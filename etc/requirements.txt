@@ -1,3 +1,4 @@
+numpy
 zipline
 bokeh
 scikit-learn
