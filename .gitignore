@@ -10,3 +10,6 @@ bin
 
 # Unknown
 .idea
+
+# Packages
+powerline/bin
