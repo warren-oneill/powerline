@@ -29,3 +29,5 @@ toolz==0.7.1
 tornado==4.1
 zipline==0.7.0
 sqlalchemy
+mysql-connector-python
+sqlacodegen
