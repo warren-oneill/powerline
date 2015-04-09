@@ -2,6 +2,7 @@
 numpy
 pandas
 cython
+matplotlib
 # powerline requirements
 sqlalchemy
 mysql-connector-python
