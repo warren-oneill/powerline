@@ -1,4 +1,5 @@
 from zipline.finance.trading import TradingEnvironment
+from zipline.finance import trading
 
 from powerline.utils import tradingcalendar_eex as tradingcalendar_eex
 from powerline.data.loader_power import load_market_data
@@ -9,11 +10,12 @@ from unittest import TestCase
 
 class TestTradingCalendarPower(TestCase):
     def setUp(self):
-        self.env = TradingEnvironment(
+        trading.environment = TradingEnvironment(
             bm_symbol='^EEX',
             exchange_tz='Europe/Berlin',
             env_trading_calendar=tradingcalendar_eex,
             load=load_market_data)
+        self.env = trading.environment
 
     def test_calendar_vs_environment_eex(self):
         cal_days = self.env.benchmark_returns[tradingcalendar_eex.start:].index
@@ -52,3 +54,6 @@ class TestTradingCalendarPower(TestCase):
             dt_last = row.dt
             while dt_last == row.dt and row.dt != source.end:
                 row = next(source)
+
+    def tearDown(self):
+        trading.environment = None

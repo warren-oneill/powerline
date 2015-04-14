@@ -6,7 +6,8 @@ from math import pow
 from zipline.data.loader import dump_treasury_curves, get_data_filepath
 
 from powerline.utils.tradingcalendar_eex import trading_day as trading_day_eex
-from powerline.utils.tradingcalendar_eex import trading_days as trading_days_eex
+from powerline.utils.tradingcalendar_eex import trading_days \
+    as trading_days_eex
 
 INDEX_MAPPING = {
     '^GSPC':

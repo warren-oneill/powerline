@@ -139,27 +139,6 @@ def get_early_closes(start, end):
 early_closes = get_early_closes(start, end)
 
 
-def get_open_and_close(day, early_closes):
-    market_open = pd.Timestamp(
-        datetime(
-            year=day.year,
-            month=day.month,
-            day=day.day,
-            hour=8,
-            minute=00),
-        tz='Europe/Berlin').tz_convert('UTC')
-    close_hour = 18
-    market_close = pd.Timestamp(
-        datetime(
-            year=day.year,
-            month=day.month,
-            day=day.day,
-            hour=close_hour),
-        tz='Europe/Berlin').tz_convert('UTC')
-
-    return market_open, market_close
-
-
 def get_open_and_closes(trading_days, early_closes):
     open_and_closes = pd.DataFrame(index=trading_days,
                                    columns=('market_open', 'market_close'))

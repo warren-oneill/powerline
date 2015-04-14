@@ -1,7 +1,6 @@
-__author__ = 'warren'
 from zipline.finance import trading
 
-from powerline.finance.trading import TradingEnvironment
+from zipline.finance.trading import TradingEnvironment
 
 from powerline.utils import tradingcalendar_eex as calendar
 from powerline.sources.eex_source import SqlSource
@@ -14,7 +13,7 @@ class EexExchange():
     def __init__(self):
         self.bm_symbol = '^EEX'
         self.exchange_tz = "Europe/Berlin"
-        self.env_trading_calendar = calendar
+        self.calendar = calendar
         self.load = load_market_data
         self.commission = PerShare(0.0125)
 
@@ -26,7 +25,7 @@ class EexExchange():
     def insert_env(self):
         return TradingEnvironment(bm_symbol=self.bm_symbol,
                                   exchange_tz=self.exchange_tz,
-                                  env_trading_calendar=self.env_trading_calendar,
+                                  env_trading_calendar=self.calendar,
                                   load=self.load)
 
     def insert_source(self):

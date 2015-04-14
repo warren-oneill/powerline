@@ -11,6 +11,7 @@ bin
 
 # Unknown
 .idea
+.coverage
 
 # Packages
 powerline/bin
