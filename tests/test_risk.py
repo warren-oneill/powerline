@@ -4,7 +4,6 @@ import pandas as pd
 import datetime
 import pytz
 
-from zipline.utils import factory
 from zipline.finance.trading import SimulationParameters
 
 from powerline.finance.risk_gg import RiskReport
@@ -26,7 +25,7 @@ class TestRiskReport(TestCase):
             period_start=start_date,
             period_end=end_date
         )
-        #returns = factory.create_returns_from_list(
+        # returns = factory.create_returns_from_list(
         #    [1.0, -0.5, 0.8, .17, 1.0, -0.1, -0.45], self.sim_params)
         returns = pd.Series([1.0, -0.5, 0.8, .17, 1.0, -0.1, -0.45])
         pnl = pd.Series([0, -100, 80, 20.6, 220.6, -41.4, -171.306])
@@ -37,6 +36,7 @@ class TestRiskReport(TestCase):
 
     def test_var(self):
         # expected values calculated in excel. see VaR-cal.xlsx
+        # http://investexcel.net/calculating-value-at-risk-in-excel
         expected_var_95 = 6.87574503
         expected_var_99 = 10.6897709
 
