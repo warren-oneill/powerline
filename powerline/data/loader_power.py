@@ -2,6 +2,7 @@ import pandas as pd
 from collections import OrderedDict
 from six import iteritems
 from math import pow
+import numpy as np
 
 from zipline.data.loader import dump_treasury_curves, get_data_filepath
 
@@ -25,6 +26,9 @@ def load_market_data(trading_day=trading_day_eex,
     daily_return = pow(1.2, 1.0/365.0)-1.0
     benchmark_returns = pd.Series(daily_return, index=trading_days)
 
+    sd = 0.01
+    for dt, value in benchmark_returns.iteritems():
+        benchmark_returns[dt] = value + np.random.randn() * sd
     most_recent = pd.Timestamp('today', tz='UTC') - trading_day
     most_recent_index = trading_days.searchsorted(most_recent)
     days_up_to_now = trading_days[:most_recent_index + 1]
