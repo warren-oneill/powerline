@@ -8,3 +8,4 @@ matplotlib
 sqlalchemy
 mysql-connector-python
 sqlacodegen
+tabulate

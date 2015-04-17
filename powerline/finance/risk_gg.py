@@ -1,14 +1,19 @@
 from scipy.stats import norm
 import numpy as np
+from tabulate import tabulate
 
 
 class RiskReport(object):
     def __init__(self, perf):
         self.returns = perf.returns
+        self.returns_period = perf.algorithm_period_return.iget(-1)
         self.profit = perf.pnl.cumsum().iget(-1)
+        self.max_drawdown = perf.max_drawdown.iget(-1)
+
         self.var_95 = 0
         self.var_99 = 0
         self.win_loss = 0
+
         self.calculate_metrics()
 
     def calculate_metrics(self):
@@ -36,3 +41,15 @@ class RiskReport(object):
         win_loss = np.round(win_loss_count[1]/win_loss_count[-1], 2)
 
         return win_loss
+
+    def display_report(self):
+        table = [
+                ["PnL (€)", self.profit],
+                ["Returns (%)", self.returns_period],
+                ["Max Drawdown (%)", self.max_drawdown],
+                ["VaR 95 (€)", self.var_95],
+                ["VaR 99 (€)", self.var_99],
+                ["Win Loss Ratio", self.win_loss]]
+        headers = ["Risk Report", ""]
+        print(tabulate(table, headers, tablefmt="fancy_grid",
+                       numalign="right"))

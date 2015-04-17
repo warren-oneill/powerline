@@ -20,6 +20,7 @@ class EexExchange():
         trading.environment = self.insert_env()
         self.source = self.insert_source()
         self.sids = self.source.sids
+        self.identifiers = self.source.identifiers
         self.metadata = self.insert_metadata()
 
     def insert_env(self):
