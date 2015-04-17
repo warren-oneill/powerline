@@ -23,12 +23,13 @@ INDEX_MAPPING = {
 def load_market_data(trading_day=trading_day_eex,
                      trading_days=trading_days_eex, bm_symbol='^EEX'):
     # generate constant daily returns for an annualised rate of 20%
-    daily_return = pow(1.2, 1.0/365.0)-1.0
+    daily_return = pow(1.12, 1.0/365.0) - 1
     benchmark_returns = pd.Series(daily_return, index=trading_days)
 
-    sd = 0.01
+    sd = 0.001
     for dt, value in benchmark_returns.iteritems():
         benchmark_returns[dt] = value + np.random.randn() * sd
+
     most_recent = pd.Timestamp('today', tz='UTC') - trading_day
     most_recent_index = trading_days.searchsorted(most_recent)
     days_up_to_now = trading_days[:most_recent_index + 1]

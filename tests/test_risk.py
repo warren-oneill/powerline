@@ -5,8 +5,6 @@ import numpy as np
 import datetime
 import pytz
 
-from zipline.finance.trading import SimulationParameters
-
 from powerline.finance.risk_gg import RiskReport
 
 
@@ -60,7 +58,13 @@ class TestRiskReport(TestCase):
         # by zipline
         returns_period = pd.Series(np.zeros(7))
         max_drawdown = pd.Series(np.zeros(7))
+        sortino = pd.Series(np.zeros(7))
+        sharpe = pd.Series(np.zeros(7))
+        information = pd.Series(np.zeros(7))
 
         return pd.DataFrame({'returns': returns, 'pnl': pnl,
                              'algorithm_period_return': returns_period,
-                             'max_drawdown': max_drawdown}).set_index(period)
+                             'max_drawdown': max_drawdown,
+                             'sortino': sortino,
+                             'sharpe': sharpe,
+                             'information': information}).set_index(period)

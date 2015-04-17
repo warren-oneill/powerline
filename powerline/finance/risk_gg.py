@@ -6,11 +6,18 @@ from tabulate import tabulate
 class RiskReport(object):
     def __init__(self, perf):
         self.returns = perf.returns
-        self.returns_period = perf.algorithm_period_return.iget(-1)
-        self.profit = perf.pnl.cumsum().iget(-1)
-        self.max_drawdown = perf.max_drawdown.iget(-1)
+        self.returns_max = perf.returns.max()
+        self.returns_min = perf.returns.min()
+        self.returns_period = perf.algorithm_period_return[-1]
+        self.profit = perf.pnl.cumsum()[-1]
+        self.pnl_max = perf.pnl.max()
+        self.pnl_min = perf.pnl.min()
+        self.max_drawdown = perf.max_drawdown[-1]
         start = perf.index[0].strftime('%Y-%m-%d')
         end = perf.index[-1].strftime('%Y-%m-%d')
+        self.sortino = perf.sortino[-1]
+        self.sharpe = perf.sharpe[-1]
+        self.information = perf.information[-1]
         self.period = start + ' to ' + end
 
         self.var_95 = 0
@@ -48,7 +55,14 @@ class RiskReport(object):
     def display_report(self):
         table = [
                 ["PnL (€)", self.profit],
+                ["PnL Tag Max (€)", self.pnl_max],
+                ["PnL Tag Min (€)", self.pnl_min],
                 ["Returns (%)", self.returns_period],
+                ["Returns Tag Max (%)", self.returns_max],
+                ["Returns Tag Min (%)", self.returns_min],
+                ["Sortino", self.sortino],
+                ["Sharpe", self.sharpe],
+                ["Information", self.information],
                 ["Max Drawdown (%)", self.max_drawdown],
                 ["VaR 95 (€)", self.var_95],
                 ["VaR 99 (€)", self.var_99],
