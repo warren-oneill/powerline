@@ -9,6 +9,9 @@ class RiskReport(object):
         self.returns_period = perf.algorithm_period_return.iget(-1)
         self.profit = perf.pnl.cumsum().iget(-1)
         self.max_drawdown = perf.max_drawdown.iget(-1)
+        start = perf.index[0].strftime('%Y-%m-%d')
+        end = perf.index[-1].strftime('%Y-%m-%d')
+        self.period = start + ' to ' + end
 
         self.var_95 = 0
         self.var_99 = 0
@@ -50,6 +53,6 @@ class RiskReport(object):
                 ["VaR 95 (€)", self.var_95],
                 ["VaR 99 (€)", self.var_99],
                 ["Win Loss Ratio", self.win_loss]]
-        headers = ["Risk Report", ""]
+        headers = ["Risk Report", self.period]
         print(tabulate(table, headers, tablefmt="fancy_grid",
                        numalign="right"))

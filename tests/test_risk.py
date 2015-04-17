@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 import pandas as pd
+import numpy as np
 import datetime
 import pytz
 
@@ -39,20 +40,17 @@ class TestRiskReport(TestCase):
         self.metrics = None
 
     def create_mock_perf(self):
-        start_date = datetime.datetime(
+        start = datetime.datetime(
             year=2006,
             month=1,
             day=1,
             hour=0,
             minute=0,
             tzinfo=pytz.utc)
-        end_date = datetime.datetime(
-            year=2006, month=12, day=31, tzinfo=pytz.utc)
+        end = datetime.datetime(
+            year=2006, month=1, day=7, tzinfo=pytz.utc)
 
-        self.sim_params = SimulationParameters(
-            period_start=start_date,
-            period_end=end_date
-        )
+        period = pd.date_range(start, end)
 
         # portfolio value = 200, 100, 180, 210.6, 421.2, 379.8, 208.494
         returns = pd.Series([1.0, -0.5, 0.8, .17, 1.0, -0.1, -0.45])
@@ -60,9 +58,9 @@ class TestRiskReport(TestCase):
 
         # the following do not need to be tested as they are provided
         # by zipline
-        returns_period = pd.Series()
-        max_drawdown = pd.Series()
+        returns_period = pd.Series(np.zeros(7))
+        max_drawdown = pd.Series(np.zeros(7))
 
         return pd.DataFrame({'returns': returns, 'pnl': pnl,
                              'algorithm_period_return': returns_period,
-                             'max_drawdown': max_drawdown})
+                             'max_drawdown': max_drawdown}).set_index(period)
