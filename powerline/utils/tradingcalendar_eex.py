@@ -19,7 +19,7 @@ from dateutil import rrule
 
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
 
-start = pd.Timestamp('2002-01-01', tz='UTC')
+start = pd.Timestamp('2013-01-01', tz='UTC')
 
 
 def get_non_trading_days(start, end):
