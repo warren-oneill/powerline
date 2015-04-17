@@ -54,9 +54,9 @@ class TestRiskReport(TestCase):
             period_end=end_date
         )
 
+        # portfolio value = 200, 100, 180, 210.6, 421.2, 379.8, 208.494
         returns = pd.Series([1.0, -0.5, 0.8, .17, 1.0, -0.1, -0.45])
         pnl = pd.Series([0, -100, 80, 20.6, 220.6, -41.4, -171.306])
-        # 200, 100, 180, 210.6, 421.2, 379.8, 208.494
 
         # the following do not need to be tested as they are provided
         # by zipline
