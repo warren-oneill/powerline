@@ -43,6 +43,11 @@ class TestRiskReport(TestCase):
         self.assertAlmostEqual(self.metrics.var_95, expected_var_95)
         self.assertAlmostEqual(self.metrics.var_99, expected_var_99)
 
+    def test_win_loss(self):
+        expected_win_loss = 1.33
+
+        self.assertEqual(self.metrics.win_loss, expected_win_loss)
+
     def tearDown(self):
         self.returns = None
         self.sim_params = None
