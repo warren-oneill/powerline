@@ -12,6 +12,7 @@ bin
 # Unknown
 .idea
 .coverage
+*.pyc
 
 # Packages
 powerline/bin

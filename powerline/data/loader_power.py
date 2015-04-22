@@ -22,7 +22,7 @@ INDEX_MAPPING = {
 
 def load_market_data(trading_day=trading_day_eex,
                      trading_days=trading_days_eex, bm_symbol='^EEX'):
-    # generate constant daily returns for an annualised rate of 20%
+    # generate constant daily returns for an annualised rate of 12%
     daily_return = pow(1.12, 1.0/365.0) - 1
     benchmark_returns = pd.Series(daily_return, index=trading_days)
 

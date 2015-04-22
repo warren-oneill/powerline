@@ -7,7 +7,7 @@ setup(
     description='Powerline extension to Zipline',
     author='Grundgruen',
     version='0.1',
-    install_requires=['nose'],
+    install_requires=['nose', 'pandas'],
     packages=['powerline'],
     name='powerline'
 )
