@@ -2,6 +2,7 @@ import pandas as pd
 
 from datetime import datetime
 from dateutil import rrule
+import pytz
 
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
 
@@ -50,6 +51,24 @@ def get_non_trading_days(start, end):
         until=end
     )
     non_trading_rules.append(easter_monday)
+    # Christi Himmelfahrt
+    ch_himm = rrule.rrule(
+        rrule.DAILY,
+        byeaster=39,
+        cache=True,
+        dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
+        until=pd.Timestamp('2013-12-31', tz='UTC')
+    )
+    non_trading_rules.append(ch_himm)
+    # Pfingstmontag
+    pfinst_mon = rrule.rrule(
+        rrule.DAILY,
+        byeaster=50,
+        cache=True,
+        dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
+        until=pd.Timestamp('2013-12-31', tz='UTC')
+    )
+    non_trading_rules.append(pfinst_mon)
     # Labour Day (1st of May)
     may_bank = rrule.rrule(
         rrule.MONTHLY,
@@ -60,6 +79,16 @@ def get_non_trading_days(start, end):
         until=end
     )
     non_trading_rules.append(may_bank)
+    # Tag der Deutschen Einheit
+    tde = rrule.rrule(
+        rrule.MONTHLY,
+        bymonth=10,
+        bymonthday=3,
+        cache=True,
+        dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
+        until=pd.Timestamp('2013-12-31', tz='UTC')
+    )
+    non_trading_rules.append(tde)
     # Christmas Eve
     christmas_eve = rrule.rrule(
         rrule.MONTHLY,
@@ -100,6 +129,7 @@ def get_non_trading_days(start, end):
         until=end
     )
     non_trading_rules.append(newyears_eve)
+
     non_trading_ruleset = rrule.rruleset()
     for rule in non_trading_rules:
         non_trading_ruleset.rrule(rule)
