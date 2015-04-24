@@ -57,6 +57,7 @@ class TestTradingCalendarEex(TestCase):
             while dt_last == row.dt and row.dt != source.end:
                 row = next(source)
 
+
     def tearDown(self):
         trading.environment = None
 
