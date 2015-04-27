@@ -1,13 +1,14 @@
-from powerline.assets.eex_metadata import MetadataFromSql
+from powerline.exchanges.exchange import EexExchange
 
 import datetime
-
 from unittest import TestCase
+
+amd_eex = EexExchange.metadata
 
 
 class TestMetadata(TestCase):
     def setUp(self):
-        self.amd = MetadataFromSql()
+        self.amd = amd_eex
 
     def test_eex_metadata(self):
         self.assertNotEqual(self.amd.cache, None)

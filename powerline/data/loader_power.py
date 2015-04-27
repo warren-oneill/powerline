@@ -1,6 +1,4 @@
 import pandas as pd
-from collections import OrderedDict
-from six import iteritems
 from math import pow
 import numpy as np
 

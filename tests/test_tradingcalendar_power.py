@@ -4,10 +4,12 @@ from zipline.finance import trading
 from powerline.utils import tradingcalendar_eex
 from powerline.utils import tradingcalendar_epex
 from powerline.data.loader_power import load_market_data
-from powerline.sources.eex_source import SqlSource
+from powerline.exchanges.exchange import EexExchange
 
 from unittest import TestCase
 from nose.tools import nottest
+
+source_eex = EexExchange.source
 
 
 class TestTradingCalendarEex(TestCase):
@@ -45,7 +47,7 @@ class TestTradingCalendarEex(TestCase):
         )
 
     def test_calendar_vs_databank_eex(self):
-        source = SqlSource()
+        source = source_eex
 
         cal_days = self.env.benchmark_returns[source.start:source.end].index
 
@@ -56,7 +58,6 @@ class TestTradingCalendarEex(TestCase):
             dt_last = row.dt
             while dt_last == row.dt and row.dt != source.end:
                 row = next(source)
-
 
     def tearDown(self):
         trading.environment = None
@@ -72,7 +73,8 @@ class TestTradingCalendarEpex(TestCase):
         self.env = trading.environment
 
     def test_calendar_vs_environment_epex(self):
-        cal_days = self.env.benchmark_returns[tradingcalendar_epex.start:].index
+        cal_days = self.env.benchmark_returns[tradingcalendar_epex.start:]\
+            .index
         bounds = self.env.trading_days.slice_locs(
             start=tradingcalendar_epex.start,
             end=cal_days[-1]
@@ -98,7 +100,7 @@ class TestTradingCalendarEpex(TestCase):
 
     @nottest
     def test_calendar_vs_databank_epex(self):
-        source = SqlSource()
+        source = 0  # TODO
 
         cal_days = self.env.benchmark_returns[source.start:source.end].index
 

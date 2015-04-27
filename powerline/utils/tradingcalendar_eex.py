@@ -2,7 +2,6 @@ import pandas as pd
 
 from datetime import datetime
 from dateutil import rrule
-import pytz
 
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
 

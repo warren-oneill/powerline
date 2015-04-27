@@ -1,14 +1,14 @@
 import pandas as pd
 from datetime import datetime
-from dateutil import rrule
 
-from zipline.utils.tradingcalendar import end, canonicalize_datetime
+from zipline.utils.tradingcalendar import end
 
 start = pd.Timestamp('2013-01-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')
 
 non_trading_days = []
 trading_day = pd.tseries.offsets.CDay(holidays=non_trading_days)
+
 
 def get_trading_days(start, end, trading_day=trading_day):
     return pd.date_range(start=start.date(),
@@ -17,10 +17,12 @@ def get_trading_days(start, end, trading_day=trading_day):
 
 trading_days = get_trading_days(start, end)
 
+
 def get_early_closes(start, end):
     return []
 
 early_closes = get_early_closes(start, end)
+
 
 def get_open_and_closes(trading_days, early_closes):
     open_and_closes = pd.DataFrame(index=trading_days,
