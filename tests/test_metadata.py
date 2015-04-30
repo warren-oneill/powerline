@@ -7,6 +7,8 @@ amd_eex = EexExchange.metadata
 
 
 class TestMetadata(TestCase):
+    _multiprocess_shared_ = True
+
     def setUp(self):
         self.amd = amd_eex
 

@@ -13,6 +13,8 @@ source_eex = EexExchange.source
 
 
 class TestTradingCalendarEex(TestCase):
+    _multiprocess_shared_ = True
+
     def setUp(self):
         trading.environment = TradingEnvironment(
             bm_symbol='^EEX',

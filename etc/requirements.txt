@@ -9,3 +9,6 @@ sqlalchemy
 mysql-connector-python
 sqlacodegen
 tabulate
+
+# development requirements
+nose-timer

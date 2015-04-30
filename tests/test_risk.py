@@ -9,6 +9,8 @@ from powerline.finance.risk_gg import RiskReport
 
 
 class TestRiskReport(TestCase):
+    _multiprocess_shared_ = True
+
     def setUp(self):
         self.perf = self.create_mock_perf()
 
