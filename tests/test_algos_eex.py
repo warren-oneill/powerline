@@ -26,9 +26,8 @@ class TestEexAlgo(TestCase):
     def run_algo(self):
         results = self.algo.run(self.data)
         return results
-    @with_environment()
-    def test_algo(self, env):
-        print(env.trading_days[9:20])
+
+    def test_algo(self):
         results_algo = self.run_algo()
 
         for dt, pnl in self.pnl.iterrows():
