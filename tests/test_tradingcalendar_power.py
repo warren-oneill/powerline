@@ -13,14 +13,13 @@ source_eex = EexExchange.source
 
 
 class TestTradingCalendarEex(TestCase):
-    _multiprocess_shared_ = True
-
     def setUp(self):
         trading.environment = TradingEnvironment(
             bm_symbol='^EEX',
             exchange_tz='Europe/Berlin',
             env_trading_calendar=tradingcalendar_eex,
             load=load_market_data)
+        trading.environment.update_asset_finder(asset_metadata=EexExchange.metadata)
         self.env = trading.environment
 
     def test_calendar_vs_environment_eex(self):
@@ -52,7 +51,7 @@ class TestTradingCalendarEex(TestCase):
         source = source_eex
 
         cal_days = self.env.benchmark_returns[source.start:source.end].index
-
+        print(trading.environment.asset_finder.cache)
         row = next(source)
         for expected_dt in cal_days:
             self.assertEqual(expected_dt, row.dt)

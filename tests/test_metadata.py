@@ -7,7 +7,6 @@ amd_eex = EexExchange.metadata
 
 
 class TestMetadata(TestCase):
-    _multiprocess_shared_ = True
 
     def setUp(self):
         self.amd = amd_eex
@@ -15,7 +14,7 @@ class TestMetadata(TestCase):
     def test_eex_metadata(self):
         self.assertNotEqual(self.amd.cache, None)
         for index in self.amd.cache:
-            self.assertEqual(self.amd.cache[index]['asset_type'], 2)
+            self.assertEqual(self.amd.cache[index]['asset_type'], 'future')
             self.assertIsInstance(self.amd.cache[index]['notice_date'],
                                   datetime.date)
             self.assertIsInstance(self.amd.cache[index]['expiration_date'],

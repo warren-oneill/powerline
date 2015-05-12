@@ -1,7 +1,8 @@
 import pandas as pd
 from datetime import datetime
 
-from zipline.utils.tradingcalendar import end
+from zipline.utils.tradingcalendar import end, canonicalize_datetime
+
 
 start = pd.Timestamp('2013-01-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')
@@ -34,9 +35,8 @@ def get_open_and_closes(trading_days, early_closes):
                 month=day.month,
                 day=day.day,
                 hour=0,
-                minute=00),
+                minute=0),
             tz='Europe/Berlin').tz_convert('UTC')
-        # 1 PM if early close, 4 PM otherwise
         market_close = pd.Timestamp(
             datetime(
                 year=day.year,

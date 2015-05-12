@@ -3,6 +3,7 @@ from zipline.finance import trading
 from zipline.finance.trading import TradingEnvironment
 
 from powerline.utils import tradingcalendar_eex
+
 from powerline.sources.sql_source import SqlSource
 from powerline.data.loader_power import load_market_data
 from powerline.assets.eex_metadata import MetadataFromSql
@@ -19,12 +20,11 @@ class Exchange():
         self.calendar = calendar
         self.load = load_market_data
         self.commission = PerShare(commission)
-
         trading.environment = self.insert_env()
+        self.metadata = self.insert_metadata()
         self.source = self.insert_source()
         self.sids = self.source.sids
         self.identifiers = self.source.identifiers
-        self.metadata = self.insert_metadata()
         self.sim_params = create_simulation_parameters(start=self.source.start,
                                                        end=self.source.end)
 
@@ -45,3 +45,4 @@ EexExchange = Exchange(kind='Future',
                        price_kind='SettlementPrice',
                        calendar=tradingcalendar_eex,
                        commission=0.0125)
+
