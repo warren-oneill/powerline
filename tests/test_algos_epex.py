@@ -5,8 +5,6 @@ from powerline.utils.data.data_generator import DataGeneratorEpex
 
 from zipline.finance import trading
 
-import pandas as pd
-from datetime import timedelta
 from nose.tools import nottest
 
 
@@ -16,14 +14,13 @@ class TestEpexAlgo(TestCase):
         self.data, self.pnl = DataGeneratorEpex().create_data()
 
     def run_algo(self):
-        results = self.algo.run(self.data) # , overwrite_sim_params=False)
+        results = self.algo.run(self.data)
         return results
 
     @nottest
     def test_algo(self):
         results_algo = self.run_algo()
 
-        #print(results_algo.pnl)
         for dt, pnl in self.pnl.iterrows():
             # pnl timestamps are at market close
 

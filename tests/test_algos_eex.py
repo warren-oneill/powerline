@@ -5,10 +5,8 @@ from powerline.utils.data.data_generator import DataGeneratorEex
 from powerline.exchanges.exchange import EexExchange
 
 from zipline.finance import trading
-from zipline.finance.trading import with_environment
 from zipline.finance.trading import TradingEnvironment
 
-import pandas as pd
 from datetime import timedelta
 
 
@@ -19,7 +17,8 @@ class TestEexAlgo(TestCase):
             exchange_tz='Europe/Berlin',
             env_trading_calendar=EexExchange.calendar,
             load=EexExchange.load)
-        trading.environment.update_asset_finder(asset_metadata=EexExchange.metadata)
+        trading.environment.update_asset_finder(
+            asset_metadata=EexExchange.metadata)
         self.algo = algo_eex
         self.data, self.pnl = DataGeneratorEex().create_data()
 
@@ -39,4 +38,3 @@ class TestEexAlgo(TestCase):
     def tearDown(self):
         self.algo = None
         trading.environment = None
-

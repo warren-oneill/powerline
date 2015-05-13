@@ -19,7 +19,8 @@ class TestTradingCalendarEex(TestCase):
             exchange_tz='Europe/Berlin',
             env_trading_calendar=tradingcalendar_eex,
             load=load_market_data)
-        trading.environment.update_asset_finder(asset_metadata=EexExchange.metadata)
+        trading.environment.update_asset_finder(
+            asset_metadata=EexExchange.metadata)
         self.env = trading.environment
 
     def test_calendar_vs_environment_eex(self):

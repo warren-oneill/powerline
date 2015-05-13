@@ -45,4 +45,3 @@ EexExchange = Exchange(kind='Future',
                        price_kind='SettlementPrice',
                        calendar=tradingcalendar_eex,
                        commission=0.0125)
-

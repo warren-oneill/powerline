@@ -11,20 +11,20 @@ from powerline.utils import tradingcalendar_epex as calendar
 from powerline.data.loader_power import load_market_data as load
 
 
-from datetime import timedelta
-
 trading.environment = TradingEnvironment(bm_symbol='^EPEX',
-                                  exchange_tz="Europe/Berlin",
-                                  env_trading_calendar=calendar,
-                                  load=load)
-#trading.environment.update_asset_finder(asset_metadata=amd)
+                                         exchange_tz="Europe/Berlin",
+                                         env_trading_calendar=calendar,
+                                         load=load)
+
+amd = MetadataFromSql()
+
+trading.environment.update_asset_finder(asset_metadata=amd)
 
 dg = DataGeneratorEpex()
 _, df = dg.create_data()
 start = df.index[0]
 end = df.index[-1]
 
-amd = MetadataFromSql()
 
 sid = dg.sid
 ident = dg.ident
