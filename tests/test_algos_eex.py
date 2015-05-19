@@ -28,7 +28,7 @@ class TestEexAlgo(TestCase):
 
     def test_algo(self):
         results_algo = self.run_algo()
-
+        print(results_algo.pnl)
         for dt, pnl in self.pnl.iterrows():
             # pnl timestamps are at market close
             dt += timedelta(hours=17)

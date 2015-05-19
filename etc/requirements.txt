@@ -12,3 +12,4 @@ tabulate
 
 # development requirements
 nose-timer
+flake8
