@@ -72,4 +72,5 @@ Fetching data from {0}
     #     ((dt, c) for dt, c in iteritems(tr_curves)),
     #     key=lambda t: t[0]))
 
+    treasury_curves = treasury_curves.reindex(trading_days, method='ffill')
     return benchmark_returns, treasury_curves

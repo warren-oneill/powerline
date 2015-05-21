@@ -5,7 +5,7 @@ from powerline.utils import tradingcalendar_eex
 from powerline.utils import tradingcalendar_epex
 from powerline.data.loader_power import load_market_data
 from powerline.exchanges.exchange import EexExchange
-
+from powerline.sources.sql_source import SqlSourceEpex
 from unittest import TestCase
 from nose.tools import nottest
 
@@ -102,7 +102,7 @@ class TestTradingCalendarEpex(TestCase):
 
     @nottest
     def test_calendar_vs_databank_epex(self):
-        source = 0  # TODO
+        source = SqlSourceEpex()
 
         cal_days = self.env.benchmark_returns[source.start:source.end].index
 
