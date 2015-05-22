@@ -18,7 +18,7 @@ class TestEexAlgo(TestCase):
             env_trading_calendar=EexExchange.calendar,
             load=EexExchange.load)
         trading.environment.update_asset_finder(
-            asset_metadata=EexExchange.metadata)
+            asset_finder=EexExchange.asset_finder)
         self.algo = algo_eex
         self.data, self.pnl = DataGeneratorEex().create_data()
 

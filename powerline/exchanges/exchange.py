@@ -21,7 +21,7 @@ class Exchange():
         self.load = load_market_data
         self.commission = PerShare(commission)
         trading.environment = self.insert_env()
-        self.metadata = self.insert_metadata()
+        self.asset_finder = self.insert_metadata()
         self.source = self.insert_source()
         self.sids = self.source.sids
         self.identifiers = self.source.identifiers
@@ -38,7 +38,7 @@ class Exchange():
         return SqlSource(kind=self.kind, price_kind=self.price_kind)
 
     def insert_metadata(self):
-        return MetadataFromSql()
+        return MetadataFromSql().asset_finder
 
 
 EexExchange = Exchange(kind='Future',

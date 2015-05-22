@@ -17,6 +17,7 @@ class TestEpexAlgo(TestCase):
         results = self.algo.run(self.data)
         return results
 
+    @nottest
     def test_algo(self):
         results_algo = self.run_algo()
 

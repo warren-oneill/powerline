@@ -23,6 +23,6 @@ def handle_data(self, data):
 
 algo = TradingAlgorithm(initialize=initialize,
                         handle_data=handle_data,
-                        asset_metadata=exchange.metadata,
+                        asset_finder=exchange.asset_finder,
                         sim_params=exchange.sim_params,
                         instant_fill=True)

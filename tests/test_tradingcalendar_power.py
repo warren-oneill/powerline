@@ -1,5 +1,6 @@
 from zipline.finance.trading import TradingEnvironment
 from zipline.finance import trading
+from zipline.finance.trading import with_environment
 
 from powerline.utils import tradingcalendar_eex
 from powerline.utils import tradingcalendar_epex
@@ -20,17 +21,16 @@ class TestTradingCalendarEex(TestCase):
             env_trading_calendar=tradingcalendar_eex,
             load=load_market_data)
         trading.environment.update_asset_finder(
-            asset_metadata=EexExchange.metadata)
-        self.env = trading.environment
+            asset_finder=EexExchange.asset_finder)
 
     def test_calendar_vs_environment_eex(self):
-        cal_days = self.env.benchmark_returns[tradingcalendar_eex.start:].index
-        bounds = self.env.trading_days.slice_locs(
+        cal_days = trading.environment.benchmark_returns[tradingcalendar_eex.start:].index
+        bounds = trading.environment.trading_days.slice_locs(
             start=tradingcalendar_eex.start,
             end=cal_days[-1]
             )
 
-        env_days = self.env.trading_days[bounds[0]:bounds[1]]
+        env_days = trading.environment.trading_days[bounds[0]:bounds[1]]
         self.check_days(env_days, cal_days)
 
     def check_days(self, env_days, cal_days):
@@ -51,7 +51,7 @@ class TestTradingCalendarEex(TestCase):
     def test_calendar_vs_databank_eex(self):
         source = source_eex
 
-        cal_days = self.env.benchmark_returns[source.start:source.end].index
+        cal_days = trading.environment.benchmark_returns[source.start:source.end].index
         print(trading.environment.asset_finder.cache)
         row = next(source)
         for expected_dt in cal_days:

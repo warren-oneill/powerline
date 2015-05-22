@@ -16,9 +16,9 @@ trading.environment = TradingEnvironment(bm_symbol='^EPEX',
                                          env_trading_calendar=calendar,
                                          load=load)
 
-amd = MetadataFromSql()
+asset_finder = MetadataFromSql().asset_finder
 
-trading.environment.update_asset_finder(asset_metadata=amd)
+trading.environment.update_asset_finder(asset_finder=asset_finder)
 
 dg = DataGeneratorEpex()
 _, df = dg.create_data()
@@ -45,6 +45,6 @@ sim_params = create_simulation_parameters(start=start,
                                           #data_frequency='minute')
 algo = TradingAlgorithm(initialize=initialize,
                         handle_data=handle_data,
-                        asset_metadata=amd,
+                        asset_finder=asset_finder,
                         sim_params=sim_params,
                         instant_fill=True)
