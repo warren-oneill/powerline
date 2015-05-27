@@ -1,5 +1,3 @@
-from zipline.finance import trading
-
 from zipline.finance.trading import TradingEnvironment
 
 from powerline.utils import tradingcalendar_eex
@@ -20,7 +18,7 @@ class Exchange():
         self.calendar = calendar
         self.load = load_market_data
         self.commission = PerShare(commission)
-        trading.environment = self.insert_env()
+        self.env = self.insert_env()
         self.asset_finder = self.insert_metadata()
         self.source = self.insert_source()
         self.sids = self.source.sids
