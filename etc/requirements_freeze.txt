@@ -1,0 +1,24 @@
+Cython==0.22
+Logbook==0.9.1
+SQLAlchemy==1.0.4
+flake8==2.4.1
+inflect==0.2.5
+matplotlib==1.4.3
+mccabe==0.3
+mysql-connector-python==2.0.3
+nose==1.3.6
+nose-timer==0.4.4
+numpy==1.9.2
+pandas==0.16.1
+pep8==1.5.7
+pyflakes==0.8.1
+pyparsing==2.0.3
+python-dateutil==2.4.2
+pytz==2015.4
+requests==2.7.0
+scipy==0.15.1
+six==1.9.0
+sqlacodegen==1.1.6
+tabulate==0.7.5
+termcolor==1.1.0
+-e git://github.com/quantopian/zipline.git@7365df204011338151a1fc1e392ce4bf4c94cc77#egg=zipline-origin/futures-trading
