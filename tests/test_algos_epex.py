@@ -52,7 +52,8 @@ class TestEpexAlgo(TestCase):
         for dt, pnl in self.pnl.iterrows():
             # pnl timestamps are at market close
 
-            self.assertEqual(results_algo.pnl[dt], pnl[0])
+            self.assertEqual(results_algo.pnl[dt], pnl[0],
+                             print(results_algo.pnl[dt]))
 
     def tearDown(self):
         self.algo = None

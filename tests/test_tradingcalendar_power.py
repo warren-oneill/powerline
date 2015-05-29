@@ -5,7 +5,7 @@ from powerline.utils import tradingcalendar_eex
 from powerline.utils import tradingcalendar_epex
 from powerline.data.loader_power import load_market_data
 from powerline.exchanges.exchange import EexExchange
-from powerline.sources.sql_source import SqlSourceEpex
+from powerline.sources.sql_source import EpexSource
 from unittest import TestCase
 from nose.tools import nottest
 
@@ -14,13 +14,10 @@ source_eex = EexExchange.source
 
 class TestTradingCalendarEex(TestCase):
     def setUp(self):
-        trading.environment = TradingEnvironment(
-            bm_symbol='^EEX',
-            exchange_tz='Europe/Berlin',
-            env_trading_calendar=tradingcalendar_eex,
-            load=load_market_data)
+        trading.environment = EexExchange.env
         trading.environment.update_asset_finder(
             asset_finder=EexExchange.asset_finder)
+        self.source = EexExchange.data_source()
 
     def test_calendar_vs_environment_eex(self):
         cal_days = trading.environment.benchmark_returns[
@@ -49,7 +46,7 @@ class TestTradingCalendarEex(TestCase):
         )
 
     def test_calendar_vs_databank_eex(self):
-        source = source_eex
+        source = self.source
 
         cal_days = trading.environment.benchmark_returns[
             source.start:source.end].index
@@ -102,7 +99,7 @@ class TestTradingCalendarEpex(TestCase):
 
     @nottest
     def test_calendar_vs_databank_epex(self):
-        source = SqlSourceEpex()
+        source = EpexSource()
 
         cal_days = self.env.benchmark_returns[source.start:source.end].index
 

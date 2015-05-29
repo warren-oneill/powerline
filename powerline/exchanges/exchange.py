@@ -1,8 +1,8 @@
 from zipline.finance.trading import TradingEnvironment
 
-from powerline.utils import tradingcalendar_eex
+from powerline.utils import tradingcalendar_eex, tradingcalendar_epex
 
-from powerline.sources.sql_source import SqlSource
+from powerline.sources.sql_source import EexSource, EpexSource
 from powerline.data.loader_power import load_market_data
 from powerline.assets.eex_metadata import MetadataFromSql
 from zipline.finance.commission import PerShare
@@ -10,16 +10,15 @@ from zipline.utils.factory import create_simulation_parameters
 
 
 class Exchange():
-    def __init__(self, kind, price_kind, calendar, commission):
-        self.bm_symbol = '^EEX'
+    def __init__(self, data_source, bm_symbol, calendar, commission):
+        self.bm_symbol = bm_symbol
         self.exchange_tz = "Europe/Berlin"
-        self.kind = kind
-        self.price_kind = price_kind
         self.calendar = calendar
         self.load = load_market_data
         self.commission = PerShare(commission)
         self.env = self.insert_env()
         self.asset_finder = self.insert_metadata()
+        self.data_source = data_source
         self.source = self.insert_source()
         self.sids = self.source.sids
         self.identifiers = self.source.identifiers
@@ -33,13 +32,16 @@ class Exchange():
                                   load=self.load)
 
     def insert_source(self):
-        return SqlSource(kind=self.kind, price_kind=self.price_kind)
+        return self.data_source()
 
     def insert_metadata(self):
         return MetadataFromSql().asset_finder
 
 
-EexExchange = Exchange(kind='Future',
-                       price_kind='SettlementPrice',
+EexExchange = Exchange(data_source=EexSource, bm_symbol='^EEX',
                        calendar=tradingcalendar_eex,
                        commission=0.0125)
+
+EpexExchange = None  # Exchange(data_source=EpexSource, bm_symbol='^EPEX',
+                     #    calendar=tradingcalendar_epex,
+                     #    commission=0.04)  # TODO Epex commission

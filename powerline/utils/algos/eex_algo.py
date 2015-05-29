@@ -3,8 +3,6 @@ from zipline.finance.commission import PerShare
 
 from powerline.exchanges.exchange import EexExchange as exchange
 
-
-sid = exchange.sids[3]
 ident = exchange.identifiers[3]
 
 
