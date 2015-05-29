@@ -1,6 +1,7 @@
 # zipline requirements
 numpy
 pandas
+scipy
 cython
 matplotlib
 
