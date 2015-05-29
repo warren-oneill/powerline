@@ -5,6 +5,7 @@ cython
 matplotlib
 
 # powerline requirements
+scipy
 sqlalchemy
 mysql-connector-python
 sqlacodegen
