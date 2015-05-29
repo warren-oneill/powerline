@@ -1,15 +1,10 @@
-from zipline.finance.trading import TradingEnvironment
 from zipline.finance import trading
 
 from powerline.utils import tradingcalendar_eex
 from powerline.utils import tradingcalendar_epex
-from powerline.data.loader_power import load_market_data
-from powerline.exchanges.exchange import EexExchange
-from powerline.sources.sql_source import EpexSource
+from powerline.exchanges.exchange import EexExchange, EpexExchange
 from unittest import TestCase
 from nose.tools import nottest
-
-source_eex = EexExchange.source
 
 
 class TestTradingCalendarEex(TestCase):
@@ -60,26 +55,25 @@ class TestTradingCalendarEex(TestCase):
 
     def tearDown(self):
         trading.environment = None
+        self.source = None
 
 
 class TestTradingCalendarEpex(TestCase):
     def setUp(self):
-        trading.environment = TradingEnvironment(
-            bm_symbol='^EPEX',
-            exchange_tz='Europe/Berlin',
-            env_trading_calendar=tradingcalendar_epex,
-            load=load_market_data)
-        self.env = trading.environment
+        trading.environment = EpexExchange.env
+        trading.environment.update_asset_finder(
+            asset_finder=EpexExchange.asset_finder)
+        self.source = EpexExchange.data_source()
 
     def test_calendar_vs_environment_epex(self):
-        cal_days = self.env.benchmark_returns[tradingcalendar_epex.start:]\
+        cal_days = trading.environment.benchmark_returns[tradingcalendar_epex.start:]\
             .index
-        bounds = self.env.trading_days.slice_locs(
+        bounds = trading.environment.trading_days.slice_locs(
             start=tradingcalendar_epex.start,
             end=cal_days[-1]
             )
 
-        env_days = self.env.trading_days[bounds[0]:bounds[1]]
+        env_days = trading.environment.trading_days[bounds[0]:bounds[1]]
         self.check_days(env_days, cal_days)
 
     def check_days(self, env_days, cal_days):
@@ -97,19 +91,18 @@ class TestTradingCalendarEpex(TestCase):
             "{diff} should be empty".format(diff=diff2)
         )
 
-    @nottest
+    #@nottest
     def test_calendar_vs_databank_epex(self):
-        source = EpexSource()
+        cal_days = trading.environment.benchmark_returns[self.source.start:self.source.end].index
 
-        cal_days = self.env.benchmark_returns[source.start:source.end].index
-
-        row = next(source)
+        row = next(self.source)
         for expected_dt in cal_days:
+            print(row.dt)
             self.assertEqual(expected_dt, row.dt)
-
             dt_last = row.dt
-            while dt_last == row.dt and row.dt != source.end:
-                row = next(source)
+            while dt_last == row.dt and row.dt != self.source.end:
+                row = next(self.source)
 
     def tearDown(self):
         trading.environment = None
+        self.source = None
