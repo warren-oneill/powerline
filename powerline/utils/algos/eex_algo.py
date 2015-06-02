@@ -12,7 +12,6 @@ def initialize(self):
 
 
 def handle_data(self, data):
-    print(data, symbol(ident))
     if self.i < 1:
         order_target(symbol(ident), 1)
     self.i += 1

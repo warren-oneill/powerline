@@ -1,4 +1,6 @@
 from unittest import TestCase
+import pandas as pd
+from datetime import timedelta
 
 from powerline.utils.data.data_generator import DataGeneratorEex
 from powerline.exchanges.exchange import EexExchange as exchange
@@ -6,8 +8,6 @@ from powerline.utils.algos.eex_algo import initialize, handle_data, ident
 
 from zipline.finance import trading
 from zipline.algorithm import TradingAlgorithm
-
-from datetime import timedelta
 
 
 class TestEexAlgo(TestCase):
@@ -24,19 +24,29 @@ class TestEexAlgo(TestCase):
                                      sim_params=exchange.sim_params,
                                      instant_fill=True)
         self.data, self.pnl = DataGeneratorEex(identifier=ident).create_data()
+        self.results = self.run_algo()
 
     def run_algo(self):
         results = self.algo.run(self.data)
         return results
 
-    def test_algo(self):
-        results_algo = self.run_algo()
-
+    def test_algo_pnl(self):
         for dt, pnl in self.pnl.iterrows():
             # pnl timestamps are at market close
             dt += timedelta(hours=17)
 
-            self.assertEqual(results_algo.pnl[dt], pnl[0])
+            self.assertEqual(self.results.pnl[dt], pnl[0], print(dt))
+
+    def test_algo_positions(self):
+        expected_positions = pd.DataFrame([1, 1, 1, 0], index=self.pnl.index)
+        for dt, amount in expected_positions.iterrows():
+            dt += timedelta(hours=17)
+            if self.results.positions[dt]:
+                actual_position = self.results.positions[dt][0]['amount']
+            else:
+                actual_position = 0
+
+            self.assertEqual(actual_position, amount[0], print(self.results.positions))
 
     def tearDown(self):
         self.algo = None
