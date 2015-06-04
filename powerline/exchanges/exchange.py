@@ -10,7 +10,7 @@ from zipline.finance.commission import PerShare
 from zipline.utils.factory import create_simulation_parameters
 
 
-class Exchange():
+class Exchange(object):
     def __init__(self, data_source, meta_data_obj, bm_symbol, calendar, commission):
         self.bm_symbol = bm_symbol
         self.exchange_tz = "Europe/Berlin"
@@ -39,7 +39,11 @@ class Exchange():
     def insert_metadata(self):
         return self.mdo().asset_finder
 
-
+# TODO please instantiate (once) where needed
+# e.g. specific exchange could be a borg
+# https://github.com/faif/python-patterns/blob/master/borg.py
+# returned from a factory
+# https://github.com/faif/python-patterns/blob/master/factory_method.py
 EexExchange = Exchange(data_source=EexSource,
                        meta_data_obj=MetadataFromSqlEex,
                        bm_symbol='^EEX',
