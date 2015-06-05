@@ -91,9 +91,10 @@ class TestTradingCalendarEpex(TestCase):
             "{diff} should be empty".format(diff=diff2)
         )
 
-    #@nottest
+    # @nottest
     def test_calendar_vs_databank_epex(self):
-        cal_days = trading.environment.benchmark_returns[self.source.start:self.source.end].index
+        cal_days = trading.environment.benchmark_returns[
+            self.source.start:self.source.end].index
 
         row = next(self.source)
         for expected_dt in cal_days:

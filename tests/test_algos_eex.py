@@ -46,7 +46,7 @@ class TestEexAlgo(TestCase):
             else:
                 actual_position = 0
 
-            self.assertEqual(actual_position, amount[0], print(self.results.positions))
+            self.assertEqual(actual_position, amount[0])
 
     def tearDown(self):
         self.algo = None

@@ -11,7 +11,8 @@ from zipline.utils.factory import create_simulation_parameters
 
 
 class Exchange(object):
-    def __init__(self, data_source, meta_data_obj, bm_symbol, calendar, commission):
+    def __init__(self, data_source, meta_data_obj, bm_symbol,
+                 calendar, commission):
         self.bm_symbol = bm_symbol
         self.exchange_tz = "Europe/Berlin"
         self.calendar = calendar

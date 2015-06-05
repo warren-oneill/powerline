@@ -8,7 +8,6 @@ from powerline.utils.data.data_generator import DataGeneratorEpex
 
 from zipline.finance import trading
 from zipline.algorithm import TradingAlgorithm
-from zipline.finance.performance.position import positiondict
 
 
 class TestEpexAlgo(TestCase):
@@ -31,14 +30,15 @@ class TestEpexAlgo(TestCase):
         results = self.algo.run(self.data)
         return results
 
-    #@nottest
+    # @nottest
     def test_algo_pnl(self):
         for dt, pnl in self.pnl.iterrows():
             # pnl timestamps are at market close
             self.assertEqual(self.results.pnl[dt], pnl[0])
 
     def test_algo_positions(self):
-        expected_positions = pd.DataFrame([1, 1, 0, 0, 0], index=self.pnl.index)
+        expected_positions = pd.DataFrame([1, 1, 0, 0, 0],
+                                          index=self.pnl.index)
         for dt, amount in expected_positions.iterrows():
             if self.results.positions[dt]:
                 actual_position = self.results.positions[dt][0]['amount']

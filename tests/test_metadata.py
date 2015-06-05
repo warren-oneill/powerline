@@ -8,6 +8,7 @@ from zipline.assets.assets import Future
 amd_eex = EexExchange.asset_finder
 amd_epex = EpexExchange.asset_finder
 
+
 class TestMetadata(TestCase):
 
     def setUp(self):
