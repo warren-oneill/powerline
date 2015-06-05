@@ -97,7 +97,6 @@ class TestTradingCalendarEpex(TestCase):
 
         row = next(self.source)
         for expected_dt in cal_days:
-            print(row.dt)
             self.assertEqual(expected_dt, row.dt)
             dt_last = row.dt
             while dt_last == row.dt and row.dt != self.source.end:
