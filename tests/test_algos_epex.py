@@ -35,7 +35,7 @@ class TestEpexAlgo(TestCase):
     def test_algo_pnl(self):
         for dt, pnl in self.pnl.iterrows():
             # pnl timestamps are at market close
-            self.assertEqual(self.results.pnl[dt], pnl[0], print(dt))
+            self.assertEqual(self.results.pnl[dt], pnl[0])
 
     def test_algo_positions(self):
         expected_positions = pd.DataFrame([1, 1, 0, 0, 0], index=self.pnl.index)
@@ -45,7 +45,7 @@ class TestEpexAlgo(TestCase):
             else:
                 actual_position = 0
 
-            self.assertEqual(actual_position, amount[0], print(self.results.positions))
+            self.assertEqual(actual_position, amount[0])
 
     def tearDown(self):
         self.algo = None
