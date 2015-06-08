@@ -35,19 +35,3 @@ class Exchange(object):
 
     def insert_commission(self):
         return {}
-
-# TODO please instantiate (once) where needed
-# e.g. specific exchange could be a borg
-# https://github.com/faif/python-patterns/blob/master/borg.py
-# returned from a factory
-# https://github.com/faif/python-patterns/blob/master/factory_method.py
-# EexExchange = Exchange(data_source=EexSource,
-#                        meta_data_obj=MetadataFromSqlEex,
-#                        bm_symbol='^EEX',
-#                        calendar=tradingcalendar_eex,
-#                        commission=0.0125)
-#
-# EpexExchange = Exchange(data_source=EpexSource, bm_symbol='^EPEX',
-#                         meta_data_obj=MetadataFromSqlEpex,
-#                         calendar=tradingcalendar_epex,
-#                         commission=0.04)

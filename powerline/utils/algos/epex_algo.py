@@ -6,7 +6,6 @@ from powerline.exchanges.epex_exchange import EpexExchange
 ident = EpexExchange().source().identifiers[3]
 
 
-
 def initialize(self):
     self.i = 0
     self.set_commission(PerShare(0))

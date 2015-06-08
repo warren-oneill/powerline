@@ -1,6 +1,6 @@
 from powerline.assets.epex_metadata import MetadataFromSqlEpex
 from powerline.utils import tradingcalendar_epex
-from powerline.sources.sql_source import EpexSource
+from powerline.sources.epex_source import EpexSource
 from powerline.exchanges.exchange import Exchange
 
 

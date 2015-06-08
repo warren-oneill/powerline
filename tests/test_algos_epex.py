@@ -1,6 +1,5 @@
 from unittest import TestCase
 import pandas as pd
-from nose.tools import nottest
 
 from powerline.utils.algos.epex_algo import initialize, handle_data, ident
 from powerline.exchanges.epex_exchange import EpexExchange
@@ -34,7 +33,6 @@ class TestEpexAlgo(TestCase):
         results = self.algo.run(self.data)
         return results
 
-    # @nottest
     def test_algo_pnl(self):
         for dt, pnl in self.pnl.iterrows():
             # pnl timestamps are at market close

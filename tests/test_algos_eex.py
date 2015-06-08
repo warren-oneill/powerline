@@ -20,7 +20,7 @@ class TestEexAlgo(TestCase):
             asset_finder=exchange.asset_finder)
         source = exchange.source()
         sim_params = create_simulation_parameters(start=source.start,
-                                                       end=source.end)
+                                                  end=source.end)
 
         self.algo = TradingAlgorithm(initialize=initialize,
                                      handle_data=handle_data,

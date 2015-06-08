@@ -1,7 +1,6 @@
-
 from powerline.utils import tradingcalendar_eex
 from powerline.exchanges.exchange import Exchange
-from powerline.sources.sql_source import EexSource
+from powerline.sources.eex_source import EexSource
 from powerline.assets.eex_metadata import MetadataFromSqlEex
 
 
