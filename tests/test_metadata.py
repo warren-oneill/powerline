@@ -1,18 +1,17 @@
-from powerline.exchanges.exchange import EexExchange, EpexExchange
+from powerline.exchanges.eex_exchange import EexExchange
+from powerline.exchanges.epex_exchange import EpexExchange
 
 import datetime
 from unittest import TestCase
 
 from zipline.assets.assets import Future
 
-amd_eex = EexExchange.asset_finder
-amd_epex = EpexExchange.asset_finder
 
-
-class TestMetadata(TestCase):
+class TestMetadataEex(TestCase):
 
     def setUp(self):
-        self.amd = amd_eex
+        self.exchange = EexExchange()
+        self.amd = self.exchange.asset_finder
 
     def test_eex_metadata(self):
         self.assertNotEqual(self.amd.cache, None)
@@ -33,7 +32,8 @@ class TestMetadata(TestCase):
 class TestMetadataEpex(TestCase):
 
     def setUp(self):
-        self.amd = amd_epex
+        self.exchange = EpexExchange()
+        self.amd = self.exchange.asset_finder
 
     def test_eex_metadata(self):
         self.assertNotEqual(self.amd.cache, None)

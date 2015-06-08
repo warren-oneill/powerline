@@ -1,13 +1,10 @@
 from zipline.api import order_target, symbol
 from zipline.finance.commission import PerShare
 
-from powerline.utils.data.data_generator import DataGeneratorEpex
-from powerline.exchanges.exchange import EpexExchange as exchange
+from powerline.exchanges.epex_exchange import EpexExchange
 
-ident = exchange.identifiers[3]
+ident = EpexExchange().source().identifiers[3]
 
-dg = DataGeneratorEpex(identifier=ident)
-_, df = dg.create_data()
 
 
 def initialize(self):

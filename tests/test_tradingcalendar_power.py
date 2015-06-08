@@ -2,17 +2,19 @@ from zipline.finance import trading
 
 from powerline.utils import tradingcalendar_eex
 from powerline.utils import tradingcalendar_epex
-from powerline.exchanges.exchange import EexExchange, EpexExchange
+from powerline.exchanges.eex_exchange import EexExchange
+from powerline.exchanges.epex_exchange import EpexExchange
 from unittest import TestCase
 from nose.tools import nottest
 
 
 class TestTradingCalendarEex(TestCase):
     def setUp(self):
-        trading.environment = EexExchange.env
+        self.exchange = EexExchange()
+        trading.environment = self.exchange.env
         trading.environment.update_asset_finder(
-            asset_finder=EexExchange.asset_finder)
-        self.source = EexExchange.data_source()
+            asset_finder=self.exchange.asset_finder)
+        self.source = self.exchange.source()
 
     def test_calendar_vs_environment_eex(self):
         cal_days = trading.environment.benchmark_returns[
@@ -60,10 +62,11 @@ class TestTradingCalendarEex(TestCase):
 
 class TestTradingCalendarEpex(TestCase):
     def setUp(self):
-        trading.environment = EpexExchange.env
+        self.exchange = EpexExchange()
+        trading.environment = self.exchange.env
         trading.environment.update_asset_finder(
-            asset_finder=EpexExchange.asset_finder)
-        self.source = EpexExchange.data_source()
+            asset_finder=self.exchange.asset_finder)
+        self.source = self.exchange.source()
 
     def test_calendar_vs_environment_epex(self):
         cal_days = trading.environment.benchmark_returns[tradingcalendar_epex.start:]\

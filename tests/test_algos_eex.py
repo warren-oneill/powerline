@@ -3,25 +3,29 @@ import pandas as pd
 from datetime import timedelta
 
 from powerline.utils.data.data_generator import DataGeneratorEex
-from powerline.exchanges.exchange import EexExchange as exchange
+from powerline.exchanges.eex_exchange import EexExchange
 from powerline.utils.algos.eex_algo import initialize, handle_data, ident
 
 from zipline.finance import trading
 from zipline.algorithm import TradingAlgorithm
+from zipline.utils.factory import create_simulation_parameters
 
 
 class TestEexAlgo(TestCase):
 
     def setUp(self):
+        exchange = EexExchange()
         trading.environment = exchange.env
         trading.environment.update_asset_finder(
             asset_finder=exchange.asset_finder)
-        exchange.data_source()
+        source = exchange.source()
+        sim_params = create_simulation_parameters(start=source.start,
+                                                       end=source.end)
 
         self.algo = TradingAlgorithm(initialize=initialize,
                                      handle_data=handle_data,
                                      asset_finder=exchange.asset_finder,
-                                     sim_params=exchange.sim_params,
+                                     sim_params=sim_params,
                                      instant_fill=True)
         self.data, self.pnl = DataGeneratorEex(identifier=ident).create_data()
         self.results = self.run_algo()

@@ -1,9 +1,9 @@
 from zipline.api import order_target, symbol
 from zipline.finance.commission import PerShare
 
-from powerline.exchanges.exchange import EexExchange as exchange
+from powerline.exchanges.eex_exchange import EexExchange
 
-ident = exchange.identifiers[3]
+ident = EexExchange().source().identifiers[3]
 
 
 def initialize(self):
