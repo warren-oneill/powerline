@@ -3,7 +3,7 @@ from zipline.finance.commission import PerShare
 
 from powerline.data.loader_power import load_market_data
 
-
+# TODO use ABCMeta and abstractmethod
 class Exchange(object):
     def __init__(self):
         self.bm_symbol = self.insert_bm()
