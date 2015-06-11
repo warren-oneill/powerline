@@ -4,14 +4,13 @@ from datetime import timedelta
 
 from powerline.utils.data.data_generator import DataGeneratorEex
 from powerline.exchanges.eex_exchange import EexExchange
-from powerline.utils.algos.eex_algo import initialize, handle_data, ident
 
 from zipline.finance import trading
-from zipline.algorithm import TradingAlgorithm
 from zipline.utils.factory import create_simulation_parameters
+from zipline.test_algorithms import TestAlgorithm
+from zipline.finance.commission import PerShare
 
 
-# TODO use zipline built-in test algo
 class TestEexAlgo(TestCase):
 
     def setUp(self):
@@ -20,14 +19,18 @@ class TestEexAlgo(TestCase):
         trading.environment.update_asset_finder(
             asset_finder=exchange.asset_finder)
         source = exchange.source()
+        ident = source.identifiers[3]
+        sid = trading.environment.asset_finder.retrieve_asset_by_identifier(
+            ident).sid
         sim_params = create_simulation_parameters(start=source.start,
                                                   end=source.end)
 
-        self.algo = TradingAlgorithm(initialize=initialize,
-                                     handle_data=handle_data,
-                                     asset_finder=exchange.asset_finder,
-                                     sim_params=sim_params,
-                                     instant_fill=True)
+        self.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
+                                  instant_fill=True,
+                                  asset_finder=exchange.asset_finder,
+                                  sim_params=sim_params,
+                                  commission=PerShare(0))
+
         self.data, self.pnl = DataGeneratorEex(identifier=ident).create_data()
         self.results = self.run_algo()
 
