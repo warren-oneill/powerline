@@ -19,7 +19,7 @@ class TestEexAlgo(TestCase):
         trading.environment.update_asset_finder(
             asset_finder=exchange.asset_finder)
         source = exchange.source()
-        ident = source.identifiers[3]
+        ident = '2013-01-21_F1B4'
         sid = trading.environment.asset_finder.retrieve_asset_by_identifier(
             ident).sid
         sim_params = create_simulation_parameters(start=source.start,
@@ -40,15 +40,11 @@ class TestEexAlgo(TestCase):
 
     def test_algo_pnl(self):
         for dt, pnl in self.pnl.iterrows():
-            # pnl timestamps are at market close
-            dt += timedelta(hours=17)
-
-            self.assertEqual(self.results.pnl[dt], pnl[0])
+            self.assertEqual(self.results.pnl[dt], pnl[0], print(self.results.pnl, self.pnl))
 
     def test_algo_positions(self):
-        expected_positions = pd.DataFrame([1, 1, 0, 0], index=self.pnl.index)
+        expected_positions = pd.DataFrame([0, 1, 1, 0], index=self.pnl.index)
         for dt, amount in expected_positions.iterrows():
-            dt += timedelta(hours=17)
             if self.results.positions[dt]:
                 actual_position = self.results.positions[dt][0]['amount']
             else:
