@@ -42,7 +42,7 @@ class TestTradingCalendarEex(TestCase):
         )
 
     def test_calendar_vs_databank_eex(self):
-        source = self.source
+        source = self.exchange.source()
 
         cal_days = trading.environment.benchmark_returns[
             source.start:source.end].index

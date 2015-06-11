@@ -11,6 +11,7 @@ from zipline.algorithm import TradingAlgorithm
 from zipline.utils.factory import create_simulation_parameters
 
 
+# TODO use zipline built-in test algo
 class TestEexAlgo(TestCase):
 
     def setUp(self):
@@ -39,10 +40,10 @@ class TestEexAlgo(TestCase):
             # pnl timestamps are at market close
             dt += timedelta(hours=17)
 
-            self.assertEqual(self.results.pnl[dt], pnl[0], print(dt))
+            self.assertEqual(self.results.pnl[dt], pnl[0])
 
     def test_algo_positions(self):
-        expected_positions = pd.DataFrame([1, 1, 1, 0], index=self.pnl.index)
+        expected_positions = pd.DataFrame([1, 1, 0, 0], index=self.pnl.index)
         for dt, amount in expected_positions.iterrows():
             dt += timedelta(hours=17)
             if self.results.positions[dt]:

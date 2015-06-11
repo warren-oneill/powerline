@@ -3,8 +3,10 @@ from zipline.finance.commission import PerShare
 
 from powerline.data.loader_power import load_market_data
 
-# TODO use ABCMeta and abstractmethod
-class Exchange(object):
+from abc import ABCMeta, abstractmethod
+
+
+class Exchange(object, metaclass=ABCMeta):
     def __init__(self):
         self.bm_symbol = self.insert_bm()
         self.exchange_tz = "Europe/Berlin"
@@ -21,17 +23,22 @@ class Exchange(object):
                                   env_trading_calendar=self.calendar,
                                   load=self.load)
 
+    @abstractmethod
     def insert_source(self):
-        return {}
+        pass
 
+    @abstractmethod
     def insert_asset_finder(self):
-        return {}
+        pass
 
+    @abstractmethod
     def insert_bm(self):
-        return {}
+        pass
 
+    @abstractmethod
     def insert_calendar(self):
-        return {}
+        pass
 
+    @abstractmethod
     def insert_commission(self):
-        return {}
+        pass
