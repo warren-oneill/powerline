@@ -1,6 +1,5 @@
 from unittest import TestCase
 import pandas as pd
-from datetime import timedelta
 
 from powerline.utils.data.data_generator import DataGeneratorEex
 from powerline.exchanges.eex_exchange import EexExchange
@@ -40,7 +39,7 @@ class TestEexAlgo(TestCase):
 
     def test_algo_pnl(self):
         for dt, pnl in self.pnl.iterrows():
-            self.assertEqual(self.results.pnl[dt], pnl[0], print(self.results.pnl, self.pnl))
+            self.assertEqual(self.results.pnl[dt], pnl[0])
 
     def test_algo_positions(self):
         expected_positions = pd.DataFrame([0, 1, 1, 0], index=self.pnl.index)

@@ -58,15 +58,5 @@ Fetching data from {0}
     else:
         treasury_curves = saved_curves.tz_localize('UTC')
 
-    # tr_curves = {}
-    # for tr_dt, curve in treasury_curves.T.iteritems():
-    #     # tr_dt = tr_dt.replace(hour=0, minute=0, second=0, microsecond=0,
-    #     #                       tzinfo=pytz.utc)
-    #     tr_curves[tr_dt] = curve.to_dict()
-    #
-    # tr_curves = OrderedDict(sorted(
-    #     ((dt, c) for dt, c in iteritems(tr_curves)),
-    #     key=lambda t: t[0]))
-
     treasury_curves = treasury_curves.reindex(trading_days, method='ffill')
     return benchmark_returns, treasury_curves
