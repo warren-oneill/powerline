@@ -16,6 +16,15 @@ INDEX_MAPPING = {
 
 def load_market_data(trading_day,
                      trading_days, bm_symbol='^EEX'):
+    '''
+    A patch of zipline loader which using the trading_days to generate a
+    constant benchmark and treasury curve that matches the market days.
+
+    :param trading_day:
+    :param trading_days:
+    :param bm_symbol:
+    :return:
+    '''
     # generate constant daily returns for an annualised rate of 12%
     daily_return = pow(1.12, 1.0/365.0) - 1
     benchmark_returns = pd.Series(daily_return, index=trading_days)

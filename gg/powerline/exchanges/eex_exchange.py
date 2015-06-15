@@ -5,6 +5,9 @@ from gg.powerline.assets.eex_metadata import MetadataFromSqlEex
 
 
 class EexExchange(Exchange):
+    '''
+    Implementing abstractmethods for the EEX exchange
+    '''
     def insert_source(self):
         return EexSource
 

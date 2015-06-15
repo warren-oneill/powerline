@@ -5,6 +5,9 @@ from gg.powerline.exchanges.exchange import Exchange
 
 
 class EpexExchange(Exchange):
+    '''
+    Implementing abstractmethods for the EPEX exchange
+    '''
     def insert_source(self):
         return EpexSource
 

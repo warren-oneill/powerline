@@ -4,6 +4,11 @@ from tabulate import tabulate
 
 
 class RiskReport(object):
+    '''
+    Collects all zipline risk parameters and adds gg-specific parameters
+    e.g. VaR.
+    A report can be displayed in the terminal by calling display_report()
+    '''
     def __init__(self, perf):
         self.returns = perf.returns
         self.returns_max = perf.returns.max()
