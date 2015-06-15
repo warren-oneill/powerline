@@ -1,13 +1,13 @@
 from unittest import TestCase
+
 import pandas as pd
-
-from powerline.exchanges.epex_exchange import EpexExchange
-from powerline.utils.data.data_generator import DataGeneratorEpex
-
 from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
 from zipline.test_algorithms import TestAlgorithm
 from zipline.finance.commission import PerShare
+
+from gg.powerline.exchanges.epex_exchange import EpexExchange
+from gg.powerline.utils.data.data_generator import DataGeneratorEpex
 
 
 class TestEpexAlgo(TestCase):

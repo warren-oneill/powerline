@@ -1,7 +1,7 @@
-from powerline.utils import tradingcalendar_eex
-from powerline.exchanges.exchange import Exchange
-from powerline.sources.eex_source import EexSource
-from powerline.assets.eex_metadata import MetadataFromSqlEex
+from gg.powerline.utils import tradingcalendar_eex
+from gg.powerline.exchanges.exchange import Exchange
+from gg.powerline.sources.eex_source import EexSource
+from gg.powerline.assets.eex_metadata import MetadataFromSqlEex
 
 
 class EexExchange(Exchange):

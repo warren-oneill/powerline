@@ -1,10 +1,10 @@
-from powerline.exchanges.eex_exchange import EexExchange
-from powerline.exchanges.epex_exchange import EpexExchange
-
 import datetime
 from unittest import TestCase
 
 from zipline.assets.assets import Future
+
+from gg.powerline.exchanges.eex_exchange import EexExchange
+from gg.powerline.exchanges.epex_exchange import EpexExchange
 
 
 class TestMetadataEex(TestCase):

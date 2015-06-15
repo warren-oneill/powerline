@@ -1,11 +1,11 @@
 from unittest import TestCase
+import datetime
 
 import pandas as pd
 import numpy as np
-import datetime
 import pytz
 
-from powerline.finance.risk_gg import RiskReport
+from gg.powerline.finance.risk_gg import RiskReport
 
 
 class TestRiskReport(TestCase):

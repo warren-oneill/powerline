@@ -1,9 +1,9 @@
+from abc import ABCMeta, abstractmethod
+
 from zipline.finance.trading import TradingEnvironment
 from zipline.finance.commission import PerShare
 
-from powerline.data.loader_power import load_market_data
-
-from abc import ABCMeta, abstractmethod
+from gg.powerline.data.loader_power import load_market_data
 
 
 class Exchange(object, metaclass=ABCMeta):

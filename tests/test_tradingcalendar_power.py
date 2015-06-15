@@ -1,10 +1,10 @@
+from unittest import TestCase
+
 from zipline.finance import trading
 
-from powerline.utils import tradingcalendar_eex
-from powerline.utils import tradingcalendar_epex
-from powerline.exchanges.eex_exchange import EexExchange
-from powerline.exchanges.epex_exchange import EpexExchange
-from unittest import TestCase
+from gg.powerline.utils import tradingcalendar_epex, tradingcalendar_eex
+from gg.powerline.exchanges.eex_exchange import EexExchange
+from gg.powerline.exchanges.epex_exchange import EpexExchange
 
 
 class TestTradingCalendarEex(TestCase):

@@ -1,7 +1,7 @@
-from powerline.assets.epex_metadata import MetadataFromSqlEpex
-from powerline.utils import tradingcalendar_epex
-from powerline.sources.epex_source import EpexSource
-from powerline.exchanges.exchange import Exchange
+from gg.powerline.assets.epex_metadata import MetadataFromSqlEpex
+from gg.powerline.utils import tradingcalendar_epex
+from gg.powerline.sources.epex_source import EpexSource
+from gg.powerline.exchanges.exchange import Exchange
 
 
 class EpexExchange(Exchange):
