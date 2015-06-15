@@ -102,7 +102,7 @@ class TestTradingCalendarEpex(TestCase):
                     str(expected_dt.date()) == '2014-04-15':
                 continue
             row = next(self.source)
-            self.assertEqual(expected_dt, row.dt)
+            self.assertEqual(expected_dt.date(), row.dt.date())
 
     def tearDown(self):
         trading.environment = None

@@ -28,7 +28,8 @@ class TestEpexAlgo(TestCase):
                                   instant_fill=True,
                                   asset_finder=exchange.asset_finder,
                                   sim_params=sim_params,
-                                  commission=PerShare(0))
+                                  commission=PerShare(0),
+                                  data_frequency='minute')
 
         self.data, self.pnl = DataGeneratorEpex(identifier=ident).create_data()
         self.results = self.run_algo()
