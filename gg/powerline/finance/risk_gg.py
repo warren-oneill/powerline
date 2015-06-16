@@ -4,11 +4,11 @@ from tabulate import tabulate
 
 
 class RiskReport(object):
-    '''
+    """
     Collects all zipline risk parameters and adds gg-specific parameters
     e.g. VaR.
     A report can be displayed in the terminal by calling display_report()
-    '''
+    """
     def __init__(self, perf):
         self.returns = perf.returns
         self.returns_max = perf.returns.max()
@@ -51,9 +51,9 @@ class RiskReport(object):
         return self.profit*(1 - (alpha + 1))
 
     def calculate_win_loss(self):
-        '''
+        """
         ratio of wins over loses
-        '''
+        """
         win_loss_count = np.sign(self.returns).value_counts()
 
         win_loss = np.round(win_loss_count[1]/win_loss_count[-1], 2)

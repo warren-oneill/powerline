@@ -8,9 +8,9 @@ from gg.powerline.exchanges.epex_exchange import EpexExchange
 
 
 class TestMetadataEex(TestCase):
-    '''
+    """
     Tests EEX weekly metadata.
-    '''
+    """
     def setUp(self):
         self.exchange = EexExchange()
         self.amd = self.exchange.asset_finder
@@ -32,9 +32,9 @@ class TestMetadataEex(TestCase):
 
 
 class TestMetadataEpex(TestCase):
-    '''
+    """
     Tests EPEX hour product metadata.
-    '''
+    """
     def setUp(self):
         self.exchange = EpexExchange()
         self.amd = self.exchange.asset_finder

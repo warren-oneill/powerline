@@ -11,9 +11,9 @@ from gg.powerline.utils.data.data_generator import DataGeneratorEpex
 
 
 class TestEpexAlgo(TestCase):
-    '''
+    """
     Tests the change in pnl and position for a simple hourly EPEX algo.
-    '''
+    """
     def setUp(self):
         exchange = EpexExchange()
         trading.environment = exchange.env

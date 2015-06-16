@@ -1,6 +1,6 @@
-'''
+"""
 Defines trading days and trading times for the EPEX market.
-'''
+"""
 
 
 import pandas as pd

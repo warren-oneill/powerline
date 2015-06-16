@@ -1,6 +1,6 @@
-'''
+"""
 Defines trading days and trading times for the EEX weekly futures market.
-'''
+"""
 
 import pandas as pd
 

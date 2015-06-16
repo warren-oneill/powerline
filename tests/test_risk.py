@@ -9,19 +9,19 @@ from gg.powerline.finance.risk_gg import RiskReport
 
 
 class TestRiskReport(TestCase):
-    '''
+    """
     Tests gg risk parameters.
-    '''
+    """
     def setUp(self):
         self.perf = self.create_mock_perf()
 
         self.metrics = RiskReport(self.perf)
 
     def test_var(self):
-        '''
+        """
         expected values calculated in excel. see VaR-cal.xlsx
         http://investexcel.net/calculating-value-at-risk-in-excel
-        '''
+        """
         expected_var_95 = 6.87574503
         expected_var_99 = 10.6897709
 
