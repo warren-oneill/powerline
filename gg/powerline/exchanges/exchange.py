@@ -8,7 +8,7 @@ from gg.powerline.data.loader_power import load_market_data
 
 class Exchange(object, metaclass=ABCMeta):
     '''
-    A class to collect all exchange-relevent info.
+    A class to collect all exchange-relevant info.
     '''
     def __init__(self):
         self.bm_symbol = self.insert_bm()

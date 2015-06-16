@@ -11,7 +11,9 @@ from gg.powerline.exchanges.eex_exchange import EexExchange
 
 
 class TestEexAlgo(TestCase):
-
+    '''
+    Tests the change in pnl and position for a simple EEX weekly algo.
+    '''
     def setUp(self):
         exchange = EexExchange()
         trading.environment = exchange.env

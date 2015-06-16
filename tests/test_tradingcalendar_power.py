@@ -8,6 +8,10 @@ from gg.powerline.exchanges.epex_exchange import EpexExchange
 
 
 class TestTradingCalendarEex(TestCase):
+    '''
+    Tests trading times and trading days for EEX calendar by comparing with
+    the benchmark and the DataSource.
+    '''
     def setUp(self):
         self.exchange = EexExchange()
         trading.environment = self.exchange.env
@@ -60,6 +64,10 @@ class TestTradingCalendarEex(TestCase):
 
 
 class TestTradingCalendarEpex(TestCase):
+    '''
+    Tests trading times and trading days for EPEX calendar by comparing with
+    the benchmark and the DataSource.
+    '''
     def setUp(self):
         self.exchange = EpexExchange()
         trading.environment = self.exchange.env
