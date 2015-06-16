@@ -1,4 +1,6 @@
-from gg.powerline.finance.auction import TradingAlgorithmGG
+from gg.powerline.finance.auction import TradingAlgorithmGG, AtAuction
+
+from datetime import timedelta
 
 
 class TestAuctionAlgorithm(TradingAlgorithmGG):
@@ -7,7 +9,6 @@ class TestAuctionAlgorithm(TradingAlgorithmGG):
     to verify the orders sent/received, transactions created, and positions
     at the close of a simulation.
     """
-
     def initialize(self,
                    sid,
                    amount,
@@ -33,8 +34,13 @@ class TestAuctionAlgorithm(TradingAlgorithmGG):
         if commission is not None:
             self.set_commission(commission)
 
+        self.schedule_function(func=auction, time_rule=AtAuction())
+
     def handle_data(self, data):
-        # place an order for amount shares of sid
-        if self.incr < self.count:
-            self.order_auction(day=self.day, amounts=self.amount)
-            self.incr += 1
+        pass
+
+
+def auction(algo, data):
+    day = algo.get_datetime().date() + timedelta(days=1)
+    algo.order_auction(day=day, amounts=algo.amount)
+    algo.incr += 1
