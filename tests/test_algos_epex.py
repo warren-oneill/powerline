@@ -47,7 +47,7 @@ class TestEpexAlgo(TestCase):
             self.assertEqual(self.results.pnl[dt], pnl[0])
 
     def test_algo_positions(self):
-        expected_positions = pd.DataFrame([0, 1, 0, 0],
+        expected_positions = pd.DataFrame([1, 1, 0, 0],
                                           index=self.pnl.index)
         for dt, amount in expected_positions.iterrows():
             if self.results.positions[dt]:
