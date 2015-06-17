@@ -40,7 +40,6 @@ class AtEpexAuction(StatelessRule):
             kwargs,
             timedelta(minutes=1),  # Defaults to the first minute.
         )
-
         self._dt = None
 
     def should_trigger(self, dt):
