@@ -1,4 +1,4 @@
-from gg.powerline.finance.auction import TradingAlgorithmGG, AtAuction
+from gg.powerline.finance.auction import TradingAlgorithmGG, AtEpexAuction
 
 from datetime import timedelta
 
@@ -34,7 +34,7 @@ class TestAuctionAlgorithm(TradingAlgorithmGG):
         if commission is not None:
             self.set_commission(commission)
 
-        self.schedule_function(func=auction, time_rule=AtAuction())
+        self.schedule_function(func=auction, time_rule=AtEpexAuction())
 
     def handle_data(self, data):
         pass
