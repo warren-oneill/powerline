@@ -2,7 +2,8 @@ from zipline.algorithm import TradingAlgorithm
 from zipline.utils.api_support import api_method
 from zipline.utils.events import StatelessRule
 
-from gg.powerline.utils.tradingcalendar_epex import get_auctions
+import pandas as pd
+from datetime import datetime
 
 
 class TradingAlgorithmGG(TradingAlgorithm):
@@ -26,7 +27,7 @@ class TradingAlgorithmGG(TradingAlgorithm):
             self.order(self.symbol(idents[i]), amounts[i])
 
 
-class AtAuction(StatelessRule):
+class AtEpexAuction(StatelessRule):
     def __init__(self):
         self._dt = None
 
@@ -38,6 +39,18 @@ class AtAuction(StatelessRule):
         Cache the auction for each day.
         """
         if self._dt is None or (self._dt.date() != dt.date()):
-            self._dt = get_auctions(dt)
+            self._dt = self.get_auctions(dt)
 
         return self._dt
+
+    # TODO: Incorpoate in calendar (generates error)
+    def get_auctions(self, dt):
+        auction = pd.Timestamp(datetime(
+            year=dt.year,
+            month=dt.month,
+            day=dt.day,
+            hour=12,
+            minute=0),
+            tz='Europe/Berlin').tz_convert('UTC')
+
+        return auction
