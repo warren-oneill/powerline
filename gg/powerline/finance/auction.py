@@ -1,9 +1,9 @@
 from zipline.algorithm import TradingAlgorithm
 from zipline.utils.api_support import api_method
-from zipline.utils.events import StatelessRule
+from zipline.utils.events import StatelessRule, _build_offset
 
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class TradingAlgorithmGG(TradingAlgorithm):
@@ -28,22 +28,31 @@ class TradingAlgorithmGG(TradingAlgorithm):
 
 
 class AtEpexAuction(StatelessRule):
-    def __init__(self):
+    """
+    A rule that triggers for some offset before the auction.
+    Example that triggers triggers before 30 minutes of the auction close:
+
+    AfterOpen(minutes=30)
+    """
+    def __init__(self, offset=None, **kwargs):
+        self.offset = _build_offset(
+            offset,
+            kwargs,
+            timedelta(minutes=1),  # Defaults to the first minute.
+        )
+
         self._dt = None
 
     def should_trigger(self, dt):
-        return self._get_auction(dt)
+        return (self._get_auction(dt) - self.offset).time() == dt.time()
 
     def _get_auction(self, dt):
-        """
-        Cache the auction for each day.
-        """
-        if self._dt is None or (self._dt.date() != dt.date()):
-            self._dt = self.get_auctions(dt)
+        self._dt = self.get_auctions(dt)
 
         return self._dt
 
     # TODO: Incorpoate in calendar (generates error)
+    # TODO: remove day info
     def get_auctions(self, dt):
         auction = pd.Timestamp(datetime(
             year=dt.year,
