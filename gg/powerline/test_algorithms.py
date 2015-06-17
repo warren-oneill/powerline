@@ -34,7 +34,8 @@ class TestAuctionAlgorithm(TradingAlgorithmGG):
         if commission is not None:
             self.set_commission(commission)
 
-        self.schedule_function(func=auction, time_rule=AtEpexAuction())
+        self.schedule_function(func=auction, time_rule=AtEpexAuction(
+            minutes=30))
 
     def handle_data(self, data):
         pass
