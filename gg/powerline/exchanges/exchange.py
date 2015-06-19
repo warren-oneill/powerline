@@ -28,20 +28,20 @@ class Exchange(object, metaclass=ABCMeta):
 
     @abstractmethod
     def insert_source(self):
-        pass
+        """defined in subclass"""
 
     @abstractmethod
     def insert_asset_finder(self):
-        pass
+        """defined in subclass"""
 
     @abstractmethod
     def insert_bm(self):
-        pass
+        """defined in subclass"""
 
     @abstractmethod
     def insert_calendar(self):
-        pass
+        """defined in subclass"""
 
     @abstractmethod
     def insert_commission(self):
-        pass
+        """defined in subclass"""
