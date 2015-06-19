@@ -1,3 +1,5 @@
+__author__ = "Warren"
+
 from abc import ABCMeta, abstractmethod
 
 from zipline.finance.trading import TradingEnvironment

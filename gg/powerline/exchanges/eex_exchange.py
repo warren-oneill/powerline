@@ -1,3 +1,5 @@
+__author__ = "Warren"
+
 from gg.powerline.utils import tradingcalendar_eex
 from gg.powerline.exchanges.exchange import Exchange
 from gg.powerline.sources.eex_source import EexSource

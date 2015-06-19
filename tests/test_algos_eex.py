@@ -1,3 +1,5 @@
+__author__ = "Warren"
+
 from unittest import TestCase
 
 import pandas as pd

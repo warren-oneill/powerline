@@ -1,3 +1,5 @@
+__author__ = "Warren"
+
 """
 Defines trading days and trading times for the EEX weekly futures market.
 """

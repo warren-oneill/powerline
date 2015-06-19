@@ -1,3 +1,5 @@
+__author__ = "Warren"
+
 from unittest import TestCase
 
 from zipline.finance import trading

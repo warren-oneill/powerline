@@ -1,3 +1,5 @@
+__author__ = "Warren"
+
 import pandas as pd
 from math import pow
 import numpy as np

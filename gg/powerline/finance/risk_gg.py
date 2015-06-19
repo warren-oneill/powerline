@@ -1,3 +1,5 @@
+__author__ = "Warren"
+
 from scipy.stats import norm
 import numpy as np
 from tabulate import tabulate
