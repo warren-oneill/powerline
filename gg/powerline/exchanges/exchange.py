@@ -13,6 +13,7 @@ class Exchange(object, metaclass=ABCMeta):
     A class to collect all exchange-relevant info.
     """
     def __init__(self):
+        # TODO use more descriptive method names - what's bm?
         self.bm_symbol = self.insert_bm()
         self.exchange_tz = "Europe/Berlin"
         self.calendar = self.insert_calendar()
