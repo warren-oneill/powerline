@@ -11,12 +11,6 @@ class EexExchange(Exchange):
     """
     Implementing abstract methods for the EEX exchange
     """
-
-    def __init__(self):
-
-        self._commission = None
-        super().__init__()
-
     def insert_source(self):
         return EexSource
 

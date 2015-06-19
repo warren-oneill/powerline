@@ -12,6 +12,8 @@ class Exchange(object, metaclass=ABCMeta):
     A class to collect all exchange-relevant info.
     """
     def __init__(self):
+        self._commission = None
+
         self.bm_symbol = self.insert_benchmark()
         self.exchange_tz = "Europe/Berlin"
         self.calendar = self.insert_calendar()

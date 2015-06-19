@@ -156,11 +156,14 @@ trading_days = get_trading_days(start, end)
 
 
 def get_early_closes(start, end):
+    '''
+    we have no early closes but its needed within zipline
+    '''
     return []
 
 early_closes = get_early_closes(start, end)
 
-# TODO remove early_closes or explain why we need it anyway
+
 def get_open_and_closes(trading_days, early_closes):
     open_and_closes = pd.DataFrame(index=trading_days,
                                    columns=('market_open', 'market_close'))
