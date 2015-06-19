@@ -24,6 +24,9 @@ class Exchange(object, metaclass=ABCMeta):
         self.source = self.insert_source()
 
     def insert_env(self):
+        """
+        passing relevant exchange objects to the environment
+        """
         return TradingEnvironment(bm_symbol=self.bm_symbol,
                                   exchange_tz=self.exchange_tz,
                                   env_trading_calendar=self.calendar,

@@ -63,6 +63,9 @@ class RiskReport(object):
         return win_loss
 
     def display_report(self):
+        """
+        displays ascii table in the terminal
+        """
         table = [
                 ["PnL (€)", self.profit],
                 ["PnL Tag Max (€)", self.pnl_max],
