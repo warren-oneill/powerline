@@ -16,7 +16,7 @@ class EpexExchange(Exchange):
     def insert_asset_finder(self):
         return MetadataFromSqlEpex().asset_finder
 
-    def insert_bm(self):
+    def insert_benchmark(self):
         return '^EPEX'
 
     def insert_calendar(self):

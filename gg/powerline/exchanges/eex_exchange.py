@@ -16,7 +16,7 @@ class EexExchange(Exchange):
     def insert_asset_finder(self):
         return MetadataFromSqlEex().asset_finder
 
-    def insert_bm(self):
+    def insert_benchmark(self):
         return '^EEX'
 
     def insert_calendar(self):

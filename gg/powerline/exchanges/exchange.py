@@ -13,8 +13,7 @@ class Exchange(object, metaclass=ABCMeta):
     A class to collect all exchange-relevant info.
     """
     def __init__(self):
-        # TODO use more descriptive method names - what's bm?
-        self.bm_symbol = self.insert_bm()
+        self.bm_symbol = self.insert_benchmark()
         self.exchange_tz = "Europe/Berlin"
         self.calendar = self.insert_calendar()
         self.load = load_market_data
@@ -41,7 +40,7 @@ class Exchange(object, metaclass=ABCMeta):
         """defined in subclass"""
 
     @abstractmethod
-    def insert_bm(self):
+    def insert_benchmark(self):
         """defined in subclass"""
 
     @abstractmethod
