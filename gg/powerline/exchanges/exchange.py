@@ -3,11 +3,10 @@ __author__ = "Warren"
 from abc import ABCMeta, abstractmethod
 
 from zipline.finance.trading import TradingEnvironment
-from zipline.finance.commission import PerShare
-
 from gg.powerline.data.loader_power import load_market_data
 
 
+# TODO use properties where appropriate (compare commission)
 class Exchange(object, metaclass=ABCMeta):
     """
     A class to collect all exchange-relevant info.
@@ -18,7 +17,6 @@ class Exchange(object, metaclass=ABCMeta):
         self.exchange_tz = "Europe/Berlin"
         self.calendar = self.insert_calendar()
         self.load = load_market_data
-        self.commission = PerShare(self.insert_commission())
         self.env = self.insert_env()
         self.asset_finder = self.insert_asset_finder()
         self.source = self.insert_source()
@@ -48,6 +46,7 @@ class Exchange(object, metaclass=ABCMeta):
     def insert_calendar(self):
         """defined in subclass"""
 
+    @property
     @abstractmethod
-    def insert_commission(self):
+    def commission(self):
         """defined in subclass"""
