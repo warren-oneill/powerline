@@ -26,6 +26,17 @@ class TradingAlgorithmGG(TradingAlgorithm):
         for i in idents:
             self.order(self.symbol(idents[i]), amounts[i])
 
+    def current_universe(self):
+        return self.insert_products()
+
+    def insert_products(self):
+        # TODO read from exchange
+        # Incorporate QH products
+        freq = 'H'
+        index = 24
+
+        return [freq + str(i) for i in range(1, index)]
+
 
 class BeforeEpexAuction(StatelessRule):
     """
