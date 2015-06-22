@@ -1,4 +1,4 @@
-from gg.powerline.finance.auction import TradingAlgorithmGG, AtEpexAuction
+from gg.powerline.finance.auction import TradingAlgorithmGG, BeforeEpexAuction
 
 from datetime import timedelta
 
@@ -34,7 +34,7 @@ class TestAuctionAlgorithm(TradingAlgorithmGG):
         if commission is not None:
             self.set_commission(commission)
 
-        self.schedule_function(func=auction, time_rule=AtEpexAuction(
+        self.schedule_function(func=auction, time_rule=BeforeEpexAuction(
             minutes=30))
 
     def handle_data(self, data):
@@ -42,6 +42,10 @@ class TestAuctionAlgorithm(TradingAlgorithmGG):
 
 
 def auction(algo, data):
+    """
+    Calculates the current day and then places an auction order for the
+    following day.
+    """
     day = algo.get_datetime().date() + timedelta(days=1)
     algo.order_auction(day=day, amounts=algo.amount)
     algo.incr += 1

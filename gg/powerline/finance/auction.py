@@ -27,12 +27,12 @@ class TradingAlgorithmGG(TradingAlgorithm):
             self.order(self.symbol(idents[i]), amounts[i])
 
 
-class AtEpexAuction(StatelessRule):
+class BeforeEpexAuction(StatelessRule):
     """
     A rule that triggers for some offset before the auction.
     Example that triggers triggers before 30 minutes of the auction close:
 
-    AfterOpen(minutes=30)
+    BeforeEpexAuction(minutes=30)
     """
     def __init__(self, offset=None, **kwargs):
         self.offset = _build_offset(
@@ -50,9 +50,13 @@ class AtEpexAuction(StatelessRule):
 
         return self._dt
 
-    # TODO: Incorpoate in calendar (generates error)
+    # TODO: Incorpoate in calendar
     # TODO: remove day info
     def get_auctions(self, dt):
+        """
+        :param dt:
+        :return: auction time on day=dt
+        """
         auction = pd.Timestamp(datetime(
             year=dt.year,
             month=dt.month,
