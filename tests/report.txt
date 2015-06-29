@@ -1,18 +1,26 @@
-[2015-06-22 09:37:37.942716] INFO: Performance: Simulated 4 trading days out of 4.
-[2015-06-22 09:37:37.942975] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
-[2015-06-22 09:37:37.943088] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
-.[2015-06-22 09:37:39.928774] INFO: Performance: Simulated 4 trading days out of 4.
-[2015-06-22 09:37:39.929038] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
-[2015-06-22 09:37:39.929129] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
-.[2015-06-22 09:37:49.879555] INFO: Performance: Simulated 13 trading days out of 14.
-[2015-06-22 09:37:49.879807] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
-[2015-06-22 09:37:49.879918] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
-.[2015-06-22 09:37:59.610443] INFO: Performance: Simulated 13 trading days out of 14.
-[2015-06-22 09:37:59.610677] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
-[2015-06-22 09:37:59.610796] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
-............/home/dev/Repos/environments/powerline-env/lib/python3.4/site-packages/pandas/tseries/base.py:363: FutureWarning: using '-' to provide set differences with datetimelike Indexes is deprecated, use .difference()
+[2015-06-29 12:34:11.779390] INFO: Performance: Simulated 4 trading days out of 4.
+[2015-06-29 12:34:11.779627] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
+[2015-06-29 12:34:11.779712] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
+.[2015-06-29 12:34:13.861077] INFO: Performance: Simulated 4 trading days out of 4.
+[2015-06-29 12:34:13.861282] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
+[2015-06-29 12:34:13.861495] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
+.[2015-06-29 12:34:20.726179] INFO: Performance: Simulated 13 trading days out of 14.
+[2015-06-29 12:34:20.726375] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
+[2015-06-29 12:34:20.726465] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
+.[2015-06-29 12:34:27.673982] INFO: Performance: Simulated 13 trading days out of 14.
+[2015-06-29 12:34:27.674199] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
+[2015-06-29 12:34:27.674325] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
+............/home/dev/Code/venv/lib/python3.4/site-packages/pandas/tseries/base.py:386: FutureWarning: using '-' to provide set differences with datetimelike Indexes is deprecated, use .difference()
   "use .difference()",FutureWarning)
-...
+.F.
+======================================================================
+FAIL: test_calendar_vs_databank_epex (tests.test_tradingcalendar_power.TestTradingCalendarEpex)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/Code/powerline/tests/test_tradingcalendar_power.py", line 115, in test_calendar_vs_databank_epex
+    self.assertEqual(expected_dt.date(), row.dt.date())
+AssertionError: datetime.date(2014, 8, 1) != datetime.date(2014, 12, 31)
+
 Name                                      Stmts   Miss  Cover   Missing
 -----------------------------------------------------------------------
 gg.powerline                                  0      0   100%   
@@ -24,7 +32,7 @@ gg.powerline.data                             1      0   100%
 gg.powerline.data.loader_power               30      0   100%   
 gg.powerline.examples                         1      0   100%   
 gg.powerline.exchanges                        1      0   100%   
-gg.powerline.exchanges.eex_exchange          19      1    95%   28
+gg.powerline.exchanges.eex_exchange          19      3    84%   27-30
 gg.powerline.exchanges.epex_exchange         19      3    84%   27-30
 gg.powerline.exchanges.exchange              22      0   100%   
 gg.powerline.finance                          1      0   100%   
@@ -40,8 +48,8 @@ gg.powerline.utils.data.data_generator       40      0   100%
 gg.powerline.utils.tradingcalendar_eex       59      0   100%   
 gg.powerline.utils.tradingcalendar_epex      24      0   100%   
 -----------------------------------------------------------------------
-TOTAL                                       434      6    99%   
+TOTAL                                       434      8    98%   
 ----------------------------------------------------------------------
-Ran 18 tests in 109.056s
+Ran 18 tests in 86.350s
 
-OK
+FAILED (failures=1)
