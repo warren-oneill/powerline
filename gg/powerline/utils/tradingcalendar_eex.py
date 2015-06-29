@@ -14,6 +14,8 @@ from zipline.utils.tradingcalendar import end, canonicalize_datetime
 start = pd.Timestamp('2013-01-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')
 
+# TODO do not duplicate code, e.g. here "New Year's Day" could be a global
+# definition for each calendar
 
 def get_non_trading_days(start, end):
     non_trading_rules = []
