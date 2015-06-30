@@ -1,15 +1,15 @@
-[2015-06-30 08:14:37.290463] INFO: Performance: Simulated 4 trading days out of 4.
-[2015-06-30 08:14:37.290766] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
-[2015-06-30 08:14:37.290883] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
-.[2015-06-30 08:14:39.542853] INFO: Performance: Simulated 4 trading days out of 4.
-[2015-06-30 08:14:39.543130] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
-[2015-06-30 08:14:39.543230] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
-.[2015-06-30 08:14:46.656045] INFO: Performance: Simulated 13 trading days out of 14.
-[2015-06-30 08:14:46.656364] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
-[2015-06-30 08:14:46.656526] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
-.[2015-06-30 08:14:53.587245] INFO: Performance: Simulated 13 trading days out of 14.
-[2015-06-30 08:14:53.587488] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
-[2015-06-30 08:14:53.587627] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
+[2015-06-30 09:56:14.079744] INFO: Performance: Simulated 4 trading days out of 4.
+[2015-06-30 09:56:14.080035] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
+[2015-06-30 09:56:14.080438] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
+.[2015-06-30 09:56:16.161194] INFO: Performance: Simulated 4 trading days out of 4.
+[2015-06-30 09:56:16.161426] INFO: Performance: first open: 2013-01-16 08:31:00+00:00
+[2015-06-30 09:56:16.161528] INFO: Performance: last close: 2013-01-21 17:00:00+00:00
+.[2015-06-30 09:56:23.070442] INFO: Performance: Simulated 13 trading days out of 14.
+[2015-06-30 09:56:23.071447] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
+[2015-06-30 09:56:23.071542] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
+.[2015-06-30 09:56:30.031433] INFO: Performance: Simulated 13 trading days out of 14.
+[2015-06-30 09:56:30.031658] INFO: Performance: first open: 2013-11-24 23:00:00+00:00
+[2015-06-30 09:56:30.031770] INFO: Performance: last close: 2013-12-07 22:59:00+00:00
 ............/home/dev/Code/venv/lib/python3.4/site-packages/pandas/tseries/base.py:386: FutureWarning: using '-' to provide set differences with datetimelike Indexes is deprecated, use .difference()
   "use .difference()",FutureWarning)
 .F.
@@ -41,15 +41,15 @@ gg.powerline.finance.risk_gg                 41      0   100%
 gg.powerline.sources                          1      0   100%   
 gg.powerline.sources.eex_source              24      1    96%   28
 gg.powerline.sources.epex_source             29      0   100%   
-gg.powerline.sources.sql_source              38      0   100%   
+gg.powerline.sources.sql_source              40      0   100%   
 gg.powerline.utils                            1      0   100%   
 gg.powerline.utils.data                       1      0   100%   
 gg.powerline.utils.data.data_generator       40      0   100%   
 gg.powerline.utils.tradingcalendar_eex       59      0   100%   
 gg.powerline.utils.tradingcalendar_epex      24      0   100%   
 -----------------------------------------------------------------------
-TOTAL                                       434      8    98%   
+TOTAL                                       436      8    98%   
 ----------------------------------------------------------------------
-Ran 18 tests in 88.140s
+Ran 18 tests in 87.567s
 
 FAILED (failures=1)
