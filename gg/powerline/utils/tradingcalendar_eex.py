@@ -17,6 +17,7 @@ end_base = pd.Timestamp('today', tz='UTC')
 # TODO do not duplicate code, e.g. here "New Year's Day" could be a global
 # definition for each calendar
 
+
 def get_non_trading_days(start, end):
     non_trading_rules = []
 
