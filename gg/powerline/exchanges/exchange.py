@@ -1,6 +1,6 @@
 __author__ = "Warren"
 
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractproperty
 
 from zipline.finance.trading import TradingEnvironment
 from gg.powerline.data.loader_power import load_market_data
@@ -39,7 +39,6 @@ class Exchange(object, metaclass=ABCMeta):
     @abstractproperty
     def asset_finder(self):
         """defined in subclass"""
-
 
     @abstractproperty
     def benchmark(self):
