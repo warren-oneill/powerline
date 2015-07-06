@@ -4,27 +4,40 @@ from gg.powerline.utils import tradingcalendar_eex
 from gg.powerline.exchanges.exchange import Exchange
 from gg.powerline.sources.eex_source import EexSource
 from gg.powerline.assets.eex_metadata import MetadataFromSqlEex
+
 from zipline.finance.commission import PerShare
 
 
 class EexExchange(Exchange):
     """
-    Implementing abstract methods for the EEX exchange
+    Implementing abstractproperties for the EEX exchange
     """
-    def insert_source(self):
-        return EexSource
+    @property
+    def source(self):
+        if self._source is None:
+            self._source = EexSource
+        return self._source
 
-    def insert_asset_finder(self):
-        return MetadataFromSqlEex().asset_finder
+    @property
+    def asset_finder(self):
+        if self._asset_finder is None:
+            self._asset_finder = MetadataFromSqlEex().asset_finder
+        return self._asset_finder
 
-    def insert_benchmark(self):
-        return '^EEX'
+    @property
+    def benchmark(self):
+        if self._benchmark is None:
+            self._benchmark = '^EEX'
+        return self._benchmark
 
-    def insert_calendar(self):
-        return tradingcalendar_eex
+    @property
+    def calendar(self):
+        if self._calendar is None:
+            self._calendar = tradingcalendar_eex
+        return self._calendar
 
+    @property
     def commission(self):
         if self._commission is None:
             self._commission = PerShare(0.0125)
-        else:
-            return self._commission
+        return self._commission

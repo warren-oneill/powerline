@@ -9,22 +9,34 @@ from zipline.finance.commission import PerShare
 
 class EpexExchange(Exchange):
     """
-    Implementing abstractmethods for the EPEX exchange
+    Implementing abstractproperties for the EPEX exchange
     """
-    def insert_source(self):
-        return EpexSource
+    @property
+    def source(self):
+        if self._source is None:
+            self._source = EpexSource
+        return self._source
 
-    def insert_asset_finder(self):
-        return MetadataFromSqlEpex().asset_finder
+    @property
+    def asset_finder(self):
+        if self._asset_finder is None:
+            self._asset_finder = MetadataFromSqlEpex().asset_finder
+        return self._asset_finder
 
-    def insert_benchmark(self):
-        return '^EPEX'
+    @property
+    def benchmark(self):
+        if self._benchmark is None:
+            self._benchmark = '^EPEX'
+        return self._benchmark
 
-    def insert_calendar(self):
-        return tradingcalendar_epex
+    @property
+    def calendar(self):
+        if self._calendar is None:
+            self._calendar = tradingcalendar_epex
+        return self._calendar
 
+    @property
     def commission(self):
         if self._commission is None:
             self._commission = PerShare(0.04)
-        else:
-            return self._commission
+        return self._commission

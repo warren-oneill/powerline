@@ -11,11 +11,13 @@ from dateutil import rrule
 
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
 
+from gg.powerline.utils.global_calendar import (
+    boxing_day, ch_himm, christmas, christmas_eve, easter_monday, may_bank,
+    new_year, newyears_eve, pfinst_mon, tde, weekends
+)
+
 start = pd.Timestamp('2013-01-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')
-
-# TODO do not duplicate code, e.g. here "New Year's Day" could be a global
-# definition for each calendar
 
 
 def get_non_trading_days(start, end):
@@ -24,22 +26,8 @@ def get_non_trading_days(start, end):
     start = canonicalize_datetime(start)
     end = canonicalize_datetime(end)
 
-    weekends = rrule.rrule(
-        rrule.YEARLY,
-        byweekday=(rrule.SA, rrule.SU),
-        cache=True,
-        dtstart=start,
-        until=end
-    )
     non_trading_rules.append(weekends)
-    # New Year's Day
-    new_year = rrule.rrule(
-        rrule.MONTHLY,
-        byyearday=1,
-        cache=True,
-        dtstart=start,
-        until=end
-    )
+
     non_trading_rules.append(new_year)
     # Good Friday
     good_friday = rrule.rrule(
@@ -50,92 +38,23 @@ def get_non_trading_days(start, end):
         until=end
     )
     non_trading_rules.append(good_friday)
-    # Easter Monday
-    easter_monday = rrule.rrule(
-        rrule.DAILY,
-        byeaster=1,
-        cache=True,
-        dtstart=start,
-        until=end
-    )
+
     non_trading_rules.append(easter_monday)
-    # Christi Himmelfahrt
-    ch_himm = rrule.rrule(
-        rrule.DAILY,
-        byeaster=39,
-        cache=True,
-        dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
-        until=pd.Timestamp('2013-12-31', tz='UTC')
-    )
+
     non_trading_rules.append(ch_himm)
-    # Pfingstmontag
-    pfinst_mon = rrule.rrule(
-        rrule.DAILY,
-        byeaster=50,
-        cache=True,
-        dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
-        until=pd.Timestamp('2013-12-31', tz='UTC')
-    )
+
     non_trading_rules.append(pfinst_mon)
-    # Labour Day (1st of May)
-    may_bank = rrule.rrule(
-        rrule.MONTHLY,
-        bymonth=5,
-        bymonthday=1,
-        cache=True,
-        dtstart=start,
-        until=end
-    )
+
     non_trading_rules.append(may_bank)
-    # Tag der Deutschen Einheit
-    tde = rrule.rrule(
-        rrule.MONTHLY,
-        bymonth=10,
-        bymonthday=3,
-        cache=True,
-        dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
-        until=pd.Timestamp('2013-12-31', tz='UTC')
-    )
+
     non_trading_rules.append(tde)
-    # Christmas Eve
-    christmas_eve = rrule.rrule(
-        rrule.MONTHLY,
-        bymonth=12,
-        bymonthday=24,
-        cache=True,
-        dtstart=start,
-        until=end
-    )
+
     non_trading_rules.append(christmas_eve)
-    # Christmas Day
-    christmas = rrule.rrule(
-        rrule.MONTHLY,
-        bymonth=12,
-        bymonthday=25,
-        cache=True,
-        dtstart=start,
-        until=end
-    )
+
     non_trading_rules.append(christmas)
-    # Boxing Day
-    boxing_day = rrule.rrule(
-        rrule.MONTHLY,
-        bymonth=12,
-        bymonthday=26,
-        cache=True,
-        dtstart=start,
-        until=end
-    )
+
     non_trading_rules.append(boxing_day)
-    # New Year's Eve
-    newyears_eve = rrule.rrule(
-        rrule.MONTHLY,
-        bymonth=12,
-        bymonthday=31,
-        cache=True,
-        dtstart=start,
-        until=end
-    )
+
     non_trading_rules.append(newyears_eve)
 
     non_trading_ruleset = rrule.rruleset()
