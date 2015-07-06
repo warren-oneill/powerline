@@ -13,6 +13,7 @@ import pandas as pd
 
 from unittest import TestCase
 
+
 class TestEexExchange(TestCase):
     def setUp(self):
         self.exchange = EexExchange()
@@ -42,6 +43,7 @@ class TestEexExchange(TestCase):
 
     def tearDown(self):
         self.exchange = []
+
 
 class TestEpexExchange(TestCase):
     def setUp(self):
