@@ -1,6 +1,7 @@
 __author__ = "Warren"
 
 from unittest import TestCase
+from datetime import timedelta
 
 from zipline.finance import trading
 
@@ -105,7 +106,7 @@ class TestTradingCalendarEpex(TestCase):
 
     def test_calendar_vs_databank_epex(self):
         cal_days = trading.environment.benchmark_returns[
-            self.source.start:self.source.end].index
+            self.source.start:self.source.end-timedelta(days=1)].index
 
         for expected_dt in cal_days:
             if str(expected_dt.date()) == '2014-01-30' or \

@@ -6,8 +6,6 @@ from zipline.finance.trading import TradingEnvironment
 from gg.powerline.data.loader_power import load_market_data
 
 
-# TODO use properties where appropriate (compare commission)
-# TODO write test_exchange
 class Exchange(object, metaclass=ABCMeta):
     """
     A class to collect all exchange-relevant info.
