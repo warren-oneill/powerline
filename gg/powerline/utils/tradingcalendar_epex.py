@@ -6,7 +6,7 @@ Defines trading days and trading times for the EPEX market.
 
 
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
 
@@ -50,8 +50,8 @@ def get_open_and_closes(trading_days, early_closes):
                 year=day.year,
                 month=day.month,
                 day=day.day,
-                hour=23,
-                minute=59),
+                hour=0,
+                minute=0) + timedelta(days=1),
             tz='Europe/Berlin').tz_convert('UTC')
 
         open_and_closes.loc[day, 'market_open'] = market_open

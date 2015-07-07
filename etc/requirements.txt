@@ -15,3 +15,6 @@ tabulate
 nose-timer
 flake8
 coverage
+
+# zipline branch
+-e git://github.com/grundgruen/zipline.git@gg-zipline#egg=zipline

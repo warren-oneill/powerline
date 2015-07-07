@@ -77,6 +77,7 @@ class TestTradingCalendarEpex(TestCase):
         trading.environment.update_asset_finder(
             asset_finder=self.exchange.asset_finder)
         self.source = self.exchange.source()
+        self.products = ['H' + str(i) for i in range(1, 24)]
 
     def test_calendar_vs_environment_epex(self):
         cal_days = trading.environment.benchmark_returns[tradingcalendar_epex.start:]\
@@ -112,8 +113,15 @@ class TestTradingCalendarEpex(TestCase):
             if str(expected_dt.date()) == '2014-01-30' or \
                     str(expected_dt.date()) == '2014-04-15':
                 continue
-            row = next(self.source)
-            self.assertEqual(expected_dt.date(), row.dt.date())
+            for product in self.products:
+                # TODO read time changes from calendar
+                if (str(expected_dt.date()) == '2014-03-29' or
+                        str(expected_dt.date()) == '2015-03-28') and product \
+                        == 'H3':
+                    continue
+                row = next(self.source)
+                self.assertEqual(product, row.product, expected_dt.date())
+                self.assertEqual(expected_dt.date(), row.dt.date())
 
     def tearDown(self):
         trading.environment = None
