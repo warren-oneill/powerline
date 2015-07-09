@@ -1,20 +1,23 @@
-# zipline requirements
+# zipline
 numpy
 pandas
 cython
 matplotlib
 
-# powerline requirements
+# powerline
 scipy
 sqlalchemy
 mysql-connector-python
 sqlacodegen
 tabulate
 
-# development requirements
+# development
 nose-timer
 flake8
 coverage
+
+# messaging
+-e git://github.com/renshawbay/pika-python3.git#egg=pika
 
 # zipline branch
 -e git://github.com/grundgruen/zipline.git@gg-zipline#egg=zipline
