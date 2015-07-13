@@ -1,9 +1,7 @@
 from gg.powerline.finance.auction import TradingAlgorithmGG, BeforeEpexAuction
 from gg.messaging.json_producer import JsonProducer
-from gg.messaging.exchange import Exchange
 
 from datetime import timedelta
-from time import sleep
 
 
 class TestAuctionAlgorithm(TradingAlgorithmGG):
@@ -53,6 +51,7 @@ def auction(algo, data):
     algo.order_auction(day=day, amounts=algo.amount)
     algo.incr += 1
 
+
 class TestEpexMessagingAlgorithm(TradingAlgorithmGG):
     """
     This algorithm will send a specified number of orders, to allow unit tests
@@ -85,14 +84,13 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmGG):
             self.set_commission(commission)
 
         self.schedule_function(func=auction_message,
-                               time_rule=BeforeEpexAuction(
-                            minutes=30))
+                               time_rule=BeforeEpexAuction(minutes=30))
 
         self.producer = JsonProducer()
 
     def handle_data(self, data):
-        self.producer.run(self.perf_tracker.todays_performance.pnl)
-        sleep(1)
+        self.producer.run(self.datetime.date(),
+                          self.perf_tracker.cumulative_performance.pnl)
 
 
 def auction_message(algo, data):
@@ -103,5 +101,3 @@ def auction_message(algo, data):
     day = algo.get_datetime().date() + timedelta(days=1)
     algo.order_auction(day=day, amounts=algo.amount)
     algo.incr += 1
-
-

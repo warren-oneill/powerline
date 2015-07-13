@@ -1,10 +1,9 @@
 __author__ = 'Warren'
 
 from unittest import TestCase
-import multiprocessing as mp
 import numpy as np
 from threading import Thread
-from time import sleep
+from collections import OrderedDict
 
 from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
@@ -14,17 +13,17 @@ from gg.powerline.test_algorithms import TestEpexMessagingAlgorithm
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.utils.data.data_generator import DataGeneratorEpex
 from gg.messaging.json_consumer import JsonConsumer
-from gg.messaging.exchange import Exchange
+
 
 class TestEpexAlgo(TestCase):
     """
-    Tests the change in pnl and position for a simple hourly EPEX algo.
+    Tests the change in pnl sent by the messanger
     """
     def setUp(self):
         self.consumer = JsonConsumer()
-        thread = Thread(target=self.consumer.run)
-        thread.daemon = True
-        thread.start()
+        self.process = Thread(target=self.consumer.run)
+        self.process.daemon = True
+        self.process.start()
 
         exchange = EpexExchange()
         trading.environment = exchange.env
@@ -51,10 +50,11 @@ class TestEpexAlgo(TestCase):
 
     def run_algo(self):
         results = self.algo.run(self.data)
-        sleep(150)
-        #self.algo.producer.close()
         return results
 
     def test_algo_pnl(self):
-        for dt, pnl in self.pnl.iterrows():
-            self.assertEqual(1, 2, self.consumer.data)
+        data = OrderedDict(sorted(self.consumer.data.items(),
+                                  key=lambda t: t[0]))
+        expected_pnl = [0, 0, 4, 9]
+        for i, pnl in enumerate(data.values()):
+            self.assertEqual(expected_pnl[i], pnl)
