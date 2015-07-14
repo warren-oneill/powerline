@@ -3,26 +3,24 @@ from zipline.utils.api_support import api_method
 from zipline.utils.events import StatelessRule, _build_offset
 
 from gg.powerline.utils.tradingcalendar_epex import get_auctions
+from gg.powerline.assets.epex_metadata import EpexMetadata as emd
 
 from datetime import timedelta
+# TOTO name to general for auction specific code
 
 
 class TradingAlgorithmGG(TradingAlgorithm):
-    def insert_idents(self, day, freq):
-        if freq == 'H':
-            index = 24
-        else:
-            index = 96
-
+    def insert_idents(self, day):
         idents = {}
-        for i in range(1, index):
-            idents.update({i: str(day) + '_' + freq + str(i)})
+        for i in range(1, 24):
+            product = emd.insert_product(i)
+            idents.update({i: emd.insert_ident(day, product)})
 
         return idents
 
     @api_method
-    def order_auction(self, amounts, day, freq='H'):
-        idents = self.insert_idents(day, freq)
+    def order_auction(self, amounts, day):
+        idents = self.insert_idents(day)
 
         for i in idents:
             self.order(self.symbol(idents[i]), amounts[i])
@@ -31,12 +29,11 @@ class TradingAlgorithmGG(TradingAlgorithm):
         return self.insert_products()
 
     def insert_products(self):
-        # TODO read from exchange
+        # TODO make slicker
         # Incorporate QH products
-        freq = 'H'
         index = 24
 
-        return [freq + str(i) for i in range(1, index)]
+        return [emd.insert_product(i) for i in range(1, index)]
 
 
 class BeforeEpexAuction(StatelessRule):

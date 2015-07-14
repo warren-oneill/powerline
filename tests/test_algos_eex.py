@@ -22,7 +22,7 @@ class TestEexAlgo(TestCase):
         trading.environment.update_asset_finder(
             asset_finder=exchange.asset_finder)
         source = exchange.source()
-        ident = '2013-01-21_F1B4'
+        ident = source.identifiers[3]
         sid = trading.environment.asset_finder.retrieve_asset_by_identifier(
             ident).sid
         sim_params = create_simulation_parameters(start=source.start,

@@ -1,9 +1,10 @@
 __author__ = "Warren"
 
-from gg.powerline.assets.epex_metadata import MetadataFromSqlEpex
+from gg.powerline.assets.epex_metadata import EpexMetadata
 from gg.powerline.utils import tradingcalendar_epex
 from gg.powerline.sources.epex_source import EpexSource
 from gg.powerline.exchanges.exchange import Exchange
+
 from zipline.finance.commission import PerShare
 
 
@@ -20,7 +21,7 @@ class EpexExchange(Exchange):
     @property
     def asset_finder(self):
         if self._asset_finder is None:
-            self._asset_finder = MetadataFromSqlEpex().asset_finder
+            self._asset_finder = EpexMetadata().asset_finder
         return self._asset_finder
 
     @property

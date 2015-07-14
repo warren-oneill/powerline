@@ -3,7 +3,7 @@ __author__ = "Warren"
 from gg.powerline.utils import tradingcalendar_eex
 from gg.powerline.exchanges.exchange import Exchange
 from gg.powerline.sources.eex_source import EexSource
-from gg.powerline.assets.eex_metadata import MetadataFromSqlEex
+from gg.powerline.assets.eex_metadata import EexMetadata
 
 from zipline.finance.commission import PerShare
 
@@ -21,7 +21,7 @@ class EexExchange(Exchange):
     @property
     def asset_finder(self):
         if self._asset_finder is None:
-            self._asset_finder = MetadataFromSqlEex().asset_finder
+            self._asset_finder = EexMetadata().asset_finder
         return self._asset_finder
 
     @property
