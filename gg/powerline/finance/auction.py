@@ -12,7 +12,7 @@ from datetime import timedelta
 class TradingAlgorithmGG(TradingAlgorithm):
     def insert_idents(self, day):
         idents = {}
-        for i in range(1, 24):
+        for i in range(1, 25):
             product = emd.insert_product(i)
             idents.update({i: emd.insert_ident(day, product)})
 
@@ -31,7 +31,7 @@ class TradingAlgorithmGG(TradingAlgorithm):
     def insert_products(self):
         # TODO make slicker
         # Incorporate QH products
-        index = 24
+        index = 25
 
         return [emd.insert_product(i) for i in range(1, index)]
 

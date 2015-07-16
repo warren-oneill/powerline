@@ -77,7 +77,7 @@ class TestTradingCalendarEpex(TestCase):
         trading.environment.update_asset_finder(
             asset_finder=self.exchange.asset_finder)
         self.source = self.exchange.source()
-        self.products = ['H' + str(i).zfill(2) for i in range(1, 24)]
+        self.products = ['H' + str(i).zfill(2) for i in range(1, 25)]
 
     def test_calendar_vs_environment_epex(self):
         cal_days = trading.environment.benchmark_returns[tradingcalendar_epex.start:]\

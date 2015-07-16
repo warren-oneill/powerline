@@ -38,7 +38,7 @@ class TestEpexAlgo(TestCase):
             ident).sid
         sim_params = create_simulation_parameters(start=source.start,
                                                   end=source.end)
-        amounts = np.full(24, 1)  # order 1MW for every hour
+        amounts = np.full(25, 1)  # order 1MW for every hour
         self.algo = TestEpexMessagingAlgorithm(
             sid=sid, amount=amounts, order_count=1, instant_fill=False,
             asset_finder=exchange.asset_finder, sim_params=sim_params,

@@ -16,19 +16,23 @@ class Exchange(object, metaclass=ABCMeta):
         self._calendar = None
         self._asset_finder = None
         self._source = None
+        self._env = None
+        self._products = None
 
         self.exchange_tz = "Europe/Berlin"
         self.load = load_market_data
-        self.env = self.insert_env()
 
-    def insert_env(self):
+    @property
+    def env(self):
         """
         passing relevant exchange objects to the environment
         """
-        return TradingEnvironment(bm_symbol=self.benchmark,
-                                  exchange_tz=self.exchange_tz,
-                                  env_trading_calendar=self.calendar,
-                                  load=self.load)
+        if self._env is None:
+            self._env = TradingEnvironment(bm_symbol=self.benchmark,
+                                           exchange_tz=self.exchange_tz,
+                                           env_trading_calendar=self.calendar,
+                                           load=self.load)
+        return self._env
 
     @abstractproperty
     def source(self):
