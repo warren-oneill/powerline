@@ -1,10 +1,11 @@
-from gg.powerline.finance.auction import TradingAlgorithmGG, BeforeEpexAuction
+from gg.powerline.finance.auction import TradingAlgorithmAuction, \
+    BeforeEpexAuction
 from gg.messaging.json_producer import JsonProducer
 
 from datetime import timedelta
 
 
-class TestAuctionAlgorithm(TradingAlgorithmGG):
+class TestAuctionAlgorithm(TradingAlgorithmAuction):
     """
     This algorithm will send a specified number of orders, to allow unit tests
     to verify the orders sent/received, transactions created, and positions
@@ -52,7 +53,7 @@ def auction(algo, data):
     algo.incr += 1
 
 
-class TestEpexMessagingAlgorithm(TradingAlgorithmGG):
+class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
     """
     This algorithm will send a specified number of orders, to allow unit tests
     to verify the orders sent/received, transactions created, and positions

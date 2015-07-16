@@ -6,34 +6,18 @@ from gg.powerline.utils.tradingcalendar_epex import get_auctions
 from gg.powerline.assets.epex_metadata import EpexMetadata as emd
 
 from datetime import timedelta
-# TOTO name to general for auction specific code
+# TODO take idents from metadata in algo (need daily)
 
 
-class TradingAlgorithmGG(TradingAlgorithm):
-    def insert_idents(self, day):
-        idents = {}
-        for i in range(1, 25):
-            product = emd.insert_product(i)
-            idents.update({i: emd.insert_ident(day, product)})
-
-        return idents
-
+class TradingAlgorithmAuction(TradingAlgorithm):
     @api_method
     def order_auction(self, amounts, day):
-        idents = self.insert_idents(day)
-
-        for i in idents:
-            self.order(self.symbol(idents[i]), amounts[i])
+        for i, product in enumerate(emd().products):
+            ident = emd.insert_ident(day, product)
+            self.order(self.symbol(ident), amounts[i])
 
     def current_universe(self):
-        return self.insert_products()
-
-    def insert_products(self):
-        # TODO make slicker
-        # Incorporate QH products
-        index = 25
-
-        return [emd.insert_product(i) for i in range(1, index)]
+        return self.emd().products
 
 
 class BeforeEpexAuction(StatelessRule):
