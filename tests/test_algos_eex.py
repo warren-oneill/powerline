@@ -18,15 +18,15 @@ class TestEexAlgo(TestCase):
     Tests the change in pnl and position for a simple EEX weekly algo.
     """
     @classmethod
-    def setUp(cls):
+    def setUpClass(cls):
         exchange = EexExchange()
         trading.environment = exchange.env
         trading.environment.update_asset_finder(
             asset_metadata=EexMetadata().metadata)
         source = exchange.source()
         ident = source.identifiers[3]
-        sid = trading.environment.asset_finder.retrieve_asset_by_identifier(
-            ident).sid
+        sid = trading.environment.asset_finder.map_identifier_index_to_sids(
+            ident, source.end)
         sim_params = create_simulation_parameters(start=source.start,
                                                   end=source.end)
 

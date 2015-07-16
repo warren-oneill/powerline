@@ -3,6 +3,7 @@ numpy
 pandas
 Cython
 matplotlib
+contextlib2==0.4.0
 
 # powerline
 scipy
