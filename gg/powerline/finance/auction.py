@@ -16,9 +16,6 @@ class TradingAlgorithmAuction(TradingAlgorithm):
             ident = emd.insert_ident(day, product)
             self.order(self.symbol(ident), amounts[i])
 
-    def current_universe(self):
-        return self.emd().products
-
 
 class BeforeEpexAuction(StatelessRule):
     """

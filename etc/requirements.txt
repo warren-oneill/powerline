@@ -17,7 +17,7 @@ flake8
 coverage
 
 # messaging
--e git://github.com/renshawbay/pika-python3.git#egg=pika
+-e git://github.com/renshawbay/pika-python3.git#egg=pika3
 
 # zipline branch
 -e git://github.com/grundgruen/zipline.git@gg-zipline#egg=zipline

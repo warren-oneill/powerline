@@ -15,9 +15,9 @@ from gg.powerline.utils.data.data_generator import DataGeneratorEpex
 from gg.messaging.json_consumer import JsonConsumer
 
 
-class TestEpexAlgo(TestCase):
+class TestMessanger(TestCase):
     """
-    Tests the change in pnl sent by the messanger
+    Tests the change in pnl sent by the messenger
     """
     def setUp(self):
         self.consumer = JsonConsumer()
