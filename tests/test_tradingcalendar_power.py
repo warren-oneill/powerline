@@ -77,7 +77,8 @@ class TestTradingCalendarEpex(TestCase):
         trading.environment.update_asset_finder(
             asset_finder=self.exchange.asset_finder)
         self.source = self.exchange.source()
-        self.products = ['H' + str(i).zfill(2) for i in range(1, 25)]
+        self.products = [str(i).zfill(2) + '-' + str(i+1).zfill(2) for i in
+                         range(0, 24)]
 
     def test_calendar_vs_environment_epex(self):
         cal_days = trading.environment.benchmark_returns[tradingcalendar_epex.start:]\
@@ -108,20 +109,29 @@ class TestTradingCalendarEpex(TestCase):
     def test_calendar_vs_databank_epex(self):
         cal_days = trading.environment.benchmark_returns[
             self.source.start:self.source.end-timedelta(days=1)].index
-
+        # TODO insert missing data in database
         for expected_dt in cal_days:
             if str(expected_dt.date()) == '2014-01-30' or \
                     str(expected_dt.date()) == '2014-04-15':
                 continue
             for product in self.products:
-                # TODO insert missing data in database
+                # Summer time
                 if (str(expected_dt.date()) == '2014-03-29' or
                         str(expected_dt.date()) == '2015-03-28') and product \
-                        == 'H03':
+                        == '02-03':
                     continue
+                # Winter time
+                if (str(expected_dt.date()) == '2014-10-25' or
+                        str(expected_dt.date()) == '2015-10-24') and product\
+                        == '03-04':
+                    row = next(self.source)
+                    self.assertEqual('02-03b', row.product, expected_dt.date())
+                    self.assertEqual(expected_dt.date(), row.dt.date())
+
                 row = next(self.source)
+                print(row.dt.date(), row.product)
                 self.assertEqual(product, row.product, expected_dt.date())
-                self.assertEqual(expected_dt.date(), row.dt.date())
+                self.assertEqual(expected_dt.date(), row.dt.date(), row.product)
 
     def tearDown(self):
         trading.environment = None
