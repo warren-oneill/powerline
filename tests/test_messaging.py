@@ -31,7 +31,7 @@ class TestMessanger(TestCase):
             asset_finder=exchange.asset_finder)
         source = exchange.source()
 
-        ident = source.identifiers[3]
+        ident = trading.environment.asset_finder.cache[3].symbol
         self.day = trading.environment.asset_finder.\
             retrieve_asset_by_identifier(ident).expiration_date
         sid = trading.environment.asset_finder.retrieve_asset_by_identifier(

@@ -1,13 +1,10 @@
 __author__ = "Warren"
 
 import datetime
-import time
 from unittest import TestCase
 
 from zipline.assets.assets import Future
 
-from gg.powerline.exchanges.eex_exchange import EexExchange
-from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.assets.epex_metadata import EpexMetadata
 from gg.powerline.assets.eex_metadata import EexMetadata
 
@@ -41,7 +38,6 @@ class TestMetadataEpex(TestCase):
     Tests EPEX hour product metadata.
     """
     def setUp(self):
-        self.start = time.time()
         self.amd = EpexMetadata().asset_finder
 
     def test_epex_metadata(self):
@@ -57,5 +53,4 @@ class TestMetadataEpex(TestCase):
             self.assertGreater(self.amd.cache[index].contract_multiplier, 0)
 
     def tearDown(self):
-        print(time.time() - self.start)
         self.amd = None

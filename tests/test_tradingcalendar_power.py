@@ -129,7 +129,6 @@ class TestTradingCalendarEpex(TestCase):
                     self.assertEqual(expected_dt.date(), row.dt.date())
 
                 row = next(self.source)
-                print(row.dt.date(), row.product)
                 self.assertEqual(product, row.product, expected_dt.date())
                 self.assertEqual(expected_dt.date(), row.dt.date(), row.product)
 
