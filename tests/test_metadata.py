@@ -14,8 +14,7 @@ class TestMetadataEex(TestCase):
     Tests EEX weekly metadata.
     """
     def setUp(self):
-        # self.exchange = EexExchange()
-        self.amd = EexMetadata().asset_finder # self.exchange.asset_finder
+        self.amd = EexMetadata().asset_finder
 
     def test_eex_metadata(self):
         self.assertNotEqual(self.amd.cache, None)

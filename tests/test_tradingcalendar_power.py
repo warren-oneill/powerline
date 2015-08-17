@@ -57,8 +57,7 @@ class TestTradingCalendarEex(TestCase):
         for expected_dt in cal_days:
             self.assertEqual(expected_dt, row.dt)
 
-            dt_last = row.dt
-            while dt_last == row.dt and row.dt != source.end:
+            while expected_dt == row.dt and row.dt < source.end:
                 row = next(source)
 
     def tearDown(self):
@@ -130,7 +129,8 @@ class TestTradingCalendarEpex(TestCase):
 
                 row = next(self.source)
                 self.assertEqual(product, row.product, expected_dt.date())
-                self.assertEqual(expected_dt.date(), row.dt.date(), row.product)
+                self.assertEqual(expected_dt.date(), row.dt.date(),
+                                 row.product)
 
     def tearDown(self):
         trading.environment = None
