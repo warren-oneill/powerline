@@ -16,7 +16,8 @@ class TestEexAlgo(TestCase):
     """
     Tests the change in pnl and position for a simple EEX weekly algo.
     """
-    def setUp(self):
+    @classmethod
+    def setUp(cls):
         exchange = EexExchange()
         trading.environment = exchange.env
         trading.environment.update_asset_finder(
@@ -28,18 +29,14 @@ class TestEexAlgo(TestCase):
         sim_params = create_simulation_parameters(start=source.start,
                                                   end=source.end)
 
-        self.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
+        cls.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
                                   instant_fill=True,
                                   asset_finder=exchange.asset_finder,
                                   sim_params=sim_params,
                                   commission=PerShare(0))
 
-        self.data, self.pnl = DataGeneratorEex(identifier=ident).create_data()
-        self.results = self.run_algo()
-
-    def run_algo(self):
-        results = self.algo.run(self.data)
-        return results
+        cls.data, cls.pnl = DataGeneratorEex(identifier=ident).create_data()
+        cls.results = cls.algo.run(cls.data)
 
     def test_algo_pnl(self):
         for dt, pnl in self.pnl.iterrows():
@@ -55,6 +52,7 @@ class TestEexAlgo(TestCase):
 
             self.assertEqual(actual_position, amount[0])
 
-    def tearDown(self):
-        self.algo = None
+    @classmethod
+    def tearDownClass(cls):
+        cls.algo = None
         trading.environment = None

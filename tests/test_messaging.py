@@ -1,6 +1,7 @@
 __author__ = 'Warren'
 
 from unittest import TestCase
+from nose.tools import nottest
 import numpy as np
 from threading import Thread
 from collections import OrderedDict
@@ -52,6 +53,7 @@ class TestMessanger(TestCase):
         results = self.algo.run(self.data)
         return results
 
+    @nottest
     def test_algo_pnl(self):
         data = OrderedDict(sorted(self.consumer.data.items(),
                                   key=lambda t: t[0]))

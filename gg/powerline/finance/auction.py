@@ -13,7 +13,7 @@ class TradingAlgorithmAuction(TradingAlgorithm):
     @api_method
     def order_auction(self, amounts, day):
         # #TODO make products part of class
-        for i, product in enumerate(emd().products):
+        for i, product in enumerate(self.products):
             ident = emd.insert_ident(day, product)
             self.order(self.symbol(ident), amounts[i])
 
