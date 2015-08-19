@@ -14,7 +14,7 @@ class Exchange(object, metaclass=ABCMeta):
         self._commission = None
         self._benchmark = None
         self._calendar = None
-        self._asset_finder = None
+        self._asset_metadata = None
         self._source = None
         self._env = None
         self._products = None
@@ -39,7 +39,7 @@ class Exchange(object, metaclass=ABCMeta):
         """defined in subclass"""
 
     @abstractproperty
-    def asset_finder(self):
+    def asset_metadata(self):
         """defined in subclass"""
 
     @abstractproperty

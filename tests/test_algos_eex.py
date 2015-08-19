@@ -10,6 +10,7 @@ from zipline.finance.commission import PerShare
 
 from gg.powerline.utils.data.data_generator import DataGeneratorEex
 from gg.powerline.exchanges.eex_exchange import EexExchange
+from gg.powerline.assets.eex_metadata import EexMetadata
 
 
 class TestEexAlgo(TestCase):
@@ -21,7 +22,7 @@ class TestEexAlgo(TestCase):
         exchange = EexExchange()
         trading.environment = exchange.env
         trading.environment.update_asset_finder(
-            asset_finder=exchange.asset_finder)
+            asset_metadata=EexMetadata().metadata)
         source = exchange.source()
         ident = source.identifiers[3]
         sid = trading.environment.asset_finder.retrieve_asset_by_identifier(
@@ -30,10 +31,10 @@ class TestEexAlgo(TestCase):
                                                   end=source.end)
 
         cls.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
-                                  instant_fill=True,
-                                  asset_finder=exchange.asset_finder,
-                                  sim_params=sim_params,
-                                  commission=PerShare(0))
+                                 instant_fill=True,
+                                 asset_metadata=exchange.asset_metadata,
+                                 sim_params=sim_params,
+                                 commission=PerShare(0))
 
         cls.data, cls.pnl = DataGeneratorEex(identifier=ident).create_data()
         cls.results = cls.algo.run(cls.data)
