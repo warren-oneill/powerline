@@ -5,7 +5,6 @@ from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.sources.eex_source import EexSource
 from gg.powerline.sources.epex_source import EpexSource
 
-from zipline.assets.assets import AssetFinder
 from zipline.finance.commission import PerShare
 from zipline.finance.trading import TradingEnvironment
 
@@ -25,7 +24,7 @@ class TestEexExchange(TestCase):
         benchmark, treasury_curve = self.loader()
         self.assertIsInstance(benchmark, pd.Series)
         self.assertIsInstance(treasury_curve, pd.DataFrame)
-        self.assertIsInstance(self.exchange.asset_finder, AssetFinder)
+        self.assertIsInstance(self.exchange.asset_metadata, dict)
         self.assertIsInstance(self.exchange.calendar.trading_day,
                               pd.tseries.offsets.CDay)
         self.assertIsInstance(self.exchange.calendar.trading_days,
@@ -56,7 +55,7 @@ class TestEpexExchange(TestCase):
         benchmark, treasury_curve = self.loader()
         self.assertIsInstance(benchmark, pd.Series)
         self.assertIsInstance(treasury_curve, pd.DataFrame)
-        self.assertIsInstance(self.exchange.asset_finder, AssetFinder)
+        self.assertIsInstance(self.exchange.asset_metadata, dict)
         self.assertIsInstance(self.exchange.calendar.trading_day,
                               pd.tseries.offsets.CDay)
         self.assertIsInstance(self.exchange.calendar.trading_days,

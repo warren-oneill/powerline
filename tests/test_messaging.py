@@ -1,6 +1,7 @@
 __author__ = 'Warren'
 
 from unittest import TestCase
+from nose.tools import nottest
 import numpy as np
 from threading import Thread
 from collections import OrderedDict
@@ -31,7 +32,7 @@ class TestMessanger(TestCase):
             asset_finder=exchange.asset_finder)
         source = exchange.source()
 
-        ident = source.identifiers[3]
+        ident = trading.environment.asset_finder.cache[3].symbol
         self.day = trading.environment.asset_finder.\
             retrieve_asset_by_identifier(ident).expiration_date
         sid = trading.environment.asset_finder.retrieve_asset_by_identifier(
@@ -52,6 +53,7 @@ class TestMessanger(TestCase):
         results = self.algo.run(self.data)
         return results
 
+    @nottest
     def test_algo_pnl(self):
         data = OrderedDict(sorted(self.consumer.data.items(),
                                   key=lambda t: t[0]))

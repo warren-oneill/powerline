@@ -16,6 +16,7 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
                    amount,
                    order_count,
                    day,
+                   products,
                    sid_filter=None,
                    slippage=None,
                    commission=None):
@@ -24,6 +25,7 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
         self.amount = amount
         self.day = day
         self.incr = 0
+        self.products = products
 
         if sid_filter:
             self.sid_filter = sid_filter
@@ -49,6 +51,7 @@ def auction(algo, data):
     following day.
     """
     day = algo.get_datetime().date() + timedelta(days=1)
+
     algo.order_auction(day=day, amounts=algo.amount)
     algo.incr += 1
 

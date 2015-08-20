@@ -19,10 +19,10 @@ class EpexExchange(Exchange):
         return self._source
 
     @property
-    def asset_finder(self):
-        if self._asset_finder is None:
-            self._asset_finder = EpexMetadata().asset_finder
-        return self._asset_finder
+    def asset_metadata(self):
+        if self._asset_metadata is None:
+            self._asset_metadata = EpexMetadata().metadata
+        return self._asset_metadata
 
     @property
     def benchmark(self):

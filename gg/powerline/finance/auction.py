@@ -12,7 +12,8 @@ from datetime import timedelta
 class TradingAlgorithmAuction(TradingAlgorithm):
     @api_method
     def order_auction(self, amounts, day):
-        for i, product in enumerate(emd().products):
+        # #TODO make products part of class
+        for i, product in enumerate(self.products):
             ident = emd.insert_ident(day, product)
             self.order(self.symbol(ident), amounts[i])
 
