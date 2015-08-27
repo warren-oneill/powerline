@@ -29,14 +29,13 @@ class TestMessanger(TestCase):
         exchange = EpexExchange()
         trading.environment = exchange.env
         trading.environment.update_asset_finder(
-            asset_finder=exchange.asset_finder)
+            asset_metadata=exchange.asset_metadata)
         source = exchange.source()
 
-        ident = trading.environment.asset_finder.cache[3].symbol
-        self.day = trading.environment.asset_finder.\
-            retrieve_asset_by_identifier(ident).expiration_date
-        sid = trading.environment.asset_finder.retrieve_asset_by_identifier(
-            ident).sid
+        ident = trading.environment.asset_finder.retrieve_asset(0).symbol
+        self.day = trading.environment.asset_finder.retrieve_asset(0).\
+            expiration_date
+        sid = 0
         sim_params = create_simulation_parameters(start=source.start,
                                                   end=source.end)
         amounts = np.full(25, 1)  # order 1MW for every hour

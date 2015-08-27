@@ -23,12 +23,14 @@ class TestEexAlgo(TestCase):
         trading.environment = exchange.env
         trading.environment.update_asset_finder(
             asset_metadata=EexMetadata().metadata)
-        source = exchange.source()
-        ident = source.identifiers[3]
-        sid = trading.environment.asset_finder.map_identifier_index_to_sids(
-            ident, source.end)
-        sim_params = create_simulation_parameters(start=source.start,
-                                                  end=source.end)
+
+        sid = 0
+        ident = trading.environment.asset_finder.retrieve_asset(sid).symbol
+
+        cls.data, cls.pnl = DataGeneratorEex(identifier=ident).create_data()
+
+        sim_params = create_simulation_parameters(start=cls.data.start,
+                                                  end=cls.data.end)
 
         cls.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
                                  instant_fill=True,
@@ -36,7 +38,6 @@ class TestEexAlgo(TestCase):
                                  sim_params=sim_params,
                                  commission=PerShare(0))
 
-        cls.data, cls.pnl = DataGeneratorEex(identifier=ident).create_data()
         cls.results = cls.algo.run(cls.data)
 
     def test_algo_pnl(self):
