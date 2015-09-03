@@ -10,7 +10,6 @@ from zipline.finance.commission import PerShare
 
 from gg.powerline.utils.data.data_generator import DataGeneratorEex
 from gg.powerline.exchanges.eex_exchange import EexExchange
-from gg.powerline.assets.eex_metadata import EexMetadata
 
 
 class TestEexAlgo(TestCase):
@@ -22,7 +21,7 @@ class TestEexAlgo(TestCase):
         exchange = EexExchange()
         trading.environment = exchange.env
         trading.environment.update_asset_finder(
-            asset_metadata=EexMetadata().metadata)
+            asset_metadata=exchange.asset_metadata)
 
         sid = 0
         ident = trading.environment.asset_finder.retrieve_asset(sid).symbol

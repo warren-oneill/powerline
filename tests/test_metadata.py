@@ -26,7 +26,7 @@ class TestMetadataEex(TestCase):
             self.assertIsInstance(self.amd.retrieve_asset(sid).expiration_date,
                                   datetime.date)
             self.assertIsInstance(self.amd.retrieve_asset(sid).
-                                  contract_multiplier, int)
+                                  contract_multiplier, float)
             self.assertGreater(self.amd.retrieve_asset(
                 sid).contract_multiplier, 0)
 
@@ -50,7 +50,7 @@ class TestMetadataEpex(TestCase):
             self.assertIsInstance(self.amd.retrieve_asset(sid).expiration_date,
                                   datetime.date)
             self.assertIsInstance(self.amd.retrieve_asset(sid).
-                                  contract_multiplier, int)
+                                  contract_multiplier, float)
             self.assertGreater(self.amd.retrieve_asset(
                 sid).contract_multiplier, 0)
 

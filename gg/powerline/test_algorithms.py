@@ -42,7 +42,7 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
             minutes=30))
 
     def handle_data(self, data):
-        print(data)
+        pass
 
 
 def auction(algo, data):

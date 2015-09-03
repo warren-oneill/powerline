@@ -15,7 +15,6 @@ class TradingAlgorithmAuction(TradingAlgorithm):
         # #TODO make products part of class
         for i, product in enumerate(self.products):
             ident = emd.insert_ident(day, product)
-            print(self.symbol(ident))
             self.order(self.symbol(ident), amounts[i])
 
 
