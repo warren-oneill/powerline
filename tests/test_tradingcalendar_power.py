@@ -52,9 +52,7 @@ class TestTradingCalendarEex(TestCase):
         )
 
     def test_calendar_vs_databank_eex(self):
-        start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
-        end = pd.Timestamp(datetime(day=17, month=10, year=2014), tz='UTC')
-        source = self.exchange.source(start=start, end=end)
+        source = self.exchange.source
 
         cal_days = trading.environment.benchmark_returns[
             source.start:source.end].index
@@ -77,10 +75,12 @@ class TestTradingCalendarEpex(TestCase):
     """
     @classmethod
     def setUpClass(cls):
-        cls.exchange = EpexExchange()
+        start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
+        end = pd.Timestamp(datetime(day=17, month=10, year=2014), tz='UTC')
+        cls.exchange = EpexExchange(start=start, end=end)
         trading.environment = cls.exchange.env
-        # trading.environment.update_asset_finder(
-        #    asset_metadata=cls.exchange.asset_metadata)
+        trading.environment.update_asset_finder(
+            asset_metadata=cls.exchange.asset_metadata)
 
     def test_calendar_vs_environment_epex(self):
         cal_days = trading.environment.benchmark_returns[tradingcalendar_epex.start:]\
@@ -111,9 +111,7 @@ class TestTradingCalendarEpex(TestCase):
     # TODO do this test differently. shouldn't be testing db
     @nottest
     def test_calendar_vs_databank_epex(self):
-        start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
-        end = pd.Timestamp(datetime(day=17, month=10, year=2014), tz='UTC')
-        source = self.exchange.source(start=start, end=end)
+        source = self.exchange.source
         products = [str(i).zfill(2) + '-' + str(i+1).zfill(2) for i in
                     range(0, 24)]
         cal_days = trading.environment.benchmark_returns[

@@ -15,13 +15,13 @@ class EexExchange(Exchange):
     @property
     def source(self):
         if self._source is None:
-            self._source = EexSource
+            self._source = EexSource(start=self.start, end=self.end)
         return self._source
 
     @property
     def asset_metadata(self):
         if self._asset_metadata is None:
-            self._asset_metadata = EexMetadata().metadata
+            self._asset_metadata = EexMetadata(self.start, self.end).metadata
         return self._asset_metadata
 
     @property
@@ -41,3 +41,8 @@ class EexExchange(Exchange):
         if self._commission is None:
             self._commission = PerShare(0.0125)
         return self._commission
+
+    @property
+    def products(self):
+        # TODO
+        return

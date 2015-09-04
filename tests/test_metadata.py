@@ -6,8 +6,8 @@ from unittest import TestCase
 from zipline.assets.assets import Future
 from zipline.assets.assets import AssetFinder
 
-from gg.powerline.assets.epex_metadata import EpexMetadata
-from gg.powerline.assets.eex_metadata import EexMetadata
+from gg.powerline.exchanges.eex_exchange import EexExchange
+from gg.powerline.exchanges.epex_exchange import EpexExchange
 
 
 class TestMetadataEex(TestCase):
@@ -15,10 +15,10 @@ class TestMetadataEex(TestCase):
     Tests EEX weekly metadata.
     """
     def setUp(self):
-        self.amd = EexMetadata().asset_finder
+        exchange = EexExchange()
+        self.amd = AssetFinder(metadata=exchange.asset_metadata)
 
     def test_eex_metadata(self):
-        self.assertIsInstance(self.amd, AssetFinder)
         for sid in self.amd.sids:
             self.assertIsInstance(self.amd.retrieve_asset(sid), Future)
             self.assertIsInstance(self.amd.retrieve_asset(sid).notice_date,
@@ -39,7 +39,8 @@ class TestMetadataEpex(TestCase):
     Tests EPEX hour product metadata.
     """
     def setUp(self):
-        self.amd = EpexMetadata().asset_finder
+        exchange = EpexExchange()
+        self.amd = AssetFinder(metadata=exchange.asset_metadata)
 
     def test_epex_metadata(self):
         self.assertIsInstance(self.amd, AssetFinder)

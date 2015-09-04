@@ -49,12 +49,20 @@ ch_himm = rrule.rrule(
     )
 
 # Pfingstmontag
-pfinst_mon = rrule.rrule(
+pfinst_mon_13 = rrule.rrule(
     rrule.DAILY,
     byeaster=50,
     cache=True,
     dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
     until=pd.Timestamp('2013-12-31', tz='UTC')
+    )
+
+pfinst_mon_15 = rrule.rrule(
+    rrule.DAILY,
+    byeaster=50,
+    cache=True,
+    dtstart=pd.Timestamp('2015-01-01', tz='UTC'),
+    until=pd.Timestamp('2015-12-31', tz='UTC')
     )
 
 # Labour Day (1st of May)
