@@ -41,8 +41,3 @@ class EexExchange(Exchange):
         if self._commission is None:
             self._commission = PerShare(0.0125)
         return self._commission
-
-    @property
-    def products(self):
-        # TODO
-        return

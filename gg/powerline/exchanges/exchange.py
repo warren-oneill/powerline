@@ -61,7 +61,3 @@ class Exchange(object, metaclass=ABCMeta):
     @abstractproperty
     def commission(self):
         """defined in subclass"""
-
-    @abstractproperty
-    def products(self):
-        """defined in subclass"""

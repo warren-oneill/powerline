@@ -48,7 +48,6 @@ class EpexExchange(Exchange):
 
     @property
     def products(self):
-        # TODO use GROUP BY to save products for each day
         if self._products is None:
             store = Store(mysql_connection(), create_new_engine=True)
             session = store.session
