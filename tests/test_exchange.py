@@ -18,7 +18,7 @@ class TestEexExchange(TestCase):
         self.exchange = EexExchange()
 
     def test_exchange(self):
-        self.assertIsInstance(self.exchange.source(), EexSource)
+        self.assertIsInstance(self.exchange.source, EexSource)
         self.assertIsInstance(self.exchange.commission, PerShare)
 
         benchmark, treasury_curve = self.loader()
@@ -49,7 +49,7 @@ class TestEpexExchange(TestCase):
         self.exchange = EpexExchange()
 
     def test_exchange(self):
-        self.assertIsInstance(self.exchange.source(), EpexSource)
+        self.assertIsInstance(self.exchange.source, EpexSource)
         self.assertIsInstance(self.exchange.commission, PerShare)
 
         benchmark, treasury_curve = self.loader()

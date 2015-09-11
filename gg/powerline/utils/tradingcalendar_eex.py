@@ -13,7 +13,7 @@ from zipline.utils.tradingcalendar import end, canonicalize_datetime
 
 from gg.powerline.utils.global_calendar import (
     boxing_day, ch_himm, christmas, christmas_eve, easter_monday, may_bank,
-    new_year, newyears_eve, pfinst_mon, tde, weekends
+    new_year, newyears_eve, pfinst_mon_13, pfinst_mon_15, tde, weekends
 )
 
 start = pd.Timestamp('2013-01-01', tz='UTC')
@@ -43,7 +43,9 @@ def get_non_trading_days(start, end):
 
     non_trading_rules.append(ch_himm)
 
-    non_trading_rules.append(pfinst_mon)
+    non_trading_rules.append(pfinst_mon_13)
+
+    non_trading_rules.append(pfinst_mon_15)
 
     non_trading_rules.append(may_bank)
 
