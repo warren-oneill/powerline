@@ -1,6 +1,6 @@
 __author__ = "Warren"
 
-import datetime
+from datetime import date
 from unittest import TestCase
 
 from zipline.assets.assets import Future
@@ -20,15 +20,12 @@ class TestMetadataEex(TestCase):
 
     def test_eex_metadata(self):
         for sid in self.amd.sids:
-            self.assertIsInstance(self.amd.retrieve_asset(sid), Future)
-            self.assertIsInstance(self.amd.retrieve_asset(sid).notice_date,
-                                  datetime.date)
-            self.assertIsInstance(self.amd.retrieve_asset(sid).expiration_date,
-                                  datetime.date)
-            self.assertIsInstance(self.amd.retrieve_asset(sid).
-                                  contract_multiplier, float)
-            self.assertGreater(self.amd.retrieve_asset(
-                sid).contract_multiplier, 0)
+            asset = self.amd.retrieve_asset(sid)
+            self.assertIsInstance(asset, Future)
+            self.assertIsInstance(asset.notice_date, date)
+            self.assertIsInstance(asset.expiration_date, date)
+            self.assertIsInstance(asset.contract_multiplier, float)
+            self.assertGreater(asset.contract_multiplier, 0)
 
     def tearDown(self):
         self.amd = None
@@ -45,15 +42,22 @@ class TestMetadataEpex(TestCase):
     def test_epex_metadata(self):
         self.assertIsInstance(self.amd, AssetFinder)
         for sid in self.amd.sids:
-            self.assertIsInstance(self.amd.retrieve_asset(sid), Future)
-            self.assertIsInstance(self.amd.retrieve_asset(sid).notice_date,
-                                  datetime.date)
-            self.assertIsInstance(self.amd.retrieve_asset(sid).expiration_date,
-                                  datetime.date)
-            self.assertIsInstance(self.amd.retrieve_asset(sid).
-                                  contract_multiplier, float)
-            self.assertGreater(self.amd.retrieve_asset(
-                sid).contract_multiplier, 0)
+            asset = self.amd.retrieve_asset(sid)
+            self.assertIsInstance(asset, Future)
+            self.assertIsInstance(asset.notice_date, date)
+            self.assertIsInstance(asset.expiration_date, date)
+            self.assertIsInstance(asset.end_date, date)
+
+            day = asset.end_date.tz_convert(
+                'Europe/Berlin').date()
+            dt = asset.end_date - asset.expiration_date
+            if day < date(2015, 7, 16):
+                self.assertEqual(dt.seconds/60, 45)
+            else:
+                self.assertEqual(dt.seconds/60, 30)
+
+            self.assertIsInstance(asset.contract_multiplier, float)
+            self.assertGreater(asset.contract_multiplier, 0)
 
     def tearDown(self):
         self.amd = None
