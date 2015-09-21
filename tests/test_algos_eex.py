@@ -23,8 +23,10 @@ class TestEexAlgo(TestCase):
         trading.environment.update_asset_finder(
             asset_metadata=exchange.asset_metadata)
 
-        sid = 0
-        ident = trading.environment.asset_finder.retrieve_asset(sid).symbol
+        ident = '2013-05-20_F1B4'
+        sid = \
+            trading.environment.asset_finder.lookup_symbol_resolve_multiple(
+                ident).sid
 
         cls.data, cls.pnl = DataGeneratorEex(identifier=ident).create_data()
 

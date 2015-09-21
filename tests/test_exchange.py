@@ -14,6 +14,7 @@ from unittest import TestCase
 
 
 class TestEexExchange(TestCase):
+
     def setUp(self):
         self.exchange = EexExchange()
 
@@ -45,6 +46,7 @@ class TestEexExchange(TestCase):
 
 
 class TestEpexExchange(TestCase):
+
     def setUp(self):
         self.exchange = EpexExchange()
 

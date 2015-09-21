@@ -14,6 +14,7 @@ class TestMetadataEex(TestCase):
     """
     Tests EEX weekly metadata.
     """
+
     def setUp(self):
         exchange = EexExchange()
         self.amd = AssetFinder(metadata=exchange.asset_metadata)
@@ -24,7 +25,6 @@ class TestMetadataEex(TestCase):
             self.assertIsInstance(asset, Future)
             self.assertIsInstance(asset.notice_date, date)
             self.assertIsInstance(asset.expiration_date, date)
-            self.assertIsInstance(asset.first_traded, date)
             self.assertIsInstance(asset.contract_multiplier, float)
             self.assertGreater(asset.contract_multiplier, 0)
             self.assertEqual(asset.exchange, 'EEX')
@@ -39,6 +39,7 @@ class TestMetadataEpex(TestCase):
     """
     Tests EPEX hour product metadata.
     """
+
     def setUp(self):
         exchange = EpexExchange()
         self.amd = AssetFinder(metadata=exchange.asset_metadata)
@@ -56,9 +57,9 @@ class TestMetadataEpex(TestCase):
                 'Europe/Berlin').date()
             dt = asset.end_date - asset.expiration_date
             if day < date(2015, 7, 16):
-                self.assertEqual(dt.seconds/60, 45)
+                self.assertEqual(dt.seconds / 60, 45)
             else:
-                self.assertEqual(dt.seconds/60, 30)
+                self.assertEqual(dt.seconds / 60, 30)
 
             self.assertIsInstance(asset.contract_multiplier, float)
             self.assertGreater(asset.contract_multiplier, 0)

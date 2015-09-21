@@ -9,6 +9,7 @@ from datetime import timedelta
 
 
 class TradingAlgorithmAuction(TradingAlgorithm):
+
     @api_method
     def order_auction(self, amounts, day):
         for i, product in enumerate(self.products['hour'][str(day)].
@@ -24,6 +25,7 @@ class BeforeEpexAuction(StatelessRule):
 
     BeforeEpexAuction(minutes=30)
     """
+
     def __init__(self, offset=None, **kwargs):
         self.offset = _build_offset(
             offset,

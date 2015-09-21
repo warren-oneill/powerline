@@ -31,7 +31,7 @@ class TestTradingCalendarEex(TestCase):
         bounds = trading.environment.trading_days.slice_locs(
             start=tradingcalendar_eex.start,
             end=cal_days[-1]
-            )
+        )
 
         env_days = trading.environment.trading_days[bounds[0]:bounds[1]]
         self.check_days(env_days, cal_days)
@@ -88,7 +88,7 @@ class TestTradingCalendarEpex(TestCase):
         bounds = trading.environment.trading_days.slice_locs(
             start=tradingcalendar_epex.start,
             end=cal_days[-1]
-            )
+        )
 
         env_days = trading.environment.trading_days[bounds[0]:bounds[1]]
         self.check_days(env_days, cal_days)
@@ -112,10 +112,10 @@ class TestTradingCalendarEpex(TestCase):
     @nottest
     def test_calendar_vs_databank_epex(self):
         source = self.exchange.source
-        products = [str(i).zfill(2) + '-' + str(i+1).zfill(2) for i in
+        products = [str(i).zfill(2) + '-' + str(i + 1).zfill(2) for i in
                     range(0, 24)]
         cal_days = trading.environment.benchmark_returns[
-            source.start:source.end-timedelta(days=1)].index
+            source.start:source.end - timedelta(days=1)].index
         # TODO insert missing data in database
         for expected_dt in cal_days:
             if str(expected_dt.date()) == '2014-01-30' or \

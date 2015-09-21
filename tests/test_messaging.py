@@ -1,12 +1,10 @@
 __author__ = 'Warren'
 
 from unittest import TestCase
-from nose.tools import nottest
 import numpy as np
 from threading import Thread
 from collections import OrderedDict
 import pandas as pd
-from datetime import timedelta
 import time
 
 from zipline.finance import trading
@@ -23,6 +21,7 @@ class TestMessanger(TestCase):
     """
     Tests the change in pnl sent by the messenger
     """
+
     def setUp(self):
         self.consumer = JsonConsumer()
         self.process = Thread(target=self.consumer.run)
@@ -39,7 +38,7 @@ class TestMessanger(TestCase):
             'asset_type': 'future', 'symbol': ident, 'expiration_date':
             expiration_date, 'children': ['child1', 'child2', 'child3',
                                           'child4']},
-            'child1': {
+                          'child1': {
                 'asset_type': 'future', 'symbol': 'child1', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25},
             'child2': {
@@ -54,18 +53,20 @@ class TestMessanger(TestCase):
 
         trading.environment.update_asset_finder(
             asset_metadata=asset_metadata)
+        sid = \
+            trading.environment.asset_finder.lookup_symbol_resolve_multiple(
+                ident).sid
 
         self.data, self.pnl = DataGeneratorEpex(identifier=ident).create_data()
         sim_params = create_simulation_parameters(start=self.data.start,
                                                   end=self.data.end)
 
         amounts = np.full(25, 1)  # order 1MW for every hour
-        self.algo = TestEpexMessagingAlgorithm(env=trading.environment,
-            sid=0, amount=amounts, order_count=1, instant_fill=False,
-            sim_params=sim_params,
-            commission=PerShare(0), data_frequency='minute',
-            day=expiration_date, products=products
-        )
+        self.algo = TestEpexMessagingAlgorithm(
+            env=trading.environment, sid=sid, amount=amounts, order_count=1,
+            instant_fill=False, sim_params=sim_params, commission=PerShare(0),
+            data_frequency='minute', day=expiration_date, products=products
+            )
 
         self.results = self.run_algo()
 
@@ -73,12 +74,11 @@ class TestMessanger(TestCase):
         results = self.algo.run(self.data)
         return results
 
-    @nottest
     def test_algo_pnl(self):
         time.sleep(10)
         data = OrderedDict(sorted(
-        self.consumer.data.items(),
-                                  key=lambda t: t[0]))
+            self.consumer.data.items(),
+            key=lambda t: t[0]))
         expected_pnl = [0, 4, 9]
         for i, perf in enumerate(data.values()):
             self.assertEqual(expected_pnl[i], perf['pnl'])
