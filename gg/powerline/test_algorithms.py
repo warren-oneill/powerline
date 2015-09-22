@@ -67,9 +67,12 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
                    amount,
                    order_count,
                    day,
+                   products,
                    sid_filter=None,
                    slippage=None,
-                   commission=None):
+                   commission=None,
+                   ):
+        self.products=products
         self.count = order_count
         self.asset = self.sid(sid)
         self.amount = amount
@@ -94,7 +97,7 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
 
     def handle_data(self, data):
         self.producer.run(self.datetime.date(),
-                          self.perf_tracker.cumulative_performance.pnl)
+                          self.perf_tracker.cumulative_performance.to_dict())
 
 
 def auction_message(algo, data):

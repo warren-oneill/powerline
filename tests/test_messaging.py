@@ -5,6 +5,9 @@ from nose.tools import nottest
 import numpy as np
 from threading import Thread
 from collections import OrderedDict
+import pandas as pd
+from datetime import timedelta
+import time
 
 from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
@@ -26,26 +29,44 @@ class TestMessanger(TestCase):
         self.process.daemon = True
         self.process.start()
 
+        products = {'hour': {'2015-06-01': '01-02'}}
         exchange = EpexExchange()
         trading.environment = exchange.env
-        trading.environment.update_asset_finder(
-            asset_metadata=exchange.asset_metadata)
-        source = exchange.source()
+        ident = '2015-06-01_01-02'
+        expiration_date = pd.Timestamp('2015-06-01 00:30',
+                                       tz='Europe/Berlin').tz_convert('UTC')
+        asset_metadata = {ident: {
+            'asset_type': 'future', 'symbol': ident, 'expiration_date':
+            expiration_date, 'children': ['child1', 'child2', 'child3',
+                                          'child4']},
+            'child1': {
+                'asset_type': 'future', 'symbol': 'child1', 'expiration_date':
+                expiration_date, 'contract_multiplier': 0.25},
+            'child2': {
+                'asset_type': 'future', 'symbol': 'child2', 'expiration_date':
+                expiration_date, 'contract_multiplier': 0.25},
+            'child3': {
+                'asset_type': 'future', 'symbol': 'child3', 'expiration_date':
+                expiration_date, 'contract_multiplier': 0.25},
+            'child4': {
+                'asset_type': 'future', 'symbol': 'child4', 'expiration_date':
+                expiration_date, 'contract_multiplier': 0.25}}
 
-        ident = trading.environment.asset_finder.retrieve_asset(0).symbol
-        self.day = trading.environment.asset_finder.retrieve_asset(0).\
-            expiration_date
-        sid = 0
-        sim_params = create_simulation_parameters(start=source.start,
-                                                  end=source.end)
-        amounts = np.full(25, 1)  # order 1MW for every hour
-        self.algo = TestEpexMessagingAlgorithm(
-            sid=sid, amount=amounts, order_count=1, instant_fill=False,
-            asset_finder=exchange.asset_finder, sim_params=sim_params,
-            commission=PerShare(0), data_frequency='minute', day=self.day
-        )
+        trading.environment.update_asset_finder(
+            asset_metadata=asset_metadata)
 
         self.data, self.pnl = DataGeneratorEpex(identifier=ident).create_data()
+        sim_params = create_simulation_parameters(start=self.data.start,
+                                                  end=self.data.end)
+
+        amounts = np.full(25, 1)  # order 1MW for every hour
+        self.algo = TestEpexMessagingAlgorithm(env=trading.environment,
+            sid=0, amount=amounts, order_count=1, instant_fill=False,
+            sim_params=sim_params,
+            commission=PerShare(0), data_frequency='minute',
+            day=expiration_date, products=products
+        )
+
         self.results = self.run_algo()
 
     def run_algo(self):
@@ -54,8 +75,10 @@ class TestMessanger(TestCase):
 
     @nottest
     def test_algo_pnl(self):
-        data = OrderedDict(sorted(self.consumer.data.items(),
+        time.sleep(10)
+        data = OrderedDict(sorted(
+        self.consumer.data.items(),
                                   key=lambda t: t[0]))
-        expected_pnl = [0, 0, 4, 9]
-        for i, pnl in enumerate(data.values()):
-            self.assertEqual(expected_pnl[i], pnl)
+        expected_pnl = [0, 4, 9]
+        for i, perf in enumerate(data.values()):
+            self.assertEqual(expected_pnl[i], perf['pnl'])
