@@ -13,6 +13,7 @@ sqlacodegen
 tabulate
 
 # development
+nose
 nose-timer
 flake8
 coverage
