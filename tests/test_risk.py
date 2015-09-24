@@ -14,6 +14,7 @@ class TestRiskReport(TestCase):
     """
     Tests gg risk parameters.
     """
+
     def setUp(self):
         self.perf = self.create_mock_perf()
 

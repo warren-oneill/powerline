@@ -11,6 +11,7 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
     to verify the orders sent/received, transactions created, and positions
     at the close of a simulation.
     """
+
     def initialize(self,
                    sid,
                    amount,
@@ -62,6 +63,7 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
     to verify the orders sent/received, transactions created, and positions
     at the close of a simulation.
     """
+
     def initialize(self,
                    sid,
                    amount,
@@ -72,7 +74,7 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
                    slippage=None,
                    commission=None,
                    ):
-        self.products=products
+        self.products = products
         self.count = order_count
         self.asset = self.sid(sid)
         self.amount = amount

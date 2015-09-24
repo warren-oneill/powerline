@@ -11,6 +11,7 @@ from zipline.data.loader import get_data_filepath, INDEX_MAPPING
 
 
 class TestLoader(TestCase):
+
     def setUp(self):
         bm_symbol = '^EEX'
         _, filename, _ = INDEX_MAPPING.get(

@@ -12,6 +12,7 @@ class Exchange(object, metaclass=ABCMeta):
     """
     A class to collect all exchange-relevant info.
     """
+
     def __init__(self,
                  start=pd.Timestamp(datetime(day=1, month=1, year=2013),
                                     tz='UTC'),

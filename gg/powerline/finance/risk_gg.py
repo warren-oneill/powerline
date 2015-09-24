@@ -11,6 +11,7 @@ class RiskReport(object):
     e.g. VaR.
     A report can be displayed in the terminal by calling display_report()
     """
+
     def __init__(self, perf):
         self.returns = perf.returns
         self.returns_max = perf.returns.max()
@@ -48,9 +49,9 @@ class RiskReport(object):
         mu = self.returns.mean()
         sigma = self.returns.std()
 
-        alpha = norm.ppf(1-c, mu, sigma)
+        alpha = norm.ppf(1 - c, mu, sigma)
 
-        return self.profit*(1 - (alpha + 1))
+        return self.profit * (1 - (alpha + 1))
 
     def calculate_win_loss(self):
         """
@@ -58,7 +59,7 @@ class RiskReport(object):
         """
         win_loss_count = np.sign(self.returns).value_counts()
 
-        win_loss = np.round(win_loss_count[1]/win_loss_count[-1], 2)
+        win_loss = np.round(win_loss_count[1] / win_loss_count[-1], 2)
 
         return win_loss
 
