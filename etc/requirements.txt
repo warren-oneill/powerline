@@ -23,3 +23,6 @@ coverage
 
 # zipline branch
 -e git://github.com/grundgruen/zipline.git@cascade-new-master#egg=zipline
+
+# strategy development
+-e git://github.com/quantopian/pyfolio.git#egg=pyfolio
