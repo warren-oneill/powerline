@@ -66,7 +66,7 @@ class TestMessanger(TestCase):
             env=trading.environment, sid=sid, amount=amounts, order_count=1,
             instant_fill=False, sim_params=sim_params, commission=PerShare(0),
             data_frequency='minute', day=expiration_date, products=products
-            )
+        )
 
         self.results = self.run_algo()
 
