@@ -19,7 +19,7 @@ weekends = rrule.rrule(
     cache=True,
     dtstart=start,
     until=end
-    )
+)
 
 # New Year's Day
 new_year = rrule.rrule(
@@ -28,7 +28,7 @@ new_year = rrule.rrule(
     cache=True,
     dtstart=start,
     until=end
-    )
+)
 
 # Easter Monday
 easter_monday = rrule.rrule(
@@ -37,7 +37,7 @@ easter_monday = rrule.rrule(
     cache=True,
     dtstart=start,
     until=end
-    )
+)
 
 # Christi Himmelfahrt
 ch_himm = rrule.rrule(
@@ -46,7 +46,7 @@ ch_himm = rrule.rrule(
     cache=True,
     dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
     until=pd.Timestamp('2013-12-31', tz='UTC')
-    )
+)
 
 # Pfingstmontag
 pfinst_mon_13 = rrule.rrule(
@@ -55,7 +55,7 @@ pfinst_mon_13 = rrule.rrule(
     cache=True,
     dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
     until=pd.Timestamp('2013-12-31', tz='UTC')
-    )
+)
 
 pfinst_mon_15 = rrule.rrule(
     rrule.DAILY,
@@ -63,7 +63,7 @@ pfinst_mon_15 = rrule.rrule(
     cache=True,
     dtstart=pd.Timestamp('2015-01-01', tz='UTC'),
     until=pd.Timestamp('2015-12-31', tz='UTC')
-    )
+)
 
 # Labour Day (1st of May)
 may_bank = rrule.rrule(
@@ -73,7 +73,7 @@ may_bank = rrule.rrule(
     cache=True,
     dtstart=start,
     until=end
-    )
+)
 
 # Tag der Deutschen Einheit
 tde = rrule.rrule(
@@ -83,7 +83,7 @@ tde = rrule.rrule(
     cache=True,
     dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
     until=pd.Timestamp('2013-12-31', tz='UTC')
-    )
+)
 
 # Christmas Eve
 christmas_eve = rrule.rrule(
@@ -123,4 +123,4 @@ newyears_eve = rrule.rrule(
     cache=True,
     dtstart=start,
     until=end
-    )
+)

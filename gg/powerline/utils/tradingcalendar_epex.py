@@ -63,16 +63,16 @@ open_and_closes = get_open_and_closes(trading_days, early_closes)
 
 
 def get_auctions(dt):
-        """
-        :param dt:
-        :return: auction time on day=dt
-        """
-        auction = pd.Timestamp(datetime(
-            year=dt.year,
-            month=dt.month,
-            day=dt.day,
-            hour=12,
-            minute=0),
-            tz='Europe/Berlin').tz_convert('UTC')
+    """
+    :param dt:
+    :return: auction time on day=dt
+    """
+    auction = pd.Timestamp(datetime(
+        year=dt.year,
+        month=dt.month,
+        day=dt.day,
+        hour=12,
+        minute=0),
+        tz='Europe/Berlin').tz_convert('UTC')
 
-        return auction
+    return auction
