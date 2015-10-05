@@ -34,7 +34,7 @@ class BeforeEpexAuction(StatelessRule):
         )
         self._dt = None
 
-    def should_trigger(self, dt):
+    def should_trigger(self, dt, env):
         return (self._get_auction(dt) - self.offset).time() == dt.time()
 
     def _get_auction(self, dt):

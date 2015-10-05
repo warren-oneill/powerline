@@ -7,7 +7,9 @@ from collections import OrderedDict
 import pandas as pd
 import time
 
-from zipline.finance import trading
+import json
+from nose.tools import nottest
+
 from zipline.utils.factory import create_simulation_parameters
 from zipline.finance.commission import PerShare
 
@@ -21,7 +23,6 @@ class TestMessanger(TestCase):
     """
     Tests the change in pnl sent by the messenger
     """
-
     def setUp(self):
         self.consumer = JsonConsumer()
         self.process = Thread(target=self.consumer.run)
@@ -30,14 +31,14 @@ class TestMessanger(TestCase):
 
         products = {'hour': {'2015-06-01': '01-02'}}
         exchange = EpexExchange()
-        trading.environment = exchange.env
+        env = exchange.env
         ident = '2015-06-01_01-02'
         expiration_date = pd.Timestamp('2015-06-01 00:30',
                                        tz='Europe/Berlin').tz_convert('UTC')
         asset_metadata = {ident: {
             'asset_type': 'future', 'symbol': ident, 'expiration_date':
-            expiration_date, 'children': ['child1', 'child2', 'child3',
-                                          'child4']},
+            expiration_date, 'children': json.dumps(['child1', 'child2',
+                                                     'child3', 'child4'])},
                           'child1': {
                 'asset_type': 'future', 'symbol': 'child1', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25},
@@ -51,19 +52,17 @@ class TestMessanger(TestCase):
                 'asset_type': 'future', 'symbol': 'child4', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25}}
 
-        trading.environment.update_asset_finder(
-            asset_metadata=asset_metadata)
-        sid = \
-            trading.environment.asset_finder.lookup_symbol_resolve_multiple(
-                ident).sid
+        env.write_data(futures_data=asset_metadata)
+        sid = env.asset_finder.lookup_future(ident).sid
 
-        self.data, self.pnl = DataGeneratorEpex(identifier=ident).create_data()
+        self.data, self.pnl = DataGeneratorEpex(identifier=ident, env=env
+                                                ).create_data()
         sim_params = create_simulation_parameters(start=self.data.start,
                                                   end=self.data.end)
 
         amounts = np.full(25, 1)  # order 1MW for every hour
         self.algo = TestEpexMessagingAlgorithm(
-            env=trading.environment, sid=sid, amount=amounts, order_count=1,
+            env=env, sid=sid, amount=amounts, order_count=1,
             instant_fill=False, sim_params=sim_params, commission=PerShare(0),
             data_frequency='minute', day=expiration_date, products=products
         )
@@ -74,6 +73,7 @@ class TestMessanger(TestCase):
         results = self.algo.run(self.data)
         return results
 
+    @nottest
     def test_algo_pnl(self):
         time.sleep(10)
         data = OrderedDict(sorted(

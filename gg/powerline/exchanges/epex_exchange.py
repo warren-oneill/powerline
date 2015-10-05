@@ -18,7 +18,8 @@ class EpexExchange(Exchange):
     @property
     def source(self):
         if self._source is None:
-            self._source = EpexSource(start=self.start, end=self.end)
+            self._source = EpexSource(start=self.start, end=self.end,
+                                      env=self.env)
         return self._source
 
     @property

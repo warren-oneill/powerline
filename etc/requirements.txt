@@ -22,4 +22,7 @@ coverage
 -e git://github.com/renshawbay/pika-python3.git#egg=pika3
 
 # zipline branch
--e git://github.com/grundgruen/zipline.git@gg-zip-new#egg=zipline
+-e git://github.com/grundgruen/zipline.git@gg-zip#egg=zipline
+
+# strategy development
+-e git://github.com/quantopian/pyfolio.git#egg=pyfolio
