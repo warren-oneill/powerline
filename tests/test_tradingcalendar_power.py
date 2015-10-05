@@ -79,6 +79,7 @@ class TestTradingCalendarEpex(TestCase):
         end = pd.Timestamp(datetime(day=17, month=10, year=2014), tz='UTC')
         cls.exchange = EpexExchange(start=start, end=end)
         cls.env = cls.exchange.env
+        cls.env.write_data(futures_data=cls.exchange.asset_metadata)
 
     def test_calendar_vs_environment_epex(self):
         cal_days = self.env.benchmark_returns[tradingcalendar_epex.start:]\

@@ -18,10 +18,13 @@ class TestEexAlgo(TestCase):
     """
     @classmethod
     def setUpClass(cls):
-        exchange = EexExchange()
-        exchange.env.write_data(
-            futures_data=exchange.asset_metadata)
+        start = pd.Timestamp('2014-05-18', tz='Europe/Berlin').tz_convert(
+            'UTC')
+        end = pd.Timestamp('2015-05-22', tz='Europe/Berlin').tz_convert('UTC')
+        exchange = EexExchange(start=start, end=end)
+
         env = exchange.env
+        env.write_data(futures_data=exchange.asset_metadata)
 
         ident = '2013-05-20_F1B4'
         sid = \

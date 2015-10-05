@@ -19,6 +19,7 @@ class TestMetadataEex(TestCase):
     def setUp(self):
         start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
         end = pd.Timestamp(datetime(day=11, month=10, year=2014), tz='UTC')
+
         exchange = EexExchange(start=start, end=end)
         env = exchange.env
         self.amd = env.asset_finder
@@ -47,8 +48,11 @@ class TestMetadataEpex(TestCase):
     def setUp(self):
         start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
         end = pd.Timestamp(datetime(day=12, month=10, year=2014), tz='UTC')
+
         exchange = EpexExchange(start=start, end=end)
         env = exchange.env
+        env.write_data(futures_data=exchange.asset_metadata)
+
         self.amd = env.asset_finder
 
     def test_epex_metadata(self):
