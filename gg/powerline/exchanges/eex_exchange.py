@@ -15,7 +15,8 @@ class EexExchange(Exchange):
     @property
     def source(self):
         if self._source is None:
-            self._source = EexSource(start=self.start, end=self.end)
+            self._source = EexSource(start=self.start, end=self.end,
+                                     env=self.env)
         return self._source
 
     @property

@@ -19,23 +19,23 @@ class TestEexAlgo(TestCase):
     @classmethod
     def setUpClass(cls):
         exchange = EexExchange()
-        trading.environment = exchange.env
-        trading.environment.update_asset_finder(
-            asset_metadata=exchange.asset_metadata)
+        exchange.env.write_data(
+            futures_data=exchange.asset_metadata)
+        env = exchange.env
 
         ident = '2013-05-20_F1B4'
         sid = \
-            trading.environment.asset_finder.lookup_symbol_resolve_multiple(
-                ident).sid
+            env.asset_finder.lookup_future(ident).sid
 
-        cls.data, cls.pnl = DataGeneratorEex(identifier=ident).create_data()
+        cls.data, cls.pnl = DataGeneratorEex(identifier=ident,
+                                             env=env).create_data()
 
         sim_params = create_simulation_parameters(start=cls.data.start,
                                                   end=cls.data.end)
 
         cls.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
                                  instant_fill=True,
-                                 asset_metadata=exchange.asset_metadata,
+                                 env=env,
                                  sim_params=sim_params,
                                  commission=PerShare(0))
 

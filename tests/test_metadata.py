@@ -1,7 +1,8 @@
 __author__ = "Warren"
 
-from datetime import date
+from datetime import date, datetime
 from unittest import TestCase
+import pandas as pd
 
 from zipline.assets.assets import Future
 from zipline.assets.assets import AssetFinder
@@ -16,8 +17,11 @@ class TestMetadataEex(TestCase):
     """
 
     def setUp(self):
-        exchange = EexExchange()
-        self.amd = AssetFinder(metadata=exchange.asset_metadata)
+        start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
+        end = pd.Timestamp(datetime(day=11, month=10, year=2014), tz='UTC')
+        exchange = EexExchange(start=start, end=end)
+        env = exchange.env
+        self.amd = env.asset_finder
 
     def test_eex_metadata(self):
         for sid in self.amd.sids:
@@ -41,8 +45,11 @@ class TestMetadataEpex(TestCase):
     """
 
     def setUp(self):
-        exchange = EpexExchange()
-        self.amd = AssetFinder(metadata=exchange.asset_metadata)
+        start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
+        end = pd.Timestamp(datetime(day=12, month=10, year=2014), tz='UTC')
+        exchange = EpexExchange(start=start, end=end)
+        env = exchange.env
+        self.amd = env.asset_finder
 
     def test_epex_metadata(self):
         self.assertIsInstance(self.amd, AssetFinder)

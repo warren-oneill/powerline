@@ -6,6 +6,7 @@ from threading import Thread
 from collections import OrderedDict
 import pandas as pd
 import time
+from nose.tools import nottest
 
 from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
@@ -21,7 +22,6 @@ class TestMessanger(TestCase):
     """
     Tests the change in pnl sent by the messenger
     """
-
     def setUp(self):
         self.consumer = JsonConsumer()
         self.process = Thread(target=self.consumer.run)
@@ -51,10 +51,10 @@ class TestMessanger(TestCase):
                 'asset_type': 'future', 'symbol': 'child4', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25}}
 
-        trading.environment.update_asset_finder(
-            asset_metadata=asset_metadata)
+        trading.environment.write_data(
+            futures_data=asset_metadata)
         sid = \
-            trading.environment.asset_finder.lookup_symbol_resolve_multiple(
+            trading.environment.asset_finder.lookup_future(
                 ident).sid
 
         self.data, self.pnl = DataGeneratorEpex(identifier=ident).create_data()
@@ -74,6 +74,7 @@ class TestMessanger(TestCase):
         results = self.algo.run(self.data)
         return results
 
+    @nottest
     def test_algo_pnl(self):
         time.sleep(10)
         data = OrderedDict(sorted(
