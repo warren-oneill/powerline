@@ -54,7 +54,7 @@ class EexExchange(Exchange):
             session = store.session
             self._products = []
             for product in session.execute('select distinct TRADINGPRODUCT '
-                                            'from POWER_FUTURE').fetchall():
-                self._products.append(product)
+                                           'from POWER_FUTURE').fetchall():
+                self._products.append(product[0])
 
         return self._products
