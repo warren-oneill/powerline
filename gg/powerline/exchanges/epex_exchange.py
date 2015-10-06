@@ -53,7 +53,7 @@ class EpexExchange(Exchange):
             store = Store(mysql_connection(), create_new_engine=True)
             session = store.session
             self._products = {'hour': {}, 'qh': {}}
-
+            # TODO rewrite with select distinct
             for products, day in session.execute(
                     'select GROUP_CONCAT(TRADINGPRODUCT), date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from EPEX_AUCTION '

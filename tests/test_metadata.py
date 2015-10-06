@@ -30,6 +30,7 @@ class TestMetadataEex(TestCase):
             self.assertIsInstance(asset, Future)
             self.assertIsInstance(asset.notice_date, date)
             self.assertIsInstance(asset.expiration_date, date)
+            self.assertIsInstance(asset.first_traded, date)
             self.assertIsInstance(asset.contract_multiplier, float)
             self.assertGreater(asset.contract_multiplier, 0)
             self.assertEqual(asset.exchange, 'EEX')

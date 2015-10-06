@@ -53,7 +53,7 @@ class TestMessanger(TestCase):
                 expiration_date, 'contract_multiplier': 0.25}}
 
         env.write_data(futures_data=asset_metadata)
-        sid = env.asset_finder.lookup_future(ident).sid
+        sid = env.asset_finder.lookup_future_symbol(ident).sid
 
         self.data, self.pnl = DataGeneratorEpex(identifier=ident, env=env
                                                 ).create_data()

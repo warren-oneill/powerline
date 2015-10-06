@@ -15,7 +15,7 @@ class TradingAlgorithmAuction(TradingAlgorithm):
         for i, product in enumerate(self.products['hour'][str(day)].
                                     split(sep=',')):
             ident = emd.insert_ident(day, product)
-            self.order(self.symbol(ident), amounts[i])
+            self.order(self.future_symbol(ident), amounts[i])
 
 
 class BeforeEpexAuction(StatelessRule):

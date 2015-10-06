@@ -18,7 +18,7 @@ class TestEexExchange(TestCase):
     def setUp(self):
         start = pd.Timestamp('2014-01-03', tz='Europe/Berlin').tz_convert(
             'UTC')
-        end = pd.Timestamp('2015-01-07', tz='Europe/Berlin').tz_convert('UTC')
+        end = pd.Timestamp('2014-01-07', tz='Europe/Berlin').tz_convert('UTC')
         self.exchange = EexExchange(start=start, end=end)
 
     def test_exchange(self):
@@ -53,7 +53,7 @@ class TestEpexExchange(TestCase):
     def setUp(self):
         start = pd.Timestamp('2014-01-03', tz='Europe/Berlin').tz_convert(
             'UTC')
-        end = pd.Timestamp('2015-01-07', tz='Europe/Berlin').tz_convert('UTC')
+        end = pd.Timestamp('2014-01-07', tz='Europe/Berlin').tz_convert('UTC')
         self.exchange = EpexExchange(start=start, end=end)
 
     def test_exchange(self):

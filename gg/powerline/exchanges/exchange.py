@@ -17,14 +17,15 @@ class Exchange(object, metaclass=ABCMeta):
                  start=pd.Timestamp(datetime(day=1, month=1, year=2013),
                                     tz='UTC'),
                  end=pd.Timestamp(datetime(day=31, month=12, year=2015),
-                                  tz='UTC')):
+                                  tz='UTC'),
+                 products=None):
         self._commission = None
         self._benchmark = None
         self._calendar = None
         self._asset_metadata = None
         self._source = None
         self._env = None
-        self._products = None
+        self._products = products
         self.start = start
         self.end = end
 

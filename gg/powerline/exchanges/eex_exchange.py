@@ -5,6 +5,9 @@ from gg.powerline.exchanges.exchange import Exchange
 from gg.powerline.sources.eex_source import EexSource
 from gg.powerline.assets.eex_metadata import EexMetadata
 
+from gg.database.store import Store
+from gg.database.mysql_conf import mysql_connection
+
 from zipline.finance.commission import PerShare
 
 
@@ -16,13 +19,14 @@ class EexExchange(Exchange):
     def source(self):
         if self._source is None:
             self._source = EexSource(start=self.start, end=self.end,
-                                     env=self.env)
+                                     env=self.env, products=self.products)
         return self._source
 
     @property
     def asset_metadata(self):
         if self._asset_metadata is None:
-            self._asset_metadata = EexMetadata(self.start, self.end).metadata
+            self._asset_metadata = EexMetadata(self.start, self.end,
+                                               self.products).metadata
         return self._asset_metadata
 
     @property
@@ -42,3 +46,15 @@ class EexExchange(Exchange):
         if self._commission is None:
             self._commission = PerShare(0.0125)
         return self._commission
+
+    @property
+    def products(self):
+        if self._products is None:
+            store = Store(mysql_connection(), create_new_engine=True)
+            session = store.session
+            self._products = []
+            for product in session.execute('select distinct TRADINGPRODUCT '
+                                            'from POWER_FUTURE').fetchall():
+                self._products.append(product)
+
+        return self._products
