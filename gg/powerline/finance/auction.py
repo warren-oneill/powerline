@@ -6,6 +6,7 @@ from gg.powerline.utils.tradingcalendar_epex import get_auctions
 from gg.powerline.assets.epex_metadata import EpexMetadata as emd
 
 from datetime import timedelta
+import pandas as pd
 
 
 class TradingAlgorithmAuction(TradingAlgorithm):
@@ -16,6 +17,20 @@ class TradingAlgorithmAuction(TradingAlgorithm):
                                     split(sep=',')):
             ident = emd.insert_ident(day, product)
             self.order(self.future_symbol(ident), amounts[i])
+
+    def prog_update(self, data):
+        for id in data:
+            if data[id].market != 'aepp' or id not in \
+                    self.perf_tracker.position_tracker.positions.keys():
+                continue
+            amount = self.perf_tracker.position_tracker.positions[id].amount
+            end_ts = self.trading_environment.asset_finder.\
+                retrieve_asset(id).end_date
+            frame = pd.DataFrame([amount], [end_ts])
+            if end_ts in self.prog.index:
+                self.prog.update(frame)
+            else:
+                self.prog = self.prog.append(frame)
 
 
 class BeforeEpexAuction(StatelessRule):

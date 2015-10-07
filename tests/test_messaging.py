@@ -23,6 +23,7 @@ class TestMessanger(TestCase):
     """
     Tests the change in pnl sent by the messenger
     """
+
     def setUp(self):
         self.consumer = JsonConsumer()
         self.process = Thread(target=self.consumer.run)
