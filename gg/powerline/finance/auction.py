@@ -33,6 +33,16 @@ class TradingAlgorithmAuction(TradingAlgorithm):
                 self.prog = self.prog.append(frame)
 
 
+def auction(algo, data):
+    """
+    Calculates the current day and then places an auction order for the
+    following day.
+    """
+    day = algo.get_datetime().date() + timedelta(days=1)
+
+    algo.order_auction(day=day, amounts=algo.amount)
+
+
 class BeforeEpexAuction(StatelessRule):
     """
     A rule that triggers for some offset before the auction.
@@ -45,7 +55,7 @@ class BeforeEpexAuction(StatelessRule):
         self.offset = _build_offset(
             offset,
             kwargs,
-            timedelta(minutes=1),  # Defaults to the first minute.
+            timedelta(minutes=30),  # Defaults to the first minute.
         )
         self._dt = None
 

@@ -1,5 +1,5 @@
 from gg.powerline.finance.auction import TradingAlgorithmAuction, \
-    BeforeEpexAuction
+    BeforeEpexAuction, auction
 from gg.messaging.json_producer import JsonProducer
 
 from datetime import timedelta
@@ -45,17 +45,6 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
 
     def handle_data(self, data):
         pass
-
-
-def auction(algo, data):
-    """
-    Calculates the current day and then places an auction order for the
-    following day.
-    """
-    day = algo.get_datetime().date() + timedelta(days=1)
-
-    algo.order_auction(day=day, amounts=algo.amount)
-    algo.incr += 1
 
 
 class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
