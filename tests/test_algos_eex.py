@@ -37,7 +37,7 @@ class TestEexAlgo(TestCase):
                                                   end=cls.data.end)
 
         cls.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
-                                 instant_fill=False,
+                                 instant_fill=True,
                                  env=env,
                                  sim_params=sim_params,
                                  commission=PerShare(0))
