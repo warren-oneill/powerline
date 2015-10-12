@@ -97,8 +97,8 @@ def get_open_and_closes(trading_days, early_closes):
                 year=day.year,
                 month=day.month,
                 day=day.day,
-                hour=9,
-                minute=31),
+                hour=8,
+                minute=00),
             tz='Europe/Berlin').tz_convert('UTC')
         # 1 PM if early close, 4 PM otherwise
         close_hour = 18
