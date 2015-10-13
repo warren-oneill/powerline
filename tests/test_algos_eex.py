@@ -27,17 +27,20 @@ class TestEexAlgo(TestCase):
         env.write_data(futures_data=exchange.asset_metadata)
 
         ident = '2013-05-20_F1B4'
-        sid = \
-            env.asset_finder.lookup_future_symbol(ident).sid
+        sid = env.asset_finder.lookup_future_symbol(ident).sid
 
-        cls.data, cls.pnl = DataGeneratorEex(identifier=ident,
-                                             env=env).create_data()
+        instant_fill = True
+
+        cls.data, cls.pnl = DataGeneratorEex(
+            identifier=ident,
+            env=env,
+            instant_fill=instant_fill).create_data()
 
         sim_params = create_simulation_parameters(start=cls.data.start,
                                                   end=cls.data.end)
 
         cls.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
-                                 instant_fill=True,
+                                 instant_fill=instant_fill,
                                  env=env,
                                  sim_params=sim_params,
                                  commission=PerShare(0))
