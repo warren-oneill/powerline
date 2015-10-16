@@ -1,4 +1,4 @@
-from unittest import TestCase, TestSuite, TestLoader, TextTestRunner
+from unittest import TestSuite, TextTestRunner
 import pandas as pd
 from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
