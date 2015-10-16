@@ -7,6 +7,7 @@ from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
 from zipline.test_algorithms import TestAlgorithm
 from zipline.finance.commission import PerShare
+from zipline.finance.slippage import FixedSlippage
 
 from gg.powerline.utils.data.data_generator import DataGeneratorEex
 from gg.powerline.exchanges.eex_exchange import EexExchange
@@ -18,9 +19,10 @@ class TestEexAlgo(TestCase):
     """
     @classmethod
     def setUpClass(cls):
-        start = pd.Timestamp('2014-05-18', tz='Europe/Berlin').tz_convert(
-            'UTC')
-        end = pd.Timestamp('2015-05-22', tz='Europe/Berlin').tz_convert('UTC')
+        start = pd.Timestamp('2014-05-18',
+                             tz='Europe/Berlin').tz_convert('UTC')
+        end = pd.Timestamp('2015-05-22',
+                           tz='Europe/Berlin').tz_convert('UTC')
         exchange = EexExchange(start=start, end=end)
 
         env = exchange.env
@@ -30,21 +32,23 @@ class TestEexAlgo(TestCase):
         sid = env.asset_finder.lookup_future_symbol(ident).sid
 
         # TODO parametrize TestCase
-        instant_fill = True
+        instant_fill = False
 
-        cls.data, cls.pnl = DataGeneratorEex(
+        cls.data, cls.pnl, cls.expected_positions = DataGeneratorEex(
             identifier=ident,
             env=env,
             instant_fill=instant_fill).create_data()
 
-        sim_params = create_simulation_parameters(start=cls.data.start,
-                                                  end=cls.data.end)
+        sim_params = create_simulation_parameters(
+            start=cls.data.start,
+            end=cls.data.end)
 
         cls.algo = TestAlgorithm(sid=sid, amount=1, order_count=1,
                                  instant_fill=instant_fill,
                                  env=env,
                                  sim_params=sim_params,
-                                 commission=PerShare(0))
+                                 commission=PerShare(0),
+                                 slippage = FixedSlippage())
 
         cls.results = cls.algo.run(cls.data)
 
@@ -53,10 +57,10 @@ class TestEexAlgo(TestCase):
             self.assertEqual(self.results.pnl[dt], pnl[0])
 
     def test_algo_positions(self):
-        expected_positions = pd.DataFrame([0, 1, 1, 0], index=self.pnl.index)
-        for dt, amount in expected_positions.iterrows():
+        for dt, amount in self.expected_positions.iterrows():
             if self.results.positions[dt]:
-                actual_position = self.results.positions[dt][0]['amount']
+                actual_position = \
+                    self.results.positions[dt][0]['amount']
             else:
                 actual_position = 0
 
