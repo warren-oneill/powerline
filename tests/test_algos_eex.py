@@ -29,6 +29,7 @@ class TestEexAlgo(TestCase):
         ident = '2013-05-20_F1B4'
         sid = env.asset_finder.lookup_future_symbol(ident).sid
 
+        # TODO parametrize TestCase
         instant_fill = True
 
         cls.data, cls.pnl = DataGeneratorEex(
