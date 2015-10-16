@@ -1,19 +1,27 @@
-__author__ = "Warren"
-
-from unittest import TestCase
-
+from unittest import TestCase, TestSuite, TestLoader, TextTestRunner
 import pandas as pd
 from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
 from zipline.test_algorithms import TestAlgorithm
 from zipline.finance.commission import PerShare
 from zipline.finance.slippage import FixedSlippage
-
+from gg.powerline.utils.test_helper import ParametrizedTestCase, \
+    parametrize
 from gg.powerline.utils.data.data_generator import DataGeneratorEex
 from gg.powerline.exchanges.eex_exchange import EexExchange
 
 
-class TestEexAlgo(TestCase):
+__author__ = "Warren"
+
+
+def workaround(self, data):
+    if self.incr < self.count:
+        self.order(self.asset, self.amount)
+        self.incr += 1
+    self.perf_tracker.position_tracker._update_asset(self.asset.sid)
+
+
+class TestEexAlgo(ParametrizedTestCase):
     """
     Tests the change in pnl and position for a simple EEX weekly algo.
     """
@@ -31,8 +39,7 @@ class TestEexAlgo(TestCase):
         ident = '2013-05-20_F1B4'
         sid = env.asset_finder.lookup_future_symbol(ident).sid
 
-        # TODO parametrize TestCase
-        instant_fill = False
+        instant_fill = cls.param
 
         cls.data, cls.pnl, cls.expected_positions = DataGeneratorEex(
             identifier=ident,
@@ -48,7 +55,9 @@ class TestEexAlgo(TestCase):
                                  env=env,
                                  sim_params=sim_params,
                                  commission=PerShare(0),
-                                 slippage = FixedSlippage())
+                                 slippage=FixedSlippage())
+
+        cls.algo.handle_data = workaround
 
         cls.results = cls.algo.run(cls.data)
 
@@ -63,10 +72,16 @@ class TestEexAlgo(TestCase):
                     self.results.positions[dt][0]['amount']
             else:
                 actual_position = 0
-
             self.assertEqual(actual_position, amount[0])
 
     @classmethod
     def tearDownClass(cls):
         cls.algo = None
         trading.environment = None
+
+suite = TestSuite()
+suite.addTest(parametrize(
+    TestEexAlgo, param=True))
+suite.addTest(parametrize(
+    TestEexAlgo, param=False))
+TextTestRunner(verbosity=2).run(suite)
