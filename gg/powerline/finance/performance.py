@@ -29,12 +29,12 @@ def pnl_and_costs(results, multiplier):
             positions[pos["sid"]][ts] = pos["amount"]
         for tra in transactions[ts]:
             costs[ts] += tra["commission"] * multiplier
-            if tra["amount"] > 0:
-                prices[tra["sid"]][ts] = \
-                    tra["price"] - tra["commission"]/tra["amount"]
-            else:
-                prices[tra["sid"]][ts] = tra["price"] \
-                    + tra["commission"]/abs(tra["amount"])
+            # if tra["amount"] > 0:
+            prices[tra["sid"]][ts] = \
+                tra["price"] - tra["commission"]/tra["amount"]
+            # else:
+            #     prices[tra["sid"]][ts] = tra["price"] \
+            #         - tra["commission"]/tra["amount"]
     for i in range(1, len(index)):
         for sid in sids:
             pnl[index[i]] += \
