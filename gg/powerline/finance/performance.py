@@ -14,7 +14,6 @@ def pnl_and_costs(results, multiplier):
     :param multiplier: position size of traded contracts
     :return: pnl ex commission and cost time series
     """
-    transactions = results.transactions
     index = results.positions.index
     pnl = pd.TimeSeries(index=index).fillna(0)
     costs = pd.TimeSeries(index=index).fillna(0)
@@ -27,17 +26,15 @@ def pnl_and_costs(results, multiplier):
     for ts in index:
         for pos in results.positions[ts]:
             positions[pos["sid"]][ts] = pos["amount"]
-        for tra in transactions[ts]:
+            prices[pos["sid"]][ts] = pos["last_sale_price"]
+        for tra in results.transactions[ts]:
             costs[ts] += tra["commission"] * multiplier
-            # if tra["amount"] > 0:
             prices[tra["sid"]][ts] = \
                 tra["price"] - tra["commission"]/tra["amount"]
-            # else:
-            #     prices[tra["sid"]][ts] = tra["price"] \
-            #         - tra["commission"]/tra["amount"]
     for i in range(1, len(index)):
         for sid in sids:
-            pnl[index[i]] += \
-                multiplier*positions[sid][index[i-1]] \
-                * (prices[sid][index[i]]-prices[sid][index[i-1]])
+            if positions[sid][index[i-1]] != 0:
+                pnl[index[i]] += \
+                    multiplier*positions[sid][index[i-1]] \
+                    * (prices[sid][index[i]]-prices[sid][index[i-1]])
     return pnl, costs
