@@ -13,7 +13,7 @@ from gg.powerline.finance.performance import variation_margin_and_costs
 __author__ = 'Stefan Hackmann'
 
 
-class TestEexFlippingAlgo(TestCase):
+class TestVariationMargin(TestCase):
     """
     Tests the change in pnl and position for a simple EEX weekly algo.
     """
