@@ -1,8 +1,6 @@
 from datetime import timedelta
 import pandas as pd
 from zipline.algorithm import TradingAlgorithm
-from zipline.finance.commission import PerShare
-from zipline.finance.slippage import FixedSlippage
 from gg.powerline.finance.auction import TradingAlgorithmAuction, \
     BeforeEpexAuction, auction
 from gg.messaging.json_producer import JsonProducer
@@ -163,6 +161,3 @@ class FlippingAlgorithm(TradingAlgorithm):
                 self.order_target(self.asset, 0)
         else:
             self.order_target(self.asset, self.amount)
-
-        # self.perf_tracker.position_tracker._update_asset(self.asset.sid)
-        # self.perf_tracker.update_performance()

@@ -7,13 +7,13 @@ from zipline.finance.slippage import FixedSlippage
 from gg.powerline.utils.data.data_generator import DataGeneratorEex
 from gg.powerline.exchanges.eex_exchange import EexExchange
 from gg.powerline.test_algorithms import FlippingAlgorithm
-from gg.powerline.finance.performance import variation_margins_and_costs
+from gg.powerline.finance.performance import pnl_and_costs
 
 
 __author__ = 'Stefan Hackmann'
 
 
-class TestVariationMargin(TestCase):
+class TestPnl(TestCase):
     """
     Tests the change in pnl and position for a simple EEX weekly algo.
     """
@@ -49,13 +49,13 @@ class TestVariationMargin(TestCase):
 
         cls.results = cls.algo.run(cls.data)
 
-    def test_algo_pnl(self):
-        margin, costs = variation_margins_and_costs(self.results, 168)
-        algo_pnl = margin + costs
-        for dt, pnl in self.pnl.iterrows():
-            self.assertEqual(algo_pnl[dt], pnl[0])
+    def test_pnl(self):
+        pnl, costs = pnl_and_costs(self.results, 168)
+        algo_pnl = pnl - costs
+        for dt, expected_pnl in self.pnl.iterrows():
+            self.assertEqual(algo_pnl[dt], expected_pnl[0])
 
-    def test_algo_positions(self):
+    def test_positions(self):
         for dt, amount in self.expected_positions.iterrows():
             if self.results.positions[dt]:
                 actual_position = \

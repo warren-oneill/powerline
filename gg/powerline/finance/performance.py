@@ -4,20 +4,19 @@ import pandas as pd
 __author__ = 'Stefan Hackmann'
 
 
-def variation_margins_and_costs(results, multiplier):
-    '''
-    This method calculates variation margins and costs provided that each
+def pnl_and_costs(results, multiplier):
+    """
+    This method calculates pnl and costs provided that each
     contract has the same multiplier, i.e. position size in MWh.
-    Let's get rid of this workaround as soon as zipline's pnl calculation has
-    been fixed.
+    TODO Let's get rid of this workaround as soon as zipline's pnl
+    calculation has been fixed.
     :param results: zipline results object
     :param multiplier: position size of traded contracts
-    :return: variation margin and cost time series
-    '''
-    # positions = results.positions
+    :return: pnl ex commission and cost time series
+    """
     transactions = results.transactions
     index = results.positions.index
-    variation_margins = pd.TimeSeries(index=index).fillna(0)
+    pnl = pd.TimeSeries(index=index).fillna(0)
     costs = pd.TimeSeries(index=index).fillna(0)
     sids = set()
     for ts in index:
@@ -31,10 +30,14 @@ def variation_margins_and_costs(results, multiplier):
         for tra in transactions[ts]:
             costs[ts] += tra["commission"] * multiplier
             if tra["amount"] > 0:
-                prices[tra["sid"]][ts] = tra["price"] \
-                                         - tra["commission"]/tra["amount"]
+                prices[tra["sid"]][ts] = \
+                    tra["price"] - tra["commission"]/tra["amount"]
             else:
                 prices[tra["sid"]][ts] = tra["price"] \
-                                         + tra["commission"]/abs(tra["amount"])
-        pass
-    return variation_margins, costs
+                    + tra["commission"]/abs(tra["amount"])
+    for i in range(1, len(index)):
+        for sid in sids:
+            pnl[index[i]] += \
+                multiplier*positions[sid][index[i-1]] \
+                * (prices[sid][index[i]]-prices[sid][index[i-1]])
+    return pnl, costs
