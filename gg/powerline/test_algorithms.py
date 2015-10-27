@@ -1,9 +1,9 @@
+from datetime import timedelta
+import pandas as pd
+from zipline.algorithm import TradingAlgorithm
 from gg.powerline.finance.auction import TradingAlgorithmAuction, \
     BeforeEpexAuction, auction
 from gg.messaging.json_producer import JsonProducer
-
-from datetime import timedelta
-import pandas as pd
 
 
 class TestAuctionAlgorithm(TradingAlgorithmAuction):
@@ -137,3 +137,27 @@ class TestFekAlgo(TestAuctionAlgorithm):
 
     def handle_data(self, data):
         self.prog_update(data)
+
+
+class FlippingAlgorithm(TradingAlgorithm):
+
+    def initialize(self,
+                   sid,
+                   amount,
+                   slippage,
+                   commission):
+        self.asset = self.sid(sid)
+        self.amount = amount
+        self.sid_filter = [self.asset.sid]
+        self.set_slippage(slippage)
+        self.set_commission(commission)
+
+    def handle_data(self, data):
+
+        if len(self.portfolio.positions) > 0:
+            if self.portfolio.positions[self.asset.sid]["amount"] > 0:
+                self.order_target(self.asset, -self.amount)
+            else:
+                self.order_target(self.asset, 0)
+        else:
+            self.order_target(self.asset, self.amount)
