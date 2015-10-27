@@ -55,7 +55,8 @@ class EpexExchange(Exchange):
             self._products = {'hour': {}, 'qh': {}}
             # TODO rewrite with select distinct
             for products, day in session.execute(
-                    'select GROUP_CONCAT(TRADINGPRODUCT), date(CONVERT_TZ('
+                    'select GROUP_CONCAT(UPPER(TRADINGPRODUCT)), '
+                    'date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from EPEX_AUCTION '
                     'where EPEX_AUCTION.NAME '
                     '= "GermanPowerSpotAuction" GROUP BY date(CONVERT_TZ('
@@ -63,7 +64,8 @@ class EpexExchange(Exchange):
                 self._products['hour'].update({str(day): products})
 
             for products, day in session.execute(
-                    'select GROUP_CONCAT(TRADINGPRODUCT), date(CONVERT_TZ('
+                    'select GROUP_CONCAT(UPPER(TRADINGPRODUCT)), '
+                    'date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from REBAP '
                     'GROUP BY date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin"))').fetchall():
