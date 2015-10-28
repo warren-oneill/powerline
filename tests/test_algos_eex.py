@@ -90,8 +90,8 @@ class TestEexAlgoFalse(TestCase):
         env = exchange.env
         env.write_data(futures_data=exchange.asset_metadata)
 
-        ident = '2013-05-20_F1B4'
-        sid = env.asset_finder.lookup_future_symbol(ident).sid
+        sid = 0
+        ident = env.asset_finder.retrieve_asset(sid).symbol
 
         instant_fill = False
 
@@ -110,8 +110,6 @@ class TestEexAlgoFalse(TestCase):
                                  sim_params=sim_params,
                                  commission=PerShare(0),
                                  slippage=FixedSlippage())
-
-        # cls.algo.handle_data = workaround
 
         cls.results = cls.algo.run(cls.data)
 

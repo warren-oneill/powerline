@@ -32,18 +32,19 @@ class TestPnl(TestCase):
         sid = env.asset_finder.lookup_future_symbol(ident).sid
 
         instant_fill = True
+        commission = 0.01
 
         cls.data, cls.pnl, cls.expected_positions = DataGeneratorEex(
             identifier=ident,
             env=env,
-            instant_fill=instant_fill).create_flipping(168, 0.01)
+            instant_fill=instant_fill).create_flipping(168, commission)
 
         sim_params = create_simulation_parameters(
             start=cls.data.start,
             end=cls.data.end)
 
         cls.algo = FlippingAlgorithm(
-            sid=sid, amount=1, commission=PerShare(0.01),
+            sid=sid, amount=1, commission=PerShare(commission),
             slippage=FixedSlippage(0), env=env, sim_params=sim_params,
             instant_fill=instant_fill, data_frequency="minute")
 
