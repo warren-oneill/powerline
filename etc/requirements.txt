@@ -17,6 +17,7 @@ nose
 nose-timer
 flake8
 coverage
+nose-ignore-docstring
 
 # messaging
 -e git://github.com/renshawbay/pika-python3.git#egg=pika3
