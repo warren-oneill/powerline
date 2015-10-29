@@ -6,7 +6,7 @@ from gg.powerline.sources.epex_source import EpexSource
 from gg.powerline.exchanges.exchange import Exchange
 
 from gg.database.store import Store
-from gg.database.mysql_conf import mysql_connection
+from gg.database.mysql_conf import mysql_connection_aws as mysql_connection
 
 from zipline.finance.commission import PerShare
 
@@ -59,7 +59,9 @@ class EpexExchange(Exchange):
                     'date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from EPEX_AUCTION '
                     'where EPEX_AUCTION.NAME '
-                    '= "GermanPowerSpotAuction" GROUP BY date(CONVERT_TZ('
+                    '= "GermanPowerSpotAuction" and KIND like "Price%" '
+                    'GROUP BY date('
+                    'CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin"))').fetchall():
                 self._products['hour'].update({str(day): products})
 

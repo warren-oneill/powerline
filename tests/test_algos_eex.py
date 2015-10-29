@@ -28,7 +28,8 @@ class TestEexAlgoTrue(TestCase):
         start = pd.Timestamp('2015-05-18', tz='Europe/Berlin').tz_convert(
             'UTC')
         end = pd.Timestamp('2015-05-22', tz='Europe/Berlin').tz_convert('UTC')
-        exchange = EexExchange(start=start, end=end, products=['F1B1'])
+        products = ['F1B1', 'F1B2', 'F1B3', 'F1B4', 'F1B5']
+        exchange = EexExchange(start=start, end=end, products=products)
 
         env = exchange.env
         env.write_data(futures_data=exchange.asset_metadata)
@@ -85,12 +86,13 @@ class TestEexAlgoFalse(TestCase):
                              tz='Europe/Berlin').tz_convert('UTC')
         end = pd.Timestamp('2015-05-22',
                            tz='Europe/Berlin').tz_convert('UTC')
-        exchange = EexExchange(start=start, end=end)
+        products = ['F1B1', 'F1B2', 'F1B3', 'F1B4', 'F1B5']
+        exchange = EexExchange(start=start, end=end, products=products)
 
         env = exchange.env
         env.write_data(futures_data=exchange.asset_metadata)
 
-        sid = 0
+        sid = 10
         ident = env.asset_finder.retrieve_asset(sid).symbol
 
         instant_fill = False
