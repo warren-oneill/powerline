@@ -88,8 +88,11 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
         self.producer = JsonProducer()
 
     def handle_data(self, data):
-        self.producer.run(self.datetime.date(),
-                          self.perf_tracker.cumulative_performance.to_dict())
+        self.incr += 1
+        if self.incr > 2:
+            self.producer.run({'perf': self.perf_tracker.cumulative_performance
+                              .to_dict(),
+                               'progress': self.perf_tracker.progress})
 
 
 def auction_message(algo, data):

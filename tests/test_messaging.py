@@ -3,12 +3,10 @@ __author__ = 'Warren'
 from unittest import TestCase
 import numpy as np
 from threading import Thread
-from collections import OrderedDict
 import pandas as pd
 import time
 
 import json
-from nose.tools import nottest
 
 from zipline.utils.factory import create_simulation_parameters
 from zipline.finance.commission import PerShare
@@ -25,32 +23,28 @@ class TestMessanger(TestCase):
     """
 
     def setUp(self):
-        self.consumer = JsonConsumer()
-        self.process = Thread(target=self.consumer.run)
-        self.process.daemon = True
-        self.process.start()
-
         products = {'hour': {'2015-06-01': '01-02'}}
         exchange = EpexExchange()
         env = exchange.env
         ident = '2015-06-01_01-02'
         expiration_date = pd.Timestamp('2015-06-01 00:30',
                                        tz='Europe/Berlin').tz_convert('UTC')
-        asset_metadata = {ident: {
+        asset_metadata = {0: {
             'asset_type': 'future', 'symbol': ident, 'expiration_date':
-            expiration_date, 'children': json.dumps(['child1', 'child2',
-                                                     'child3', 'child4'])},
-                          'child1': {
-                'asset_type': 'future', 'symbol': 'child1', 'expiration_date':
+            expiration_date, 'children': json.dumps(['CHILD1', 'CHILD2',
+                                                     'CHILD3', 'CHILD4']),
+            'contract_multiplier': 1},
+            1: {
+                'asset_type': 'future', 'symbol': 'CHILD1', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25},
-            'child2': {
-                'asset_type': 'future', 'symbol': 'child2', 'expiration_date':
+            2: {
+                'asset_type': 'future', 'symbol': 'CHILD2', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25},
-            'child3': {
-                'asset_type': 'future', 'symbol': 'child3', 'expiration_date':
+            3: {
+                'asset_type': 'future', 'symbol': 'CHILD3', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25},
-            'child4': {
-                'asset_type': 'future', 'symbol': 'child4', 'expiration_date':
+            4: {
+                'asset_type': 'future', 'symbol': 'CHILD4', 'expiration_date':
                 expiration_date, 'contract_multiplier': 0.25}}
 
         env.write_data(futures_data=asset_metadata)
@@ -68,18 +62,20 @@ class TestMessanger(TestCase):
             data_frequency='minute', day=expiration_date, products=products
         )
 
+        self.consumer = JsonConsumer()
+        self.process = Thread(target=self.consumer.run)
+        self.process.daemon = True
+        self.process.start()
+
         self.results = self.run_algo()
 
     def run_algo(self):
         results = self.algo.run(self.data)
         return results
 
-    @nottest
     def test_algo_pnl(self):
         time.sleep(10)
-        data = OrderedDict(sorted(
-            self.consumer.data.items(),
-            key=lambda t: t[0]))
-        expected_pnl = [0, 4, 9]
-        for i, perf in enumerate(data.values()):
-            self.assertEqual(expected_pnl[i], perf['pnl'])
+        data = self.consumer.data
+
+        expected_pnl = 9
+        self.assertEqual(expected_pnl, data['perf']['pnl'])
