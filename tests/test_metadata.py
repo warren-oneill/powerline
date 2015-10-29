@@ -20,8 +20,11 @@ class TestMetadataEex(TestCase):
         start = pd.Timestamp(datetime(day=10, month=10, year=2014), tz='UTC')
         end = pd.Timestamp(datetime(day=11, month=10, year=2014), tz='UTC')
 
-        exchange = EexExchange(start=start, end=end)
+        products = ['F1B1', 'F1B2', 'F1B3', 'F1B4', 'F1B5']
+        exchange = EexExchange(start=start, end=end, products=products)
         env = exchange.env
+        env.write_data(futures_data=exchange.asset_metadata)
+
         self.amd = env.asset_finder
 
     def test_eex_metadata(self):

@@ -21,15 +21,16 @@ class TestPnl(TestCase):
     def setUpClass(cls):
         start = pd.Timestamp('2014-05-18',
                              tz='Europe/Berlin').tz_convert('UTC')
-        end = pd.Timestamp('2015-05-22',
+        end = pd.Timestamp('2014-05-22',
                            tz='Europe/Berlin').tz_convert('UTC')
-        exchange = EexExchange(start=start, end=end)
+        products = ['F1B1', 'F1B2', 'F1B3', 'F1B4', 'F1B5']
+        exchange = EexExchange(start=start, end=end, products=products)
 
         env = exchange.env
         env.write_data(futures_data=exchange.asset_metadata)
 
-        ident = '2013-05-20_F1B4'
-        sid = env.asset_finder.lookup_future_symbol(ident).sid
+        sid = 0
+        ident = env.asset_finder.retrieve_asset(sid).symbol
 
         instant_fill = True
         commission = 0.01

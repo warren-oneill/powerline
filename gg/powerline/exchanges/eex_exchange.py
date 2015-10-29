@@ -6,7 +6,7 @@ from gg.powerline.sources.eex_source import EexSource
 from gg.powerline.assets.eex_metadata import EexMetadata
 
 from gg.database.store import Store
-from gg.database.mysql_conf import mysql_connection
+from gg.database.mysql_conf import mysql_connection_aws as mysql_connection
 
 from zipline.finance.commission import PerShare
 
