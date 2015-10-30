@@ -15,8 +15,8 @@ def pnl_and_costs(results, multiplier):
     :return: pnl ex commission and cost time series
     """
     index = results.positions.index
-    pnl = pd.TimeSeries(index=index).fillna(0)
-    costs = pd.TimeSeries(index=index).fillna(0)
+    pnl = pd.Series(index=index).fillna(0)
+    costs = pd.Series(index=index).fillna(0)
     sids = set()
     for ts in index:
         for pos in results.positions[ts]:
