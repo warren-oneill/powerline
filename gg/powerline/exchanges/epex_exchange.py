@@ -69,7 +69,7 @@ class EpexExchange(Exchange):
                     'select GROUP_CONCAT(UPPER(TRADINGPRODUCT)), '
                     'date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from REBAP '
-                    'GROUP BY date(CONVERT_TZ('
+                    'where KIND like "energy%" GROUP BY date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin"))').fetchall():
                 self._products['qh'].update({str(day): products})
 
