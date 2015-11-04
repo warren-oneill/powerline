@@ -12,6 +12,7 @@ from zipline.finance.commission import PerShare
 from gg.powerline.test_algorithms import TestFekAlgo
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.utils.data.data_generator import DataGeneratorEpex
+from gg.powerline.prognosis.prog_performance import ProgPerformance
 
 
 class TestFek(TestCase):
@@ -70,12 +71,19 @@ class TestFek(TestCase):
         )
 
         self.results = self.run_algo()
+        self.perf = ProgPerformance(self.algo.prog)
 
     def run_algo(self):
         results = self.algo.run(self.data)
         return results
 
     def test_prog(self):
-        self.run_algo()
         for amount in self.algo.prog.values:
             self.assertEqual(amount, 1)
+
+    def test_error(self):
+        error = self.perf.prog_error()
+        print(np.sqrt((error**2).sum()))
+        print(np.sqrt(((self.algo.prog + error)**2).sum()))
+
+
