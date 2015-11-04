@@ -7,7 +7,6 @@ from zipline.finance.slippage import FixedSlippage
 from gg.powerline.utils.data.data_generator import DataGeneratorEex
 from gg.powerline.exchanges.eex_exchange import EexExchange
 from gg.powerline.test_algorithms import FlippingAlgorithm
-from gg.powerline.finance.performance import pnl_and_costs
 
 
 __author__ = 'Stefan Hackmann'
@@ -52,12 +51,8 @@ class TestPnl(TestCase):
         cls.results = cls.algo.run(cls.data)
 
     def test_pnl(self):
-        # TODO get rid of fix and use new zipline master, see below
-        pnl, costs = pnl_and_costs(self.results, 168)
-        algo_pnl = pnl - costs
         for dt, expected_pnl in self.pnl.iterrows():
-            # self.assertAlmostEqual(self.results.pnl[dt], expected_pnl[0])
-            self.assertEqual(algo_pnl[dt], expected_pnl[0])
+            self.assertAlmostEqual(self.results.pnl[dt], expected_pnl[0])
 
     def test_positions(self):
         for dt, amount in self.expected_positions.iterrows():
