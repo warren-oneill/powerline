@@ -12,14 +12,13 @@ from zipline.finance.commission import PerShare
 from gg.powerline.test_algorithms import TestFekAlgo
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.utils.data.data_generator import DataGeneratorEpex
-from gg.powerline.prognosis.prog_performance import ProgPerformance
+from gg.powerline.prognosis.prog_performance import PrognosisPerformance
 
 
 class TestFek(TestCase):
     """
-    Tests the change in pnl sent by the messenger
+    Tests the calculation of the prognosis error
     """
-
     def setUp(self):
         products = {'hour': {'2015-06-01': '01-02'}}
         exchange = EpexExchange()
@@ -35,22 +34,23 @@ class TestFek(TestCase):
             'end_date': expiration_date},
             1: {
                 'asset_type': 'future', 'symbol': 'CHILD1', 'expiration_date':
-                expiration_date, 'end_date': expiration_date,
+                expiration_date, 'end_date': expiration_date +
+                timedelta(minutes=30),
                 'contract_multiplier': 0.25},
             2: {
                 'asset_type': 'future', 'symbol': 'CHILD2', 'expiration_date':
                 expiration_date + timedelta(minutes=15),
-                'end_date': expiration_date + timedelta(minutes=15),
+                'end_date': expiration_date + timedelta(minutes=45),
                 'contract_multiplier': 0.25},
             3: {
                 'asset_type': 'future', 'symbol': 'CHILD3', 'expiration_date':
                 expiration_date + timedelta(minutes=30),
-                'end_date': expiration_date + timedelta(minutes=30),
+                'end_date': expiration_date + timedelta(minutes=60),
                 'contract_multiplier': 0.25},
             4: {
                 'asset_type': 'future', 'symbol': 'CHILD4', 'expiration_date':
                 expiration_date + timedelta(minutes=45),
-                'end_date': expiration_date + timedelta(minutes=45),
+                'end_date': expiration_date + timedelta(minutes=75),
                 'contract_multiplier': 0.25}}
 
         env.write_data(futures_data=asset_metadata)
@@ -67,11 +67,10 @@ class TestFek(TestCase):
         self.algo = TestFekAlgo(
             env=env, sid=sid, amount=amounts, order_count=1,
             instant_fill=False, sim_params=sim_params, commission=PerShare(0),
-            data_frequency='minute', day=expiration_date, products=products
-        )
+            data_frequency='minute', day=expiration_date, products=products)
 
         self.results = self.run_algo()
-        self.perf = ProgPerformance(self.algo.prog)
+        self.perf = PrognosisPerformance(self.algo.prog)
 
     def run_algo(self):
         results = self.algo.run(self.data)
@@ -81,9 +80,15 @@ class TestFek(TestCase):
         for amount in self.algo.prog.values:
             self.assertEqual(amount, 1)
 
-    def test_error(self):
-        error = self.perf.prog_error()
-        print(np.sqrt((error**2).sum()))
-        print(np.sqrt(((self.algo.prog + error)**2).sum()))
+    def test_performance(self):
+        expected_generation = [103.53, 107.89, 108.19, 107.69]
+        expected_prog_intraday = [109.325, 107.075, 103.225, 104.4]
 
+        self.assertTrue(self.perf.generation.index.equals(
+            self.perf.open_mw.index))
+        self.assertTrue(self.perf.prognosis_intraday.index.equals(
+                        self.perf.open_mw.index))
+        self
 
+    def test_report(self):
+        self.perf.display_report()
