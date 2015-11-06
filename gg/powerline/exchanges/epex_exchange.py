@@ -6,7 +6,7 @@ from gg.powerline.sources.epex_source import EpexSource
 from gg.powerline.exchanges.exchange import Exchange
 
 from gg.database.store import Store
-from gg.database.mysql_conf import mysql_connection
+from gg.powerline.settings import connection
 
 from zipline.finance.commission import PerShare
 
@@ -50,7 +50,7 @@ class EpexExchange(Exchange):
     @property
     def products(self):
         if self._products is None:
-            store = Store(mysql_connection(), create_new_engine=True)
+            store = Store(connection(), create_new_engine=True)
             session = store.session
             self._products = {'hour': {}, 'qh': {}}
             # TODO rewrite with select distinct
@@ -59,7 +59,9 @@ class EpexExchange(Exchange):
                     'date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from EPEX_AUCTION '
                     'where EPEX_AUCTION.NAME '
-                    '= "GermanPowerSpotAuction" GROUP BY date(CONVERT_TZ('
+                    '= "GermanPowerSpotAuction" and KIND like "Price%" '
+                    'GROUP BY date('
+                    'CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin"))').fetchall():
                 self._products['hour'].update({str(day): products})
 
@@ -67,7 +69,7 @@ class EpexExchange(Exchange):
                     'select GROUP_CONCAT(UPPER(TRADINGPRODUCT)), '
                     'date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from REBAP '
-                    'GROUP BY date(CONVERT_TZ('
+                    'where KIND like "energy%" GROUP BY date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin"))').fetchall():
                 self._products['qh'].update({str(day): products})
 

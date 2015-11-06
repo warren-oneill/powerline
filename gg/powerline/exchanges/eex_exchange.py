@@ -6,7 +6,7 @@ from gg.powerline.sources.eex_source import EexSource
 from gg.powerline.assets.eex_metadata import EexMetadata
 
 from gg.database.store import Store
-from gg.database.mysql_conf import mysql_connection
+from gg.powerline.settings import connection
 
 from zipline.finance.commission import PerShare
 
@@ -50,7 +50,7 @@ class EexExchange(Exchange):
     @property
     def products(self):
         if self._products is None:
-            store = Store(mysql_connection(), create_new_engine=True)
+            store = Store(connection(), create_new_engine=True)
             session = store.session
             self._products = []
             for product in session.execute('select distinct TRADINGPRODUCT '
