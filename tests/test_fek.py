@@ -19,7 +19,8 @@ class TestFek(TestCase):
     """
     Tests the calculation of the prognosis error
     """
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         products = {'hour': {'2015-06-01': '01-02'}}
         exchange = EpexExchange()
         env = exchange.env
@@ -57,38 +58,66 @@ class TestFek(TestCase):
         sid = \
             env.asset_finder.lookup_future_symbol(ident).sid
 
-        self.data, self.pnl = DataGeneratorEpex(identifier=ident, env=env
-                                                ).create_data()
+        cls.data, cls.pnl = DataGeneratorEpex(identifier=ident, env=env
+                                              ).create_data()
 
-        sim_params = create_simulation_parameters(start=self.data.start,
-                                                  end=self.data.end)
+        sim_params = create_simulation_parameters(start=cls.data.start,
+                                                  end=cls.data.end)
 
         amounts = np.full(25, 1)  # order 1MW for every hour
-        self.algo = TestFekAlgo(
+        cls.algo = TestFekAlgo(
             env=env, sid=sid, amount=amounts, order_count=1,
             instant_fill=False, sim_params=sim_params, commission=PerShare(0),
             data_frequency='minute', day=expiration_date, products=products)
 
-        self.results = self.run_algo()
-        self.perf = PrognosisPerformance(self.algo.prog)
+        cls.results = cls.algo.run(cls.data)
+        cls.perf = PrognosisPerformance(cls.algo.prog)
 
-    def run_algo(self):
-        results = self.algo.run(self.data)
-        return results
+        cls.expected_generation = np.array([103.53, 107.89, 108.19, 107.69])
+        cls.expected_prog_intraday = np.array([109.325, 107.075, 103.225,
+                                               104.4])
 
     def test_prog(self):
         for amount in self.algo.prog.values:
             self.assertEqual(amount, 1)
 
     def test_performance(self):
-        expected_generation = [103.53, 107.89, 108.19, 107.69]
-        expected_prog_intraday = [109.325, 107.075, 103.225, 104.4]
-
         self.assertTrue(self.perf.generation.index.equals(
-            self.perf.open_mw.index))
+            self.perf.index))
         self.assertTrue(self.perf.prognosis_intraday.index.equals(
-                        self.perf.open_mw.index))
-        self
+                        self.perf.index))
+
+        for i, amount in enumerate(self.expected_generation):
+            self.assertAlmostEqual(amount,
+                                   self.perf.generation.values[i][0],
+                                   places=0)
+
+        for i, amount in enumerate(self.expected_prog_intraday):
+            self.assertEqual(amount, self.perf.prognosis_intraday.values[i][0])
+
+    def test_mape(self):
+        test_data = np.array([1, 2, 3, 4]) + np.array(
+            self.perf.prognosis_intraday).transpose()[0]
+        generation = np.array(self.perf.generation).transpose()[0]
+
+        expected_mape = np.mean(np.abs((generation -
+                                        test_data)/generation))
+
+        test_df = pd.DataFrame(test_data, index=self.perf.index, columns=[
+            'mw'])
+        self.assertEqual(expected_mape, self.perf.mape(test_df))
+
+    def test_rmse(self):
+        test_data = np.array([1, 2, 3, 4]) + np.array(
+            self.perf.prognosis_intraday).transpose()[0]
+        generation = np.array(self.perf.generation).transpose()[0]
+
+        expected_rmse = np.sqrt(np.mean(np.square(
+            generation - test_data)))
+
+        test_df = pd.DataFrame(test_data, index=self.perf.index, columns=[
+            'mw'])
+        self.assertEqual(expected_rmse, self.perf.rmse(test_df))
 
     def test_report(self):
         self.perf.display_report()

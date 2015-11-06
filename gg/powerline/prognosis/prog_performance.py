@@ -49,7 +49,7 @@ class PrognosisPerformance(object):
             ).fetchall()
 
         return pd.DataFrame(self._generation, columns=['dt', 'mw']).\
-            set_index('dt').tz_localize('UTC')
+            set_index('dt').tz_localize('UTC').astype(float)/4
 
     @property
     def prognosis_intraday(self):
@@ -71,7 +71,7 @@ class PrognosisPerformance(object):
                 ).fetchall()
             self._prognosis_intraday = pd.DataFrame(
                 self._prognosis_intraday, columns=['dt', 'mw']).\
-                set_index('dt').tz_localize('UTC')
+                set_index('dt').tz_localize('UTC').astype(float)/4
 
         return self._prognosis_intraday
 
