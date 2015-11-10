@@ -13,8 +13,7 @@ class TradingAlgorithmAuction(TradingAlgorithm):
 
     @api_method
     def order_auction(self, amounts, day):
-        for i, product in enumerate(self.products['hour'][str(day)].
-                                    split(sep=',')):
+        for i, product in enumerate(self.products['hour'][str(day)]):
             ident = emd.insert_ident(day, product)
             self.order(self.future_symbol(ident), amounts[i])
 

@@ -13,6 +13,7 @@ import pandas as pd
 from unittest import TestCase
 
 
+# TODO add products test
 class TestEexExchange(TestCase):
 
     def setUp(self):

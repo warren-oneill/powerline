@@ -21,7 +21,7 @@ class TestFek(TestCase):
     """
     @classmethod
     def setUpClass(cls):
-        products = {'hour': {'2015-06-01': '01-02'}}
+        products = {'hour': {'2015-06-01': ['01-02']}}
         exchange = EpexExchange()
         env = exchange.env
         ident = '2015-06-01_01-02'

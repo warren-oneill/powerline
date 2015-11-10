@@ -68,7 +68,8 @@ class EpexExchange(Exchange):
                     'GROUP BY date('
                     'CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin"))').fetchall():
-                self._products['hour'].update({str(day): products})
+                self._products['hour'].update({str(day):
+                                               products.split(sep=',')})
 
             for products, day in session.execute(
                     'select GROUP_CONCAT(UPPER(TRADINGPRODUCT)), '
@@ -76,7 +77,8 @@ class EpexExchange(Exchange):
                     'BEGIN_TS, "UTC", "Europe/Berlin")) from REBAP '
                     'where KIND like "energy%" GROUP BY date(CONVERT_TZ('
                     'BEGIN_TS, "UTC", "Europe/Berlin"))').fetchall():
-                self._products['qh'].update({str(day): products})
+                self._products['qh'].update({str(day):
+                                             products.split(sep=',')})
 
             store.finalize()
         return self._products
