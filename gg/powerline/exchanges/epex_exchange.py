@@ -10,6 +10,11 @@ from gg.powerline.settings import connection
 
 from zipline.finance.commission import PerShare
 
+import pandas as pd
+from gg.database.db_views import EPEX_AUCTION as EA
+from gg.database.db_views import REBAP
+from sqlalchemy import func
+
 
 class EpexExchange(Exchange):
     """
@@ -75,3 +80,24 @@ class EpexExchange(Exchange):
 
             store.finalize()
         return self._products
+
+    def insert_start_end(self):
+        store = Store(connection(), create_new_engine=True)
+        session = store.session
+        qry = session.query(func.min(EA.BEGIN_TS).label(
+            'start'), func.max(EA.BEGIN_TS).label('end'))
+        res = qry.one()
+
+        start_auction = pd.Timestamp(res.start).tz_localize('UTC')
+        end_auction = pd.Timestamp(res.end).tz_localize('UTC')
+
+        qry = session.query(func.min(REBAP.BEGIN_TS).label(
+            'start'), func.max(REBAP.BEGIN_TS).label('end'))
+        res = qry.one()
+
+        start_rebap = pd.Timestamp(res.start).tz_localize('UTC')
+        end_rebap = pd.Timestamp(res.end).tz_localize('UTC')
+
+        store.finalize()
+
+        return max(start_auction, start_rebap), min(end_auction, end_rebap)

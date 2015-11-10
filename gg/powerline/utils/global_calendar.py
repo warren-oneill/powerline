@@ -62,7 +62,6 @@ pfinst_mon_15 = rrule.rrule(
     byeaster=50,
     cache=True,
     dtstart=pd.Timestamp('2015-01-01', tz='UTC'),
-    until=pd.Timestamp('2015-12-31', tz='UTC')
 )
 
 # Labour Day (1st of May)
@@ -81,7 +80,7 @@ tde = rrule.rrule(
     bymonth=10,
     bymonthday=3,
     cache=True,
-    dtstart=pd.Timestamp('2013-01-01', tz='UTC'),
+    dtstart=pd.Timestamp('2011-01-01', tz='UTC'),
     until=pd.Timestamp('2013-12-31', tz='UTC')
 )
 

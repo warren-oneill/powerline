@@ -16,7 +16,7 @@ from gg.powerline.utils.global_calendar import (
     new_year, newyears_eve, pfinst_mon_13, pfinst_mon_15, tde, weekends
 )
 
-start = pd.Timestamp('2013-01-01', tz='UTC')
+start = pd.Timestamp('2010-12-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')
 
 

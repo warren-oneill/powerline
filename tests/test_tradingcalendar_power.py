@@ -52,15 +52,18 @@ class TestTradingCalendarEex(TestCase):
 
     @nottest
     def test_calendar_vs_databank_eex(self):
-        source = self.exchange.source
+        exchange = EexExchange()
+        exchange.env.write_data(futures_data=exchange.asset_metadata)
+        source = exchange.source
 
         cal_days = self.env.benchmark_returns[
             source.start:source.end].index
         row = next(source)
         for expected_dt in cal_days:
-            self.assertEqual(expected_dt, row.dt)
+            self.assertEqual(expected_dt.date(), row.dt.date())
 
-            while expected_dt == row.dt and row.dt < source.end:
+            while expected_dt.date() == row.dt.date() and row.dt.date() < \
+                    source.end.date():
                 row = next(source)
 
     @classmethod

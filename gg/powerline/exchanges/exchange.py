@@ -1,8 +1,6 @@
 __author__ = "Warren"
 
-from abc import ABCMeta, abstractproperty
-import pandas as pd
-from datetime import datetime
+from abc import ABCMeta, abstractproperty, abstractmethod
 
 from zipline.finance.trading import TradingEnvironment
 from gg.powerline.data.loader_power import load_market_data
@@ -13,21 +11,20 @@ class Exchange(object, metaclass=ABCMeta):
     A class to collect all exchange-relevant info.
     """
 
-    def __init__(self,
-                 start=pd.Timestamp(datetime(day=1, month=1, year=2013),
-                                    tz='UTC'),
-                 end=pd.Timestamp(datetime(day=31, month=12, year=2015),
-                                  tz='UTC'),
-                 products=None):
+    def __init__(self, **kwargs):
         self._commission = None
         self._benchmark = None
         self._calendar = None
         self._asset_metadata = None
         self._source = None
         self._env = None
-        self._products = products
-        self.start = start
-        self.end = end
+        self._products = kwargs.get('products', None)
+        self.source_start, self.source_end = self.insert_start_end()
+        self.start = kwargs.get('start', self.source_start)
+        self.start = max(self.start, self.source_start)
+
+        self.end = kwargs.get('end', self.source_end)
+        self.end = min(self.end, self.source_end)
 
         self.exchange_tz = "Europe/Berlin"
         self.load = load_market_data
@@ -62,4 +59,8 @@ class Exchange(object, metaclass=ABCMeta):
 
     @abstractproperty
     def commission(self):
+        """defined in subclass"""
+
+    @abstractmethod
+    def insert_start_end(self):
         """defined in subclass"""

@@ -12,7 +12,7 @@ from zipline.utils.tradingcalendar import end, canonicalize_datetime
 
 canonicalize_datetime = canonicalize_datetime
 
-start = pd.Timestamp('2013-01-01', tz='UTC')
+start = pd.Timestamp('2011-01-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')
 
 non_trading_days = []

@@ -5,6 +5,11 @@ from gg.powerline.exchanges.exchange import Exchange
 from gg.powerline.sources.eex_source import EexSource
 from gg.powerline.assets.eex_metadata import EexMetadata
 
+from sqlalchemy import func
+import pandas as pd
+
+from gg.database.db_views import POWER_FUTURE as PF
+
 from gg.database.store import Store
 from gg.powerline.settings import connection
 
@@ -58,3 +63,16 @@ class EexExchange(Exchange):
                 self._products.append(product[0])
 
         return self._products
+
+    def insert_start_end(self):
+        store = Store(connection(), create_new_engine=True)
+        session = store.session
+        qry = session.query(func.min(PF.EVENT_TS).label(
+            'start'), func.max(PF.EVENT_TS).label('end'))
+        res = qry.one()
+
+        start = pd.Timestamp(res.start).tz_localize('UTC')
+        end = pd.Timestamp(res.end).tz_localize('UTC')
+
+        store.finalize()
+        return start, end
