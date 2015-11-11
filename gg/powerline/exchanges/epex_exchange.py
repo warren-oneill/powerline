@@ -20,11 +20,15 @@ class EpexExchange(Exchange):
     """
     Implementing abstractproperties for the EPEX exchange
     """
+    def __init__(self, markets=['DA', 'ID'], **kwargs):
+        super().__init__(**kwargs)
+        self.markets = markets
+
     @property
     def source(self):
         if self._source is None:
             self._source = EpexSource(start=self.start, end=self.end,
-                                      env=self.env)
+                                      env=self.env, markets=self.markets)
         return self._source
 
     @property
