@@ -3,7 +3,7 @@ import numpy as np
 from tabulate import tabulate
 
 from gg.database.store import Store
-from gg.database.mysql_conf import mysql_connection_aws as mysql_connection
+from gg.powerline.settings import connection
 
 __author__ = 'Warren'
 
@@ -19,7 +19,7 @@ class PrognosisPerformance(object):
         end = self.index[-1].strftime('%Y-%m-%d')
         self.period = start + ' to ' + end
 
-        store = Store(mysql_connection(), create_new_engine=True)
+        store = Store(connection(), create_new_engine=True)
         self.session = store.session
 
         self._generation = None
