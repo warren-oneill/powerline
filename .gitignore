@@ -18,4 +18,7 @@ bin
 powerline/bin
 powerline/lib
 
+# local settings
+mysql_conf.py
+
 report.txt

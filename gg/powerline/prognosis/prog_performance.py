@@ -3,7 +3,7 @@ import numpy as np
 from tabulate import tabulate
 
 from gg.database.store import Store
-from gg.powerline.settings import connection
+from gg.powerline.mysql_conf import mysql_connection as connection
 
 __author__ = 'Warren'
 

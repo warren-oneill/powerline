@@ -6,7 +6,7 @@ from gg.powerline.sources.epex_source import EpexSource
 from gg.powerline.exchanges.exchange import Exchange
 
 from gg.database.store import Store
-from gg.powerline.settings import connection
+from gg.powerline.mysql_conf import mysql_connection as connection
 
 from zipline.finance.commission import PerShare
 

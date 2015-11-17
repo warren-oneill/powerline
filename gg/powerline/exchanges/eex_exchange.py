@@ -11,7 +11,7 @@ import pandas as pd
 from gg.database.db_views import POWER_FUTURE as PF
 
 from gg.database.store import Store
-from gg.powerline.settings import connection
+from gg.powerline.mysql_conf import mysql_connection as connection
 
 from zipline.finance.commission import PerShare
 

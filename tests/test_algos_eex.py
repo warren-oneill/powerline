@@ -12,13 +12,6 @@ from gg.powerline.exchanges.eex_exchange import EexExchange
 __author__ = "Warren"
 
 
-def workaround(self, data):
-    if self.incr < self.count:
-        self.order(self.asset, self.amount)
-        self.incr += 1
-    self.perf_tracker.position_tracker._update_asset(self.asset.sid)
-
-
 class TestEexAlgoTrue(TestCase):
     """
     Tests the change in pnl and position for a simple EEX weekly algo.
