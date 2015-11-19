@@ -5,6 +5,9 @@ from zipline.utils.events import StatelessRule, _build_offset
 from gg.powerline.utils.tradingcalendar_epex import get_auctions
 from gg.powerline.assets.epex_metadata import EpexMetadata as emd
 
+from gg.database.store import Store
+from gg.powerline.mysql_conf import mysql_connection as connection
+
 from datetime import timedelta
 import pandas as pd
 
@@ -30,6 +33,29 @@ class TradingAlgorithmAuction(TradingAlgorithm):
                 self.prog.update(frame)
             else:
                 self.prog = self.prog.append(frame)
+
+    @api_method
+    def prognosis(self, sid, as_of):
+        end_ts = self.trading_environment.asset_finder.retrieve_asset(
+            sid).end_date
+        store = Store(connection(), create_new_engine=True)
+        session = store.session
+
+        prog = session.execute(
+            'select sum(y.VAL) from '
+            'PROGNOSIS_INTRADAY as y '
+            'JOIN (select *, max(EVENT_TS) as dt from PROGNOSIS_INTRADAY '
+            'where BEGIN_TS = "' + str(end_ts) + '" '
+            'and EVENT_TS <= "' + str(as_of) + '" '
+            'group by BEGIN_TS) '
+            'as x on y.EVENT_TS=x.dt and y.BEGIN_TS=x.BEGIN_TS where '
+            'y.KIND not like "TS%" '
+            'and y.KIND<>"OFFSHORE" '
+            'group by y.BEGIN_TS'
+            ).fetchall()
+        store.finalize()
+
+        return float(prog[0][0])
 
 
 def auction(algo, data):
