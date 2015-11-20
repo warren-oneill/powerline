@@ -10,7 +10,7 @@ from gg.powerline.history.history_container import EpexHistoryContainer
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 
 
-class TestHistory(TestCase):
+class TestHistoryDBData(TestCase):
 
     def setUp(self):
         start = pd.Timestamp('2015-06-25', tz='Europe/Berlin').tz_convert(

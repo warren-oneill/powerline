@@ -22,7 +22,7 @@ def date_range(start_date, end_date):
         yield start_date + pd.Timedelta(days=n)
 
 
-class TestHistoryContent(TestCase):
+class TestHistoryContentBatch(TestCase):
     def setUp(self):
         self.start_date = pd.Timestamp('2015-06-25', tz='Europe/Berlin').\
             tz_convert('UTC')
@@ -30,6 +30,10 @@ class TestHistoryContent(TestCase):
             tz_convert('UTC')
 
         source_start = self.start_date - pd.Timedelta(hours=2)
+
+        self.hourly_products = ["%(a)02d-%(b)02d" % {'a': i, 'b': i+1}
+                                for i in range(24)]
+        self.quarter_product_tags = ["Q"+str(i) for i in range(1, 5)]
 
         self.exchange = EpexExchange(start=self.start_date, end=self.end_date)
         self.env = self.exchange.env
@@ -60,7 +64,7 @@ class TestHistoryContent(TestCase):
         for single_date in date_range(self.start_date, self.end_date):
             for current_hour in range(24):
                 data[rolling_sid] = {
-                    'dt': single_date,
+                    'dt': self.end_date,
                     'price': np.random.uniform(0, 100),
                     'market': self.market_forms[0],
                     'product': self.hourly_products[current_hour],
@@ -71,7 +75,7 @@ class TestHistoryContent(TestCase):
                 for market in self.market_forms[1:4]:
                     for current_quarter in self.quarter_product_tags:
                         data[rolling_sid] = {
-                            'dt': single_date,
+                            'dt': self.end_date,
                             'price': np.random.uniform(0, 100),
                             'market': market,
                             'product': "%02d" % current_hour + current_quarter,
@@ -80,15 +84,15 @@ class TestHistoryContent(TestCase):
                         }
                         rolling_sid += 1
 
-        for current_sid in data:
-            current_data = data[current_sid]
-            bar = BarData({current_sid: current_data})
-            self.container.update(bar, current_data['dt'])
-            history = self.container.get_history()
+        bar = BarData(data)
+        self.container.update(bar, self.end_date)
+        history = self.container.get_history()
 
-            for market in self.market_forms:
-                self.assertLessEqual(len(history[market]), self.BAR_COUNT)
+        for market in self.market_forms:
+            self.assertLessEqual(len(history[market]), self.BAR_COUNT)
 
+        for sid in data:
+            current_data = data[sid]
             self.assertEqual(history[current_data['market']]
                              [current_data['product']].ix[current_data['day']],
                              current_data['price'])
@@ -98,7 +102,7 @@ class TestHistoryContent(TestCase):
         rolling_sid = 1
         for single_date in date_range(self.start_date, self.end_date):
             data[rolling_sid] = {
-                'dt': single_date,
+                'dt': self.end_date,
                 'price': np.random.uniform(0, 100),
                 'market': 'epex_auction',
                 'product': self.hourly_products[np.random.randint(0, 24)],
@@ -107,15 +111,15 @@ class TestHistoryContent(TestCase):
             }
             rolling_sid += 1
 
-        for current_sid in data:
-            current_data = data[current_sid]
-            bar = BarData({current_sid: current_data})
-            self.container.update(bar, current_data['dt'])
-            history = self.container.get_history()
+        bar = BarData(data)
+        self.container.update(bar, self.end_date)
+        history = self.container.get_history()
 
-            for market in self.market_forms:
-                self.assertLessEqual(len(history[market]), self.BAR_COUNT)
+        for market in self.market_forms:
+            self.assertLessEqual(len(history[market]), self.BAR_COUNT)
 
+        for sid in data:
+            current_data = data[sid]
             self.assertEqual(history[current_data['market']]
                              [current_data['product']].ix[current_data['day']],
                              current_data['price'])
@@ -124,19 +128,19 @@ class TestHistoryContent(TestCase):
         day1 = self.start_date
         day2 = self.start_date + pd.Timedelta(days=1)
 
-        data = {1: {'dt': day1,
+        data = {1: {'dt': self.end_date,
                     'price': 5,
                     'market': 'aepp',
                     'product': '01Q1',
                     'day': day1,
                     'sid': 1},
-                2: {'dt': day2,
+                2: {'dt': self.end_date,
                     'price': 10,
                     'market': 'aepp',
                     'product': '01Q1',
                     'day': day2,
                     'sid': 2},
-                3: {'dt': day2,
+                3: {'dt': self.end_date,
                     'price': 7,
                     'market': 'aepp',
                     'product': '01Q1',
@@ -144,10 +148,8 @@ class TestHistoryContent(TestCase):
                     'sid': 3}
                 }
 
-        for current_sid in data:
-            current_data = data[current_sid]
-            bar = BarData({current_sid: current_data})
-            self.container.update(bar, current_data['dt'])
+        bar = BarData(data)
+        self.container.update(bar, self.end_date)
 
         history = self.container.get_history()
 
@@ -163,6 +165,10 @@ class TestHistoryDateRows(TestCase):
             tz_convert('UTC')
 
         source_start = self.start_date - pd.Timedelta(hours=2)
+
+        self.hourly_products = ["%(a)02d-%(b)02d" % {'a': i, 'b': i+1}
+                                for i in range(24)]
+        self.quarter_product_tags = ["Q"+str(i) for i in range(1, 5)]
 
         self.exchange = EpexExchange(start=self.start_date, end=self.end_date)
         self.env = self.exchange.env
@@ -182,8 +188,6 @@ class TestHistoryDateRows(TestCase):
                                               env=self.env)
 
         self.market_forms = ['epex_auction', 'intraday', 'aepp', 'rebap']
-        self.hourly_products = ["%(a)02d-%(b)02d" % {'a': i, 'b': i+1}
-                                for i in range(24)]
 
     def test_date_rows_simple_case(self):
         day1 = pd.Timestamp('2015-06-06')
@@ -193,7 +197,7 @@ class TestHistoryDateRows(TestCase):
         rolling_sid = 1
         for single_date in date_range(day1, day5):
             data[rolling_sid] = {
-                'dt': single_date,
+                'dt': self.end_date,
                 'price': np.random.uniform(0, 100),
                 'market': 'epex_auction',
                 'product': self.hourly_products[np.random.randint(0, 24)],
@@ -202,10 +206,8 @@ class TestHistoryDateRows(TestCase):
             }
             rolling_sid += 1
 
-        for current_sid in data:
-            current_data = data[current_sid]
-            bar = BarData({current_sid: current_data})
-            self.container.update(bar, current_data['dt'])
+        bar = BarData(data)
+        self.container.update(bar, self.end_date)
 
         history = self.container.get_history()
         observed_dates = history['epex_auction'].index.tolist()
@@ -222,7 +224,7 @@ class TestHistoryDateRows(TestCase):
         rolling_sid = 1
         for i in [0, 1, 2, 4]:
             data1[rolling_sid] = {
-                'dt': days[i],
+                'dt': self.end_date,
                 'price': np.random.uniform(0, 100),
                 'market': 'epex_auction',
                 'product': '00-01',
@@ -233,7 +235,7 @@ class TestHistoryDateRows(TestCase):
         data2 = {}
         for i in [2, 3, 4]:
             data2[rolling_sid] = {
-                'dt': days[i],
+                'dt': self.end_date,
                 'price': np.random.uniform(0, 100),
                 'market': 'epex_auction',
                 'product': '01-02',
@@ -242,10 +244,8 @@ class TestHistoryDateRows(TestCase):
             }
             rolling_sid += 1
 
-        for current_sid in data1:
-            current_data = data1[current_sid]
-            bar = BarData({current_sid: current_data})
-            self.container.update(bar, current_data['dt'])
+        bar = BarData(data1)
+        self.container.update(bar, self.end_date)
 
         history = self.container.get_history()
         observed_dates = history['epex_auction'].index.tolist()
@@ -254,10 +254,8 @@ class TestHistoryDateRows(TestCase):
             self.assertEqual(observed_dates[i].date(),
                              expected_dates[i].date())
 
-        for current_sid in data2:
-            current_data = data2[current_sid]
-            bar = BarData({current_sid: current_data})
-            self.container.update(bar, current_data['dt'])
+        bar = BarData(data2)
+        self.container.update(bar, self.end_date)
 
         history = self.container.get_history()
         observed_dates = history['epex_auction'].index.tolist()
