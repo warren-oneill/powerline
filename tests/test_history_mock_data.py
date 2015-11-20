@@ -75,14 +75,65 @@ class TestHistoryDateRows(TestCase):
             current_data = data[current_sid]
             bar = BarData({current_sid: current_data})
             self.container.update(bar, current_data['dt'])
-            history = self.container.get_history()
 
-            for market in self.market_forms:
-                self.assertLessEqual(len(history[market]), self.BAR_COUNT)
+        history = self.container.get_history()
+        observed_dates = history['epex_auction'].index.tolist()
+        expected_dates = [day1 + pd.Timedelta(days=i) for i in range(1, 4)]
+        for i in range(3):
+            self.assertEqual(observed_dates[i].date(),
+                             expected_dates[i].date())
 
-            self.assertEqual(history[current_data['market']]
-                             [current_data['product']].ix[current_data['day']],
-                             current_data['price'])
+    def test_date_rows_complex(self):
+        day1 = pd.Timestamp('2015-06-06')
+        days = [day1 + pd.Timedelta(days=i) for i in range(5)]
+
+        data1 = {}
+        rolling_sid = 1
+        for i in [0, 1, 2, 4]:
+            data1[rolling_sid] = {
+                'dt': days[i],
+                'price': np.random.uniform(0, 100),
+                'market': 'epex_auction',
+                'product': '00-01',
+                'day': days[i],
+                'sid': rolling_sid
+            }
+            rolling_sid += 1
+        data2 = {}
+        for i in [2, 3, 4]:
+            data2[rolling_sid] = {
+                'dt': days[i],
+                'price': np.random.uniform(0, 100),
+                'market': 'epex_auction',
+                'product': '01-02',
+                'day': days[i],
+                'sid': rolling_sid
+            }
+            rolling_sid += 1
+
+        for current_sid in data1:
+            current_data = data1[current_sid]
+            bar = BarData({current_sid: current_data})
+            self.container.update(bar, current_data['dt'])
+
+        history = self.container.get_history()
+        observed_dates = history['epex_auction'].index.tolist()
+        expected_dates = [days[1], days[2], days[4]]
+        for i in range(3):
+            self.assertEqual(observed_dates[i].date(),
+                             expected_dates[i].date())
+
+        for current_sid in data2:
+            current_data = data2[current_sid]
+            bar = BarData({current_sid: current_data})
+            self.container.update(bar, current_data['dt'])
+
+        history = self.container.get_history()
+        observed_dates = history['epex_auction'].index.tolist()
+        expected_dates = [days[2], days[3], days[4]]
+        for i in range(3):
+            self.assertEqual(observed_dates[i].date(),
+                             expected_dates[i].date())
 
 
 class TestHistoryPerSimpleMockData(TestCase):
