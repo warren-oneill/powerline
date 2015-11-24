@@ -139,7 +139,7 @@ class TestFekAlgo(TestAuctionAlgorithm):
             minutes=30))
 
     def handle_data(self, data):
-        self.prog_update(data)
+        self.prog_update(data, self.datetime)
 
 
 class FlippingAlgorithm(TradingAlgorithm):

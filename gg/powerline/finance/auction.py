@@ -20,10 +20,10 @@ class TradingAlgorithmAuction(TradingAlgorithm):
             ident = emd.insert_ident(day, product)
             self.order(self.future_symbol(ident), amounts[i])
 
-    def prog_update(self, data):
+    def prog_update(self, data, algo_dt):
         for id in data:
-            if data[id].market != 'aepp' or id not in \
-                    self.perf_tracker.position_tracker.positions.keys():
+            if data[id].dt != algo_dt or data[id].market != 'aepp' or id not \
+                    in self.perf_tracker.position_tracker.positions.keys():
                 continue
             amount = self.perf_tracker.position_tracker.positions[id].amount
             end_ts = self.trading_environment.asset_finder.\

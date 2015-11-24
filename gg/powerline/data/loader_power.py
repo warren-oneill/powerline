@@ -30,6 +30,7 @@ def load_market_data(trading_day,
     # generate constant daily returns for an annualised rate of 12%
     daily_return = pow(1.12, 1.0 / 365.0) - 1
     benchmark_returns = pd.Series(daily_return, index=trading_days)
+    # now = pd.Timestamp.utcnow()
 
     sd = 0.001
     for dt, value in benchmark_returns.iteritems():
@@ -43,6 +44,7 @@ def load_market_data(trading_day,
         bm_symbol,
         first_date,
         last_date,
+        # now,
     )
     treasury_curves = treasury_curves.reindex(trading_days, method='ffill')
 

@@ -8,6 +8,7 @@ from gg.powerline.mysql_conf import mysql_connection as connection
 __author__ = 'Warren'
 
 
+# TODO add APE and average diff between QHs
 class PrognosisPerformance(object):
     def __init__(self, open_mw):
         self.open_mw = open_mw
