@@ -74,5 +74,8 @@ class EexExchange(Exchange):
         start = pd.Timestamp(res.start).tz_localize('UTC')
         end = pd.Timestamp(res.end).tz_localize('UTC')
 
+        # TODO write unit test
+        end += pd.Timedelta(1, unit="d")
+
         store.finalize()
         return start, end
