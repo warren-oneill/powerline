@@ -35,7 +35,8 @@ class EpexExchange(Exchange):
     def asset_metadata(self):
         if self._asset_metadata is None:
             self._asset_metadata = EpexMetadata(start=self.start,
-                                                end=self.end).metadata
+                                                end=self.end,
+                                                markets=self.markets).metadata
         return self._asset_metadata
 
     @property

@@ -5,15 +5,11 @@ from zipline.utils.events import StatelessRule, _build_offset
 from gg.powerline.utils.tradingcalendar_epex import get_auctions
 from gg.powerline.assets.epex_metadata import EpexMetadata as emd
 
-from gg.database.store import Store
-from gg.powerline.mysql_conf import mysql_connection as connection
-
 from datetime import timedelta
 import pandas as pd
 
 
 class TradingAlgorithmAuction(TradingAlgorithm):
-
     @api_method
     def order_auction(self, amounts, day):
         for i, product in enumerate(self.products['hour'][str(day)]):
@@ -35,17 +31,12 @@ class TradingAlgorithmAuction(TradingAlgorithm):
                 self.prog = self.prog.append(frame)
 
     @api_method
-    def prognosis(self, sid, as_of):
-        end_ts = self.trading_environment.asset_finder.retrieve_asset(
-            sid).end_date
-        store = Store(connection(), create_new_engine=True)
-        session = store.session
-
-        prog = session.execute(
+    def prognosis(self, end_date, as_of):
+        prog = self.store.session.execute(
             'select sum(y.VAL) from '
             'PROGNOSIS_INTRADAY as y '
             'JOIN (select *, max(EVENT_TS) as dt from PROGNOSIS_INTRADAY '
-            'where BEGIN_TS = "' + str(end_ts) + '" '
+            'where BEGIN_TS = "' + str(end_date) + '" '
             'and EVENT_TS <= "' + str(as_of) + '" '
             'group by BEGIN_TS) '
             'as x on y.EVENT_TS=x.dt and y.BEGIN_TS=x.BEGIN_TS where '
@@ -53,9 +44,32 @@ class TradingAlgorithmAuction(TradingAlgorithm):
             'and y.KIND<>"OFFSHORE" '
             'group by y.BEGIN_TS'
             ).fetchall()
-        store.finalize()
 
         return float(prog[0][0])
+
+    # @api_method
+    # def prognosis(self, start, end):
+    #     store = Store(connection(), create_new_engine=True)
+    #     session = store.session
+    #
+    #     prog = session.execute(
+    #         'select y.BEGIN_TS, sum(y.VAL) from '
+    #         'PROGNOSIS_INTRADAY as y '
+    #         'JOIN (select BEGIN_TS, max(EVENT_TS) as dt from '
+    #         'PROGNOSIS_INTRADAY '
+    #         'where BEGIN_TS <= "' + str(end+timedelta(hours=1)) + '" '
+    #         'and BEGIN_TS >= "' + str(start) + '" '
+    #         'group by BEGIN_TS) '
+    #         'as x on y.BEGIN_TS=x.BEGIN_TS and y.EVENT_TS=x.dt where '
+    #         'y.KIND not like "TS%" '
+    #         'and y.KIND<>"OFFSHORE" '
+    #         'group by y.BEGIN_TS '
+    #         'order by BEGIN_TS'
+    #         ).fetchall()
+    #     store.finalize()
+    #
+    #     return pd.DataFrame(prog, columns=['dt', 'prognosis']).\
+    #         set_index('dt').astype(float)
 
 
 def auction(algo, data):

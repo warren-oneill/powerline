@@ -5,6 +5,9 @@ from gg.powerline.finance.auction import TradingAlgorithmAuction, \
     BeforeEpexAuction, auction
 from gg.messaging.json_producer import JsonProducer
 
+from gg.database.store import Store
+from gg.powerline.mysql_conf import mysql_connection as connection
+
 
 class TestAuctionAlgorithm(TradingAlgorithmAuction):
     """
@@ -28,6 +31,9 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
         self.day = day
         self.incr = 0
         self.products = products
+
+        self.prog = pd.DataFrame()
+        self.store = Store(connection(), create_new_engine=True)
 
         if sid_filter:
             self.sid_filter = sid_filter

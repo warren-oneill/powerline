@@ -1,6 +1,6 @@
 __author__ = "Warren"
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from unittest import TestCase
 import pandas as pd
 
@@ -71,11 +71,14 @@ class TestMetadataEpex(TestCase):
             day = asset.end_date.tz_convert(
                 'Europe/Berlin').date()
             dt = asset.end_date - asset.expiration_date
-            if day < date(2015, 7, 16):
-                self.assertEqual(dt.seconds / 60, 45)
+            if asset.root_symbol == 'H':
+                if day < date(2015, 7, 16):
+                    self.assertEqual(dt.seconds / 60, 45)
+                else:
+                    self.assertEqual(dt.seconds / 60, 30)
             else:
-                self.assertEqual(dt.seconds / 60, 30)
-
+                self.assertGreater(asset.expiration_date,
+                                   asset.end_date + timedelta(days=20))
             self.assertIsInstance(asset.contract_multiplier, float)
             self.assertGreater(asset.contract_multiplier, 0)
 
