@@ -13,6 +13,7 @@ from gg.powerline.test_algorithms import TestFekAlgo
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.utils.data.data_generator import DataGeneratorEpex
 from gg.powerline.prognosis.prog_performance import PrognosisPerformance
+# TODO reduce copied code -> add to setUp
 
 
 class TestFek(TestCase):
@@ -73,9 +74,9 @@ class TestFek(TestCase):
         cls.results = cls.algo.run(cls.data)
         cls.perf = PrognosisPerformance(cls.algo.prog)
 
-        cls.expected_generation = np.array([103.53, 107.89, 108.19, 107.69])
-        cls.expected_prog_intraday = np.array([109.325, 107.075, 103.225,
-                                               104.4])
+        cls.expected_generation = 4*np.array([103.53, 107.89, 108.19, 107.69])
+        cls.expected_prog_intraday = 4*np.array([109.325, 107.075, 103.225,
+                                                 104.4])
 
     def test_prog(self):
         for amount in self.algo.prog.values:
@@ -90,7 +91,7 @@ class TestFek(TestCase):
         for i, amount in enumerate(self.expected_generation):
             self.assertAlmostEqual(amount,
                                    self.perf.generation.values[i][0],
-                                   places=0)
+                                   delta=2)
 
         for i, amount in enumerate(self.expected_prog_intraday):
             self.assertEqual(amount, self.perf.prognosis_intraday.values[i][0])
@@ -118,6 +119,27 @@ class TestFek(TestCase):
         test_df = pd.DataFrame(test_data, index=self.perf.index, columns=[
             'mw'])
         self.assertEqual(expected_rmse, self.perf.rmse(test_df))
+
+    def test_ape(self):
+        test_data = np.array([1, 2, 3, 4]) + np.array(
+            self.perf.prognosis_intraday).transpose()[0]
+        generation = np.array(self.perf.generation).transpose()[0]
+
+        expected_ape = np.sum(np.abs(generation - test_data))/(
+            np.sum(np.abs(generation)))
+
+        test_df = pd.DataFrame(test_data, index=self.perf.index, columns=[
+            'mw'])
+        self.assertEqual(expected_ape, self.perf.ape(test_df))
+
+    def test_mean_ramp(self):
+        test_data = np.array([1, 2, 3, 4]) + np.array(
+            self.perf.prognosis_intraday).transpose()[0]
+        expected_mean_ramp = np.mean(np.abs(test_data[0:3] - test_data[1:4]))
+
+        test_df = pd.DataFrame(test_data, index=self.perf.index, columns=[
+            'mw'])
+        self.assertEqual(expected_mean_ramp, self.perf.mean_ramp(test_df))
 
     def test_report(self):
         self.perf.display_report()

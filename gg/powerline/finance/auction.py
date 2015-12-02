@@ -45,7 +45,7 @@ class TradingAlgorithmAuction(TradingAlgorithm):
             'group by y.BEGIN_TS'
             ).fetchall()
 
-        return float(prog[0][0])/4
+        return float(prog[0][0])
 
 
 def auction(algo, data):

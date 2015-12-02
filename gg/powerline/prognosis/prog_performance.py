@@ -8,7 +8,6 @@ from gg.powerline.mysql_conf import mysql_connection as connection
 __author__ = 'Warren'
 
 
-# TODO add APE and average diff between QHs
 class PrognosisPerformance(object):
     def __init__(self, open_mw):
         self.open_mw = open_mw
@@ -27,6 +26,14 @@ class PrognosisPerformance(object):
         self._prognosis_intraday = None
         self._strategy_abs_error = None
 
+    def ape(self, df):
+        """
+        :param df:
+        :return:absolute percentage error
+        """
+        return (self.generation - df).abs().sum().divide(self.generation.abs(
+        ).sum()).values[0]
+
     def mape(self, df):
         """
         :param df:
@@ -37,6 +44,9 @@ class PrognosisPerformance(object):
 
     def rmse(self, df):
         return np.sqrt(((self.generation - df)**2).mean()).values[0]
+
+    def mean_ramp(self, df):
+        return (df - df.shift(1)).abs().mean().values[0]
 
     @property
     def generation(self):
@@ -50,7 +60,7 @@ class PrognosisPerformance(object):
             ).fetchall()
 
         return pd.DataFrame(self._generation, columns=['dt', 'mw']).\
-            set_index('dt').tz_localize('UTC').astype(float)/4
+            set_index('dt').tz_localize('UTC').astype(float)
 
     @property
     def prognosis_intraday(self):
@@ -72,7 +82,7 @@ class PrognosisPerformance(object):
                 ).fetchall()
             self._prognosis_intraday = pd.DataFrame(
                 self._prognosis_intraday, columns=['dt', 'mw']).\
-                set_index('dt').tz_localize('UTC').astype(float)/4
+                set_index('dt').tz_localize('UTC').astype(float)
 
         return self._prognosis_intraday
 
@@ -83,9 +93,16 @@ class PrognosisPerformance(object):
         table = [
                 ["Current RMSE", self.rmse(self.prognosis_intraday)],
                 ["Current MAPE (%)", self.mape(self.prognosis_intraday)*100],
+                ["Current APE (%)", self.ape(self.prognosis_intraday)*100],
+                ["Current Mean Ramps", self.mean_ramp(
+                    self.prognosis_intraday)],
                 ["New RMSE", self.rmse(self.prognosis_intraday+self.open_mw)],
                 ["New MAPE (%)", self.mape(
-                    self.prognosis_intraday+self.open_mw)*100]]
+                    self.prognosis_intraday+self.open_mw)*100],
+                ["New APE (%)", self.ape(
+                    self.prognosis_intraday+self.open_mw)*100],
+                ["New Mean Ramps", self.mean_ramp(
+                    self.prognosis_intraday+self.open_mw)]]
         headers = ["Prognosis Report", self.period]
         print(tabulate(table, headers, tablefmt="fancy_grid",
                        numalign="right"))
