@@ -23,8 +23,16 @@ class EexExchange(Exchange):
     @property
     def source(self):
         if self._source is None:
-            self._source = EexSource(start=self.start, end=self.end,
-                                     env=self.env, products=self.products)
+            if self._type == "input":
+                from gg.powerline.sources.eex_source_with_input \
+                    import EexSourceWithInput
+                self._source = EexSourceWithInput(
+                    start=self.start, end=self.end, env=self.env,
+                    products=self.products)
+            else:
+                self._source = EexSource(
+                    start=self.start, end=self.end, env=self.env,
+                    products=self.products)
         return self._source
 
     @property
