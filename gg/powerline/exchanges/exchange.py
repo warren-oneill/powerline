@@ -1,9 +1,10 @@
-__author__ = "Warren"
-
 from abc import ABCMeta, abstractproperty, abstractmethod
 
 from zipline.finance.trading import TradingEnvironment
 from gg.powerline.data.loader_power import load_market_data
+
+
+__author__ = "Warren, Stefan"
 
 
 class Exchange(object, metaclass=ABCMeta):
@@ -17,15 +18,14 @@ class Exchange(object, metaclass=ABCMeta):
         self._calendar = None
         self._asset_metadata = None
         self._source = None
+        self._type = kwargs.get("type", None)
         self._env = None
-        self._products = kwargs.get('products', None)
+        self._products = kwargs.get("products", None)
         self.source_start, self.source_end = self.insert_start_end()
-        self.start = kwargs.get('start', self.source_start)
+        self.start = kwargs.get("start", self.source_start)
         self.start = max(self.start, self.source_start)
-
-        self.end = kwargs.get('end', self.source_end)
+        self.end = kwargs.get("end", self.source_end)
         self.end = min(self.end, self.source_end)
-
         self.exchange_tz = "Europe/Berlin"
         self.load = load_market_data
 
@@ -35,10 +35,11 @@ class Exchange(object, metaclass=ABCMeta):
         passing relevant exchange objects to the environment
         """
         if self._env is None:
-            self._env = TradingEnvironment(bm_symbol=self.benchmark,
-                                           exchange_tz=self.exchange_tz,
-                                           env_trading_calendar=self.calendar,
-                                           load=self.load)
+            self._env = TradingEnvironment(
+                bm_symbol=self.benchmark,
+                exchange_tz=self.exchange_tz,
+                env_trading_calendar=self.calendar,
+                load=self.load)
         return self._env
 
     @abstractproperty
