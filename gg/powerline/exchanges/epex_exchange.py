@@ -85,7 +85,7 @@ class EpexExchange(Exchange):
                 self._products['qh'].update({str(day):
                                              products.split(sep=',')})
 
-            store.finalize()
+            session.close()
         return self._products
 
     def insert_start_end(self):
@@ -105,6 +105,6 @@ class EpexExchange(Exchange):
         start_rebap = pd.Timestamp(res.start).tz_localize('UTC')
         end_rebap = pd.Timestamp(res.end).tz_localize('UTC')
 
-        store.finalize()
+        session.close()
 
         return max(start_auction, start_rebap), min(end_auction, end_rebap)

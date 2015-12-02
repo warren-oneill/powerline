@@ -77,5 +77,5 @@ class EexExchange(Exchange):
         # TODO write unit test
         end += pd.Timedelta(1, unit="d")
 
-        store.finalize()
+        session.close()
         return start, end
