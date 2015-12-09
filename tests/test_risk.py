@@ -66,13 +66,16 @@ class TestRiskReport(TestCase):
         # by zipline
         returns_period = pd.Series(np.zeros(7))
         max_drawdown = pd.Series(np.zeros(7))
+        benchmark = pd.Series(np.zeros(7))
         sortino = pd.Series(np.zeros(7))
         sharpe = pd.Series(np.zeros(7))
         information = pd.Series(np.zeros(7))
 
-        return pd.DataFrame({'returns': returns, 'pnl': pnl,
+        return pd.DataFrame({'returns': returns,
+                             'pnl': pnl,
                              'algorithm_period_return': returns_period,
                              'max_drawdown': max_drawdown,
+                             'benchmark_period_return': benchmark,
                              'sortino': sortino,
                              'sharpe': sharpe,
                              'information': information}).set_index(period)
