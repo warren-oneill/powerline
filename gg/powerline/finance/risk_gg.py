@@ -26,7 +26,7 @@ class RiskReport(object):
         self.max_drawdown_duration = pd.Timestamp(0)
 
         self.benchmark = perf.benchmark_period_return
-        self.benchmark_profit = perf.benchmark_period_return[-1]
+        self.benchmark_returns = perf.benchmark_period_return[-1]
 
         start = perf.index[0].strftime('%Y-%m-%d')
         end = perf.index[-1].strftime('%Y-%m-%d')
@@ -62,6 +62,7 @@ class RiskReport(object):
         Variance-Covariance calculation of daily Value-at-Risk based on a
         normal distribution model with mean of returns mu and standard
         deviation of returns sigma, on a portfolio of value P.
+        see page 9: https://people.math.ethz.ch/~embrecht/ftp/LongTermRisk.pdf
 
         :param c: confidence level of the calculation
         :param n: length of the considered time period (multiple of the base
@@ -72,10 +73,9 @@ class RiskReport(object):
         sigma = self.returns.std()
         P = self.profit
 
-        alpha = norm.ppf(1 - c, mu, sigma)
-        sqrt_n = np.sqrt(n)
+        alpha = norm.ppf(1 - c, n*mu, np.sqrt(n)*sigma)
 
-        return - sqrt_n * P * alpha - (n - sqrt_n) * mu
+        return - P * alpha
 
     def calculate_win_loss(self):
         """
@@ -107,7 +107,8 @@ class RiskReport(object):
                 ["VaR 99 (€)", self.var_99],
                 ["VaR 95 (€), 5 days", self.five_day_var_95],
                 ["VaR 99 (€), 5 days", self.five_day_var_99],
-                ["Win Loss Ratio", self.win_loss]]
+                ["Win Loss Ratio", self.win_loss],
+                ["Total Benchmark return", self.benchmark_returns]]
         headers = ["Risk Report", self.period]
 
         pd.concat([self.returns.cumsum(), self.benchmark], axis=1).plot()

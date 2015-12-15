@@ -13,6 +13,7 @@ bin
 .idea
 .coverage
 *.pyc
+.ipynb_checkpoints
 
 # Packages
 powerline/bin
