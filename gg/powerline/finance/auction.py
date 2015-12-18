@@ -7,14 +7,16 @@ from gg.powerline.assets.epex_metadata import EpexMetadata as emd
 
 from datetime import timedelta
 import pandas as pd
+import numpy as np
 
 
 class TradingAlgorithmAuction(TradingAlgorithm):
     @api_method
     def order_auction(self, amounts, day):
+        amounts = np.concatenate((amounts, [0]))
         for i, product in enumerate(self.products['hour'][str(day)]):
             ident = emd.insert_ident(day, product)
-            self.order(self.future_symbol(ident), amounts[i])
+            self.order_target(self.future_symbol(ident), amounts[i])
 
     def prog_update(self, data, algo_dt):
         for id in data:
