@@ -91,7 +91,7 @@ class RiskReport(object):
         drawdown_table = gen_drawdown_table(self.returns,
                                             top=number_drawdowns_for_longest)
         if pd.isnull(drawdown_table['duration']).any():
-            last_peak = np.argmax(self.returns.cumsum()).tz_localize('UTC')
+            last_peak = np.argmax(self.returns.cumsum()).tz_convert('UTC')
             final_drawdown_duration = len(pd.date_range(last_peak, self.end_dt,
                                                         freq='B'))
             longest_drawdown_duration = max(final_drawdown_duration,
@@ -125,10 +125,10 @@ class RiskReport(object):
                 ["Total Benchmark Profit (€)", self.benchmark_profits]]
         headers = ["Risk Report", self.period]
 
-        print("* : " +
-              "Among the top %d drawdowns." % number_drawdowns_for_longest)
-
         pd.concat([self.returns.cumsum(), self.benchmark], axis=1).plot()
 
         print(tabulate(table, headers, tablefmt="fancy_grid",
                        numalign="right"))
+
+        print("* : " +
+              "Among the top %d drawdowns." % number_drawdowns_for_longest)

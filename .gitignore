@@ -21,5 +21,6 @@ powerline/lib
 
 # local settings
 mysql_conf.py
+.env
 
 report.txt
