@@ -15,6 +15,7 @@ from gg.powerline.test_algorithms import TestEpexMessagingAlgorithm
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.utils.data.data_generator import DataGeneratorEpex
 from gg.messaging.json_consumer import JsonConsumer
+from gg.powerline.finance.auction import auction
 
 
 class TestMessanger(TestCase):
@@ -59,7 +60,8 @@ class TestMessanger(TestCase):
         self.algo = TestEpexMessagingAlgorithm(
             env=env, sid=sid, amount=amounts, order_count=1,
             instant_fill=False, sim_params=sim_params, commission=PerShare(0),
-            data_frequency='minute', day=expiration_date, products=products
+            data_frequency='minute', day=expiration_date, products=products,
+            auction=auction
         )
 
         self.consumer = JsonConsumer()

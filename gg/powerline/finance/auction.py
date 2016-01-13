@@ -11,8 +11,17 @@ import numpy as np
 
 
 class TradingAlgorithmAuction(TradingAlgorithm):
+    def __init__(self, *args, **kwargs):
+        if kwargs.get('auction'):
+            self.auction = kwargs.pop('auction')
+        else:
+            raise ValueError('You must define an auction function.')
+
+        super().__init__(*args, **kwargs)
+
     @api_method
-    def order_auction(self, amounts, day):
+    def order_auction(self, amounts):
+        day = self.get_datetime().date() + timedelta(days=1)
         amounts = np.concatenate((amounts, [0]))
         for i, product in enumerate(self.products['hour'][str(day)]):
             ident = emd.insert_ident(day, product)
@@ -51,13 +60,8 @@ class TradingAlgorithmAuction(TradingAlgorithm):
 
 
 def auction(algo, data):
-    """
-    Calculates the current day and then places an auction order for the
-    following day.
-    """
-    day = algo.get_datetime().date() + timedelta(days=1)
 
-    algo.order_auction(day=day, amounts=algo.amount)
+    algo.order_auction(amounts=algo.amount)
 
 
 class BeforeEpexAuction(StatelessRule):

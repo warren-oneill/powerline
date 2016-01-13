@@ -91,7 +91,10 @@ class RiskReport(object):
         drawdown_table = gen_drawdown_table(self.returns,
                                             top=number_drawdowns_for_longest)
         if pd.isnull(drawdown_table['duration']).any():
-            last_peak = np.argmax(self.returns.cumsum()).tz_convert('UTC')
+            last_peak = np.argmax(self.returns.cumsum())
+            if last_peak.tz is None:
+                last_peak = last_peak.tz_localize('UTC')
+
             final_drawdown_duration = len(pd.date_range(last_peak, self.end_dt,
                                                         freq='B'))
             longest_drawdown_duration = max(final_drawdown_duration,

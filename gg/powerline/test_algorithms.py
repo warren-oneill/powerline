@@ -1,8 +1,7 @@
-from datetime import timedelta
 import pandas as pd
 from zipline.algorithm import TradingAlgorithm
 from gg.powerline.finance.auction import TradingAlgorithmAuction, \
-    BeforeEpexAuction, auction
+    BeforeEpexAuction
 from gg.messaging.json_producer import JsonProducer
 
 from gg.database.store import Store
@@ -46,7 +45,7 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
         if commission is not None:
             self.set_commission(commission)
 
-        self.schedule_function(func=auction, time_rule=BeforeEpexAuction(
+        self.schedule_function(func=self.auction, time_rule=BeforeEpexAuction(
             minutes=30))
 
     def handle_data(self, data):
@@ -88,7 +87,7 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
         if commission is not None:
             self.set_commission(commission)
 
-        self.schedule_function(func=auction_message,
+        self.schedule_function(func=self.auction,
                                time_rule=BeforeEpexAuction(minutes=30))
 
         self.producer = JsonProducer()
@@ -101,14 +100,9 @@ class TestEpexMessagingAlgorithm(TradingAlgorithmAuction):
                                'progress': self.perf_tracker.progress})
 
 
-def auction_message(algo, data):
-    """
-    Calculates the current day and then places an auction order for the
-    following day.
-    """
-    day = algo.get_datetime().date() + timedelta(days=1)
-    algo.order_auction(day=day, amounts=algo.amount)
-    algo.incr += 1
+def auction_message(self, data):
+    self.order_auction(amounts=self.amount)
+    self.incr += 1
 
 
 class TestFekAlgo(TestAuctionAlgorithm):
@@ -141,11 +135,14 @@ class TestFekAlgo(TestAuctionAlgorithm):
         if commission is not None:
             self.set_commission(commission)
 
-        self.schedule_function(func=auction, time_rule=BeforeEpexAuction(
+        self.schedule_function(func=self.auction, time_rule=BeforeEpexAuction(
             minutes=30))
 
     def handle_data(self, data):
         self.prog_update(data, self.datetime)
+
+    def auction(self, data):
+        self.order_auction(amounts=self.amount)
 
 
 class FlippingAlgorithm(TradingAlgorithm):

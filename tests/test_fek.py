@@ -13,6 +13,7 @@ from gg.powerline.test_algorithms import TestFekAlgo
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 from gg.powerline.utils.data.data_generator import DataGeneratorEpex
 from gg.powerline.prognosis.prog_performance import PrognosisPerformance
+from gg.powerline.finance.auction import auction
 # TODO reduce copied code -> add to setUp
 
 
@@ -69,7 +70,8 @@ class TestFek(TestCase):
         cls.algo = TestFekAlgo(
             env=env, sid=sid, amount=amounts, order_count=1,
             instant_fill=False, sim_params=sim_params, commission=PerShare(0),
-            data_frequency='minute', day=expiration_date, products=products)
+            data_frequency='minute', day=expiration_date, products=products,
+            auction=auction)
 
         cls.results = cls.algo.run(cls.data)
         cls.perf = PrognosisPerformance(cls.algo.prog)
