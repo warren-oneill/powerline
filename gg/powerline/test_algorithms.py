@@ -20,7 +20,6 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
                    amount,
                    order_count,
                    day,
-                   products,
                    sid_filter=None,
                    slippage=None,
                    commission=None):
@@ -29,7 +28,6 @@ class TestAuctionAlgorithm(TradingAlgorithmAuction):
         self.amount = amount
         self.day = day
         self.incr = 0
-        self.products = products
 
         self.prog = pd.DataFrame()
         self.store = Store(connection(), create_new_engine=True)
