@@ -20,7 +20,7 @@ class EpexExchange(Exchange):
     """
     Implementing abstractproperties for the EPEX exchange
     """
-    def __init__(self, markets=['DA', 'ID', 'CASCADE'], **kwargs):
+    def __init__(self, markets=['H', 'QH'], **kwargs):
         super().__init__(**kwargs)
         self.markets = markets
 

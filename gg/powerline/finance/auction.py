@@ -77,7 +77,7 @@ class BeforeEpexAuction(StatelessRule):
         self.offset = _build_offset(
             offset,
             kwargs,
-            timedelta(minutes=30),  # Defaults to the first minute.
+            timedelta(minutes=60),  # Defaults to the first minute.
         )
         self._dt = None
 
