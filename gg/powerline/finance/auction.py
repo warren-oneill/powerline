@@ -3,7 +3,6 @@ from zipline.utils.api_support import api_method
 from zipline.utils.events import StatelessRule, _build_offset
 
 from gg.powerline.utils.tradingcalendar_epex import get_auctions
-from gg.powerline.assets.epex_metadata import EpexMetadata as emd
 from gg.powerline.exchanges.epex_exchange import EpexExchange
 
 from datetime import timedelta
@@ -17,15 +16,16 @@ class TradingAlgorithmAuction(TradingAlgorithm):
             self.auction = kwargs.pop('auction')
         else:
             raise ValueError('You must define an auction function.')
-        self.products = EpexExchange().products
+        self.exchange = EpexExchange()
+        self.products = self.exchange.products
         super().__init__(*args, **kwargs)
 
     @api_method
     def order_auction(self, amounts):
         day = self.get_datetime().date() + timedelta(days=1)
         amounts = np.concatenate((amounts, [0]))
-        for i, product in enumerate(self.products['hour'][str(day)]):
-            ident = emd.insert_ident(day, product)
+        for i, product in enumerate(self.products['hour']):
+            ident = self.exchange.insert_ident(day, product)
             self.order_target(self.future_symbol(ident), amounts[i])
 
     def prog_update(self, data, algo_dt):

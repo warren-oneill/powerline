@@ -25,6 +25,7 @@ class TestEexAlgoTrue(TestCase):
         exchange = EexExchange(start=start, end=end, products=products)
 
         env = exchange.env
+        # TODO: create metadata manually here
         env.write_data(futures_data=exchange.asset_metadata)
 
         sid = 0

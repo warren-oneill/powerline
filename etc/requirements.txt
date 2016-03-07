@@ -1,15 +1,15 @@
 # zipline
-numpy
-pandas
-Cython
-matplotlib
-contextlib2==0.4.0
+# numpy
+# pandas
+# Cython
+# matplotlib
+# contextlib2==0.4.0
 
 # powerline
-scipy
-sqlalchemy
-mysql-connector-python
-sqlacodegen
+# scipy
+# sqlalchemy
+# mysql-connector-python
+# sqlacodegen
 tabulate
 
 # development
