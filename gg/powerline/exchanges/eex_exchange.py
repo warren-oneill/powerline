@@ -2,16 +2,6 @@ __author__ = "Warren"
 
 from gg.powerline.utils import tradingcalendar_eex
 from gg.powerline.exchanges.exchange import Exchange
-from gg.powerline.sources.eex_source import EexSource
-from gg.powerline.assets.eex_metadata import EexMetadata
-
-from sqlalchemy import func
-import pandas as pd
-
-from gg.database.db_views import POWER_FUTURE as PF
-
-from gg.database.store import Store
-from gg.powerline.mysql_conf import mysql_connection as connection
 
 from zipline.finance.commission import PerShare
 
@@ -20,27 +10,6 @@ class EexExchange(Exchange):
     """
     Implementing abstractproperties for the EEX exchange
     """
-    @property
-    def source(self):
-        if self._source is None:
-            if self._type == "input":
-                from gg.powerline.sources.eex_source_with_input \
-                    import EexSourceWithInput
-                self._source = EexSourceWithInput(
-                    start=self.start, end=self.end, env=self.env,
-                    products=self.products)
-            else:
-                self._source = EexSource(
-                    start=self.start, end=self.end, env=self.env,
-                    products=self.products)
-        return self._source
-
-    @property
-    def asset_metadata(self):
-        if self._asset_metadata is None:
-            self._asset_metadata = EexMetadata(self.start, self.end,
-                                               self.products).metadata
-        return self._asset_metadata
 
     @property
     def benchmark(self):
@@ -63,27 +32,6 @@ class EexExchange(Exchange):
     @property
     def products(self):
         if self._products is None:
-            store = Store(connection(), create_new_engine=True)
-            session = store.session
-            self._products = []
-            for product in session.execute('select distinct TRADINGPRODUCT '
-                                           'from POWER_FUTURE').fetchall():
-                self._products.append(product[0])
+            self._products = ['F1B1', 'F1B2', 'F1B3', 'F1B4', 'F1B5']
 
         return self._products
-
-    def insert_start_end(self):
-        store = Store(connection(), create_new_engine=True)
-        session = store.session
-        qry = session.query(func.min(PF.EVENT_TS).label(
-            'start'), func.max(PF.EVENT_TS).label('end'))
-        res = qry.one()
-
-        start = pd.Timestamp(res.start).tz_localize('UTC')
-        end = pd.Timestamp(res.end).tz_localize('UTC')
-
-        # TODO write unit test
-        end += pd.Timedelta(1, unit="d")
-
-        session.close()
-        return start, end

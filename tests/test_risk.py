@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import pytz
 
-from gg.powerline.finance.risk_gg import RiskReport
+from gg.powerline.finance.risk import RiskReport
 from zipline.utils.factory import create_simulation_parameters
 
 
