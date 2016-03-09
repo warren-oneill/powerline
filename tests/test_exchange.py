@@ -1,14 +1,13 @@
-__author__ = 'Warren'
-
-from gg.powerline.exchanges.eex_exchange import EexExchange
-from gg.powerline.exchanges.epex_exchange import EpexExchange
+from unittest import TestCase
 
 from zipline.finance.commission import PerShare
 from zipline.finance.trading import TradingEnvironment
-
 import pandas as pd
 
-from unittest import TestCase
+from powerline.exchanges.eex_exchange import EexExchange
+from powerline.exchanges.epex_exchange import EpexExchange
+
+__author__ = 'Warren'
 
 
 # TODO add products test

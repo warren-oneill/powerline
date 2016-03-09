@@ -1,9 +1,9 @@
-__author__ = "Warren"
-
-from gg.powerline.utils import tradingcalendar_eex
-from gg.powerline.exchanges.exchange import Exchange
-
 from zipline.finance.commission import PerShare
+
+from powerline.utils import tradingcalendar_eex
+from powerline.exchanges.exchange import Exchange
+
+__author__ = "Warren"
 
 
 class EexExchange(Exchange):

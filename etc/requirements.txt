@@ -1,15 +1,4 @@
-# zipline
-# numpy
-# pandas
-# Cython
-# matplotlib
-# contextlib2==0.4.0
-
 # powerline
-# scipy
-# sqlalchemy
-# mysql-connector-python
-# sqlacodegen
 tabulate
 
 # development
@@ -19,11 +8,9 @@ flake8
 coverage
 nose-ignore-docstring
 
-# messaging
--e git://github.com/renshawbay/pika-python3.git#egg=pika3
-
 # zipline branch
 -e git://github.com/grundgruen/zipline.git@gg-zip#egg=zipline
 
 # strategy development
+sklearn
 -e git://github.com/quantopian/pyfolio.git#egg=pyfolio

@@ -1,13 +1,14 @@
 from unittest import TestCase
+
 import pandas as pd
 from zipline.finance import trading
 from zipline.utils.factory import create_simulation_parameters
 from zipline.test_algorithms import TestAlgorithm
 from zipline.finance.commission import PerShare
 from zipline.finance.slippage import FixedSlippage
-from gg.powerline.utils.data.data_generator import DataGeneratorEex
-from gg.powerline.exchanges.eex_exchange import EexExchange
 
+from powerline.utils.data.data_generator import DataGeneratorEex
+from powerline.exchanges.eex_exchange import EexExchange
 
 __author__ = "Warren"
 
@@ -24,15 +25,14 @@ class TestEexAlgoTrue(TestCase):
         exchange = EexExchange(start=start, end=end)
 
         env = exchange.env
-        # TODO: create metadata manually here
         day = '2015-05-20'
         ident = exchange.insert_ident(day, exchange.products[0])
         expiration_date = pd.Timestamp(day,
                                        tz='Europe/Berlin').tz_convert('UTC')
         asset_metadata = {0: {
-                'asset_type': 'future', 'symbol': ident,
-                'expiration_date': expiration_date, 'contract_multiplier': 168,
-                'end_date': expiration_date}}
+            'asset_type': 'future', 'symbol': ident,
+            'expiration_date': expiration_date, 'contract_multiplier': 168,
+            'end_date': expiration_date}}
         env.write_data(futures_data=asset_metadata)
 
         instant_fill = True
@@ -92,9 +92,9 @@ class TestEexAlgoFalse(TestCase):
         expiration_date = pd.Timestamp(day,
                                        tz='Europe/Berlin').tz_convert('UTC')
         asset_metadata = {0: {
-                'asset_type': 'future', 'symbol': ident,
-                'expiration_date': expiration_date, 'contract_multiplier': 168,
-                'end_date': expiration_date}}
+            'asset_type': 'future', 'symbol': ident,
+            'expiration_date': expiration_date, 'contract_multiplier': 168,
+            'end_date': expiration_date}}
         env.write_data(futures_data=asset_metadata)
 
         instant_fill = False

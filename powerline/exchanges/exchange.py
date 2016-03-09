@@ -1,7 +1,8 @@
-from abc import ABCMeta, abstractproperty, abstractmethod
+from abc import ABCMeta, abstractproperty
 
 from zipline.finance.trading import TradingEnvironment
-from gg.powerline.data.loader_power import load_market_data
+
+from powerline.data.loader_power import load_market_data
 
 
 __author__ = "Warren, Stefan"

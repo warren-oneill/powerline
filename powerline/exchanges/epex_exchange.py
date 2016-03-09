@@ -1,11 +1,9 @@
-__author__ = "Warren"
-
-from gg.powerline.utils import tradingcalendar_epex
-from gg.powerline.exchanges.exchange import Exchange
-
 from zipline.finance.commission import PerShare
 
-import pandas as pd
+from powerline.utils import tradingcalendar_epex
+from powerline.exchanges.exchange import Exchange
+
+__author__ = "Warren"
 
 
 class EpexExchange(Exchange):
@@ -34,8 +32,13 @@ class EpexExchange(Exchange):
     def products(self):
         if self._products is None:
             self._products = {'hour': {}, 'qh': {}}
-            self._products['hour'] = ["%(a)02d-%(b)02d" % {'a': i, 'b': i+1}
-                               for i in range(24)]
-            self._products['qh'] = [str(j).zfill(2) + "Q"+str(i) for i in range(1, 5) for j in range(24)]
+            self._products['hour'] = ["%(a)02d-%(b)02d" % {'a': i, 'b': i + 1}
+                                      for i in range(24)]
+            self._products['qh'] = [
+                str(j).zfill(2) +
+                "Q" +
+                str(i) for j in range(24) for i in range(
+                    1,
+                    5)]
 
         return self._products

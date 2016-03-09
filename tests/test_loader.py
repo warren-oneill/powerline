@@ -1,13 +1,12 @@
-__author__ = "Warren"
-
 from unittest import TestCase
-
 import os
 
-from gg.powerline.data.loader_power import load_market_data
-from gg.powerline.utils.tradingcalendar_eex import trading_day, trading_days
-
 from zipline.data.loader import get_data_filepath, INDEX_MAPPING
+
+from powerline.data.loader_power import load_market_data
+from powerline.utils.tradingcalendar_eex import trading_day, trading_days
+
+__author__ = "Warren"
 
 
 class TestLoader(TestCase):

@@ -1,13 +1,13 @@
-__author__ = "Warren"
-
 from unittest import TestCase
-from datetime import timedelta, datetime
-from nose.tools import nottest
+from datetime import datetime
+
 import pandas as pd
 
-from gg.powerline.utils import tradingcalendar_epex, tradingcalendar_eex
-from gg.powerline.exchanges.eex_exchange import EexExchange
-from gg.powerline.exchanges.epex_exchange import EpexExchange
+from powerline.utils import tradingcalendar_epex, tradingcalendar_eex
+from powerline.exchanges.eex_exchange import EexExchange
+from powerline.exchanges.epex_exchange import EpexExchange
+
+__author__ = "Warren"
 
 
 # TODO not being tested properly

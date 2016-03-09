@@ -1,14 +1,14 @@
-__author__ = "Warren"
-
 from unittest import TestCase
 import datetime
 
 import pandas as pd
 import numpy as np
 import pytz
-
-from gg.powerline.finance.risk import RiskReport
 from zipline.utils.factory import create_simulation_parameters
+
+from powerline.finance.risk import RiskReport
+
+__author__ = "Warren, Max"
 
 
 class TestRiskReport(TestCase):
