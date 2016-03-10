@@ -1,9 +1,9 @@
-__author__ = 'dev'
-
 import pandas as pd
 from dateutil import rrule
 
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
+
+__author__ = 'Warren'
 
 
 start = pd.Timestamp('2013-01-01', tz='UTC')

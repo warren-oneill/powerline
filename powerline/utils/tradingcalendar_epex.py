@@ -1,5 +1,3 @@
-__author__ = "Warren"
-
 """
 Defines trading days and trading times for the EPEX market.
 """
@@ -9,6 +7,8 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
+
+__author__ = "Warren"
 
 canonicalize_datetime = canonicalize_datetime
 

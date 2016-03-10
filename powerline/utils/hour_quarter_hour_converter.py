@@ -4,7 +4,7 @@ from itertools import product
 
 __author__ = 'max'
 
-hourly_products = ['%02d-%02d' % (i, i+1) for i in range(24)]
+hourly_products = ['%02d-%02d' % (i, i + 1) for i in range(24)]
 quarter_tags = ['Q%d' % i for i in range(1, 5)]
 quarterly_products = ['%02d%s' % (i, tag)
                       for (i, tag) in product(range(24), quarter_tags)]
@@ -24,7 +24,7 @@ def convert_between_h_and_qh(source_frame):
     elif source_frame.columns.shape[0] == 96:
         data = np.array(source_frame)
         mean_data = np.mean(np.array([data[:, ::4], data[:, 1::4],
-                            data[:, 2::4], data[:, 3::4]]), axis=0)
+                                      data[:, 2::4], data[:, 3::4]]), axis=0)
         result_frame = pd.DataFrame(mean_data, index=source_frame.index,
                                     columns=hourly_products)
     else:

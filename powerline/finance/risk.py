@@ -1,5 +1,3 @@
-__author__ = "Warren"
-
 from scipy.stats import norm
 import numpy as np
 from tabulate import tabulate
@@ -7,6 +5,8 @@ import pandas as pd
 from pyfolio.timeseries import gen_drawdown_table
 
 number_drawdowns_for_longest = 20
+
+__author__ = "Warren, Max"
 
 
 class RiskReport(object):
@@ -73,7 +73,7 @@ class RiskReport(object):
         sigma = self.returns.std()
         P = self.profit
 
-        alpha = norm.ppf(1 - c, n*mu, np.sqrt(n)*sigma)
+        alpha = norm.ppf(1 - c, n * mu, np.sqrt(n) * sigma)
 
         return - P * alpha
 
@@ -112,13 +112,13 @@ class RiskReport(object):
                 ["PnL (€)", self.profit],
                 ["PnL Tag Max (€)", self.pnl_max],
                 ["PnL Tag Min (€)", self.pnl_min],
-                ["Returns (%)", self.returns_period*100],
-                ["Returns Day Max (%)", self.returns_max*100],
-                ["Returns Day Min (%)", self.returns_min*100],
+                ["Returns (%)", self.returns_period * 100],
+                ["Returns Day Max (%)", self.returns_max * 100],
+                ["Returns Day Min (%)", self.returns_min * 100],
                 ["Sortino", self.sortino],
                 ["Sharpe", self.sharpe],
                 ["Information", self.information],
-                ["Max Drawdown (%)", self.max_drawdown*100],
+                ["Max Drawdown (%)", self.max_drawdown * 100],
                 ["Longest Drawdown Duration*", self.longest_drawdown_duration],
                 ["VaR 95 (€)", self.var_95],
                 ["VaR 99 (€)", self.var_99],

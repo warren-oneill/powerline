@@ -1,10 +1,11 @@
-__author__ = "Warren"
-
 import pandas as pd
 from math import pow
 import numpy as np
 
 from zipline.data.loader import ensure_treasury_data
+
+__author__ = "Warren"
+
 
 INDEX_MAPPING = {
     '^GSPC':

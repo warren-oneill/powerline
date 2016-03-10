@@ -1,20 +1,20 @@
-__author__ = "Warren"
-
 """
 Defines trading days and trading times for the EEX weekly futures market.
 """
 
-import pandas as pd
-
 from datetime import datetime
-from dateutil import rrule
 
+import pandas as pd
+from dateutil import rrule
 from zipline.utils.tradingcalendar import end, canonicalize_datetime
 
-from gg.powerline.utils.global_calendar import (
+from powerline.utils.global_calendar import (
     boxing_day, ch_himm, christmas, christmas_eve, easter_monday, may_bank,
     new_year, newyears_eve, pfinst_mon_13, pfinst_mon_15, tde, weekends
 )
+
+__author__ = "Warren"
+
 
 start = pd.Timestamp('2010-12-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')
@@ -62,9 +62,10 @@ def get_non_trading_days(start, end):
     non_trading_ruleset = rrule.rruleset()
     for rule in non_trading_rules:
         non_trading_ruleset.rrule(rule)
-    non_trading_days = non_trading_ruleset.between(start, end, inc=True)
+    non_trading_days = sorted(
+        non_trading_ruleset.between(
+            start, end, inc=True))
 
-    non_trading_days.sort()
     return pd.DatetimeIndex(non_trading_days)
 
 non_trading_days = get_non_trading_days(start, end)

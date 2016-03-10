@@ -1,16 +1,13 @@
-__author__ = 'Warren'
-
-from gg.powerline.exchanges.eex_exchange import EexExchange
-from gg.powerline.exchanges.epex_exchange import EpexExchange
-from gg.powerline.sources.eex_source import EexSource
-from gg.powerline.sources.epex_source import EpexSource
+from unittest import TestCase
 
 from zipline.finance.commission import PerShare
 from zipline.finance.trading import TradingEnvironment
-
 import pandas as pd
 
-from unittest import TestCase
+from powerline.exchanges.eex_exchange import EexExchange
+from powerline.exchanges.epex_exchange import EpexExchange
+
+__author__ = 'Warren'
 
 
 # TODO add products test
@@ -23,13 +20,11 @@ class TestEexExchange(TestCase):
         self.exchange = EexExchange(start=start, end=end)
 
     def test_exchange(self):
-        self.assertIsInstance(self.exchange.source, EexSource)
         self.assertIsInstance(self.exchange.commission, PerShare)
 
         benchmark, treasury_curve = self.loader()
         self.assertIsInstance(benchmark, pd.Series)
         self.assertIsInstance(treasury_curve, pd.DataFrame)
-        self.assertIsInstance(self.exchange.asset_metadata, dict)
         self.assertIsInstance(self.exchange.calendar.trading_day,
                               pd.tseries.offsets.CDay)
         self.assertIsInstance(self.exchange.calendar.trading_days,
@@ -58,13 +53,11 @@ class TestEpexExchange(TestCase):
         self.exchange = EpexExchange(start=start, end=end)
 
     def test_exchange(self):
-        self.assertIsInstance(self.exchange.source, EpexSource)
         self.assertIsInstance(self.exchange.commission, PerShare)
 
         benchmark, treasury_curve = self.loader()
         self.assertIsInstance(benchmark, pd.Series)
         self.assertIsInstance(treasury_curve, pd.DataFrame)
-        self.assertIsInstance(self.exchange.asset_metadata, dict)
         self.assertIsInstance(self.exchange.calendar.trading_day,
                               pd.tseries.offsets.CDay)
         self.assertIsInstance(self.exchange.calendar.trading_days,

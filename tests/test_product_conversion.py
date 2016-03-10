@@ -1,28 +1,30 @@
-__author__ = "Warren"
+import pandas as pd
+import numpy as np
 
 from unittest import TestCase
 
-import pandas as pd
-import numpy as np
-from itertools import product
-
-from gg.powerline.utils.hour_quarter_hour_converter import \
+from powerline.utils.hour_quarter_hour_converter import \
     convert_between_h_and_qh
 
-hourly_products = ['%02d-%02d' % (i, i+1) for i in range(24)]
-quarter_tags = ['Q%d' % i for i in range(1, 5)]
-quarterly_products = ['%02d%s' % (i, tag)
-                      for (i, tag) in product(range(24), quarter_tags)]
+from powerline.exchanges.epex_exchange import EpexExchange
+
+__author__ = "Max"
 
 
-class TestRiskReport(TestCase):
+class TestProductConversion(TestCase):
     """
     Testing the utility function for history conversion via mock histories
     """
 
+    def setUp(self):
+        exchange = EpexExchange()
+        self.hourly_products = exchange.products['hour']
+        self.quarterly_products = exchange.products['qh']
+
     def test_conversion_hourly_to_quarterly(self):
         hourly_data = np.array([range(0, 24), range(24, 48), range(48, 72)])
-        hourly_history = pd.DataFrame(hourly_data, columns=hourly_products,
+        hourly_history = pd.DataFrame(hourly_data,
+                                      columns=self.hourly_products,
                                       index=pd.date_range('2015-01-01',
                                                           '2015-01-03'))
 
@@ -43,7 +45,7 @@ class TestRiskReport(TestCase):
                                    quarterly_row_2])
 
         expected_output = pd.DataFrame(quarterly_data,
-                                       columns=quarterly_products,
+                                       columns=self.quarterly_products,
                                        index=pd.date_range('2015-01-01',
                                                            '2015-01-03'))
 
@@ -55,14 +57,14 @@ class TestRiskReport(TestCase):
         quarterly_data = np.array([range(0, 96), range(96, 192), range(192,
                                                                        288)])
         quarterly_history = pd.DataFrame(quarterly_data,
-                                         columns=quarterly_products,
+                                         columns=self.quarterly_products,
                                          index=pd.date_range('2015-01-01',
                                                              '2015-01-03'))
         hourly_data = np.array([range(0, 24), range(24, 48), range(48, 72)]) \
             * 4 + 1.5
 
         expected_output = pd.DataFrame(hourly_data,
-                                       columns=hourly_products,
+                                       columns=self.hourly_products,
                                        index=pd.date_range('2015-01-01',
                                                            '2015-01-03'))
 

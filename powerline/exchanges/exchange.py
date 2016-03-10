@@ -1,7 +1,8 @@
-from abc import ABCMeta, abstractproperty, abstractmethod
+from abc import ABCMeta, abstractproperty
 
 from zipline.finance.trading import TradingEnvironment
-from gg.powerline.data.loader_power import load_market_data
+
+from powerline.data.loader_power import load_market_data
 
 
 __author__ = "Warren, Stefan"
@@ -16,16 +17,9 @@ class Exchange(object, metaclass=ABCMeta):
         self._commission = None
         self._benchmark = None
         self._calendar = None
-        self._asset_metadata = None
-        self._source = None
         self._type = kwargs.get("type", None)
         self._env = None
         self._products = kwargs.get("products", None)
-        self.source_start, self.source_end = self.insert_start_end()
-        self.start = kwargs.get("start", self.source_start)
-        self.start = max(self.start, self.source_start)
-        self.end = kwargs.get("end", self.source_end)
-        self.end = min(self.end, self.source_end)
         self.exchange_tz = "Europe/Berlin"
         self.load = load_market_data
 
@@ -43,14 +37,6 @@ class Exchange(object, metaclass=ABCMeta):
         return self._env
 
     @abstractproperty
-    def source(self):
-        """defined in subclass"""
-
-    @abstractproperty
-    def asset_metadata(self):
-        """defined in subclass"""
-
-    @abstractproperty
     def benchmark(self):
         """defined in subclass"""
 
@@ -62,6 +48,5 @@ class Exchange(object, metaclass=ABCMeta):
     def commission(self):
         """defined in subclass"""
 
-    @abstractmethod
-    def insert_start_end(self):
-        """defined in subclass"""
+    def insert_ident(self, day, product):
+        return str(day) + '_' + product
