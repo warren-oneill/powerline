@@ -11,7 +11,7 @@ __author__ = "Warren, Max"
 
 class RiskReport(object):
     """
-    Collects all zipline risk parameters and adds gg-specific parameters
+    Collects all zipline risk parameters and adds extra risk parameters
     e.g. VaR.
     A report can be displayed in the terminal by calling display_report()
     """
