@@ -1,5 +1,5 @@
 # powerline
-Extension to the zipline library which incorporates functionality for
+Extension to the [zipline](http://www.zipline.io/) library which incorporates functionality for
 the German EPEX and EEX energy markets.
 
 # Installation
