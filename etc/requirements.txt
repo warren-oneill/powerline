@@ -1,5 +1,7 @@
 # powerline
 tabulate
+numpy
+pandas
 
 # development
 nose
