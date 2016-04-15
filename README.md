@@ -4,7 +4,7 @@ the German EPEX and EEX energy markets.
 
 # Installation
 * create and activate a virtual environment (pyvenv-3.4 is preferred)
-* upgrade setup tools using:
+* upgrade pip, setuptools and IPython using:
 ```
 pip install --upgrade pip
 pip install --upgrade setuptools
