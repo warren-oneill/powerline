@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractproperty
+from six import with_metaclass
 
 from zipline.finance.trading import TradingEnvironment
 
@@ -8,7 +9,7 @@ from powerline.data.loader_power import load_market_data
 __author__ = "Warren, Stefan"
 
 
-class Exchange(object, metaclass=ABCMeta):
+class Exchange(with_metaclass(ABCMeta)):
     """
     A class to collect all exchange-relevant info.
     """

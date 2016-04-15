@@ -1,3 +1,6 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+
 from scipy.stats import norm
 import numpy as np
 from tabulate import tabulate
@@ -109,23 +112,23 @@ class RiskReport(object):
         displays ascii table in the terminal
         """
         table = [
-                ["PnL (€)", self.profit],
-                ["PnL Tag Max (€)", self.pnl_max],
-                ["PnL Tag Min (€)", self.pnl_min],
-                ["Returns (%)", self.returns_period * 100],
-                ["Returns Day Max (%)", self.returns_max * 100],
-                ["Returns Day Min (%)", self.returns_min * 100],
+                [u"PnL (€)", self.profit],
+                [u"PnL Tag Max (€)", self.pnl_max],
+                [u"PnL Tag Min (€)", self.pnl_min],
+                [u"Returns (%)", self.returns_period * 100],
+                [u"Returns Day Max (%)", self.returns_max * 100],
+                [u"Returns Day Min (%)", self.returns_min * 100],
                 ["Sortino", self.sortino],
                 ["Sharpe", self.sharpe],
                 ["Information", self.information],
-                ["Max Drawdown (%)", self.max_drawdown * 100],
+                [u"Max Drawdown (%)", self.max_drawdown * 100],
                 ["Longest Drawdown Duration*", self.longest_drawdown_duration],
-                ["VaR 95 (€)", self.var_95],
-                ["VaR 99 (€)", self.var_99],
-                ["VaR 95 (€), 5 days", self.five_day_var_95],
-                ["VaR 99 (€), 5 days", self.five_day_var_99],
+                [u"VaR 95 (€)", self.var_95],
+                [u"VaR 99 (€)", self.var_99],
+                [u"VaR 95 (€), 5 days", self.five_day_var_95],
+                [u"VaR 99 (€), 5 days", self.five_day_var_99],
                 ["Win Loss Ratio", self.win_loss],
-                ["Total Benchmark Profit (€)", self.benchmark_profits]]
+                [u"Total Benchmark Profit (€)", self.benchmark_profits]]
         headers = ["Risk Report", self.period]
 
         pd.concat([self.returns.cumsum(), self.benchmark], axis=1).plot()
