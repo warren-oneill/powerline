@@ -16,8 +16,8 @@ class EpexHistoryContainer(HistoryContainer):
                  data_frequency,
                  env,
                  bar_data=None):
-        super().__init__(history_specs, None, initial_dt,
-                         data_frequency, env, bar_data)
+        super(EpexHistoryContainer, self).__init__(
+            history_specs, None, initial_dt, data_frequency, env, bar_data)
 
         self.length = [spec.bar_count for spec in itervalues(
             self.history_specs)][0]

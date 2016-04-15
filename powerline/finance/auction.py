@@ -20,7 +20,7 @@ class TradingAlgorithmAuction(TradingAlgorithm):
             raise ValueError('You must define an auction function.')
         self.exchange = EpexExchange()
         self.products = self.exchange.products
-        super().__init__(*args, **kwargs)
+        super(TradingAlgorithmAuction, self).__init__(*args, **kwargs)
 
     @api_method
     def order_auction(self, amounts):
