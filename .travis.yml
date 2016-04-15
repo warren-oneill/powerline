@@ -6,8 +6,9 @@ python:
 install:
   - "pip install --upgrade pip"
   - "pip install --upgrade setuptools"
+  - "pip install --upgrade IPython"
   - "pip install -r etc/requirements.txt"
 # command to run tests
 script:
-  - nosetests --with-coverage tests/
+  - nosetests --with-coverage --cover-package=powerline
   - flake8 tests powerline
