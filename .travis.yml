@@ -9,5 +9,5 @@ install:
   - "pip install -r etc/requirements.txt"
 # command to run tests
 script:
-  - nosetests --with-coverage --with-timer --cover-package=powerline &> tests/report.txt
+  - nosetests --with-coverage tests/
   - flake8 tests powerline
