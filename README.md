@@ -1,6 +1,7 @@
-[![Build Status](https://travis-ci.org/grundgruen/powerline.svg?branch=master)](https://travis-ci.org/grundgruen/powerline)
-
 # powerline
+[![Build Status](https://travis-ci.org/grundgruen/powerline.svg?branch=master)](https://travis-ci.org/grundgruen/powerline)
+[![Coverage Status](https://coveralls.io/repos/github/grundgruen/powerline/badge.svg?branch=master)](https://coveralls.io/github/grundgruen/powerline?branch=master)
+
 Extension to the [zipline](http://www.zipline.io/) library which incorporates functionality for
 the German EPEX and EEX energy markets.
 
