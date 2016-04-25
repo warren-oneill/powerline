@@ -12,6 +12,7 @@ install:
   - "pip install --upgrade setuptools"
   - "pip install --upgrade IPython"
   - "pip install -r etc/requirements.txt"
+  - "pip install coveralls"
 # command to run tests
 script:
   - nosetests --with-coverage --cover-package=powerline
