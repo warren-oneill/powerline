@@ -16,3 +16,5 @@ install:
 script:
   - nosetests --with-coverage --cover-package=powerline
   - flake8 tests powerline
+after_success:
+  - coveralls
