@@ -11,7 +11,7 @@ coverage
 nose-ignore-docstring
 
 # zipline branch
--e git://github.com/grundgruen/zipline.git@gg-zip#egg=zipline
+-e git://github.com/warren-oneill/zipline.git@gg-zip#egg=zipline
 
 # strategy development
 sklearn
