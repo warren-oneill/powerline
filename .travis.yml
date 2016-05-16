@@ -8,6 +8,7 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 install:
+  - "sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran"  
   - "pip install --upgrade pip"
   - "pip install --upgrade setuptools"
   - "pip install --upgrade IPython"
